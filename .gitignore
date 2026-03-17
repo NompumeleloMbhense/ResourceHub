@@ -1,0 +1,20 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+# Build Folders
+bin/
+obj/
+
+# NuGet Packages
+*.nupkg
+packages/
+
+# Rider
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

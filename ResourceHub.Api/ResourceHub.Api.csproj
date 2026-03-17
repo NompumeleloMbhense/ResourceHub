@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ResourceHub.Core\ResourceHub.Core.csproj" />
+    <ProjectReference Include="..\ResourceHub.Infrastructure\ResourceHub.Infrastructure.csproj" />
+    <ProjectReference Include="..\ResourceHub.Shared\ResourceHub.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
