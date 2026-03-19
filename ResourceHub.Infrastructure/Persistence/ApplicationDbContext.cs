@@ -9,7 +9,7 @@ namespace ResourceHub.Infrastructure.Persistence
             : base(options) { }
 
         public DbSet<Resource> Resources => Set<Resource>();
-        public DbSet<Booking> bookings => Set<Booking>();
+        public DbSet<Booking> Bookings => Set<Booking>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

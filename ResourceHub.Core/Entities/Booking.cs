@@ -47,5 +47,16 @@ namespace ResourceHub.Core.Entities
             EndTime = endTime;
         }
 
+        public void UpdateDetails(string bookedBy, string purpose)
+        {
+            if (string.IsNullOrWhiteSpace(purpose))
+                throw new ArgumentException("Purpose is required");
+
+            if (string.IsNullOrWhiteSpace(bookedBy))
+                throw new ArgumentException("BookedBy is required");
+
+            BookedBy = bookedBy;
+            Purpose = purpose;
+        }
     }
 }
