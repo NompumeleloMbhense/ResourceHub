@@ -1,0 +1,66 @@
+using Microsoft.EntityFrameworkCore;
+using ResourceHub.Core.Entities;
+using ResourceHub.Core.Interfaces;
+using ResourceHub.Infrastructure.Persistence;
+
+namespace ResourceHub.Infrastructure.Services
+{
+    public class ResourceService : IResourceService
+    {
+
+        private readonly ApplicationDbContext _context;
+
+        public ResourceService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<Resource>> GetAllResourcesAsync()
+        {
+            return await _context.Resources.ToListAsync();
+        }
+
+        public async Task<Resource?> GetResourceByIdAsync(int id)
+        {
+            return await _context.Resources.FindAsync(id);
+        }
+
+        public async Task<Resource> CreateResourceAsync(Resource resource)
+        {
+            _context.Resources.Add(resource);
+            await _context.SaveChangesAsync();
+
+            return resource;
+        }
+
+        public async Task<bool> UpdateResourceAsync(int id, string name, string description, string location, int capacity, bool isAvailable)
+        {
+            var resource = await _context.Resources.FindAsync(id);
+
+            if (resource == null)
+                return false;
+
+            // Update fields
+            resource.UpdateDetails(name, description, location, capacity, isAvailable);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteResourceAsync(int id)
+        {
+            var resource = await _context.Resources.FindAsync(id);
+
+            if(resource == null)
+                return false;
+
+            _context.Resources.RemoveRange(resource);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+
+    }
+}

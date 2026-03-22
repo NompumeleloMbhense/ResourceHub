@@ -46,6 +46,13 @@ namespace ResourceHub.Infrastructure.Services
                 .ToListAsync();
         }
 
+        public async Task<Booking?> GetBookingByIdAsync(int bookingId)
+        {
+            return await _context.Bookings
+                .Include(b => b.Resource)
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+        }
+
         public async Task<List<Booking>> GetBookingByResourceAsync(int resourceId)
         {
             return await _context.Bookings
@@ -58,7 +65,7 @@ namespace ResourceHub.Infrastructure.Services
         {
             var booking = await _context.Bookings.FindAsync(bookingId);
 
-            if(booking == null) 
+            if (booking == null)
                 return false;
 
             // Check conflicts excluding current booking
@@ -66,7 +73,7 @@ namespace ResourceHub.Infrastructure.Services
                 .Where(b => b.ResourceId == booking.ResourceId && b.Id != bookingId)
                 .AnyAsync(b => startTime < b.EndTime && endTime > b.StartTime);
 
-            if(hasConflict)
+            if (hasConflict)
                 return false;
 
             // Update fields
@@ -82,7 +89,7 @@ namespace ResourceHub.Infrastructure.Services
         {
             var booking = await _context.Bookings.FindAsync(bookingId);
 
-            if(booking == null)
+            if (booking == null)
                 return false;
 
             _context.Bookings.Remove(booking);
@@ -90,6 +97,6 @@ namespace ResourceHub.Infrastructure.Services
 
             return true;
         }
-        
+
     }
 }

@@ -27,6 +27,7 @@ namespace ResourceHub.Core.Entities
 
             Name = name;
             Description = description;
+            Location = location;
             Capacity = capacity;
         }
 
@@ -36,7 +37,7 @@ namespace ResourceHub.Core.Entities
             IsAvailable = isAvailable;
         }
 
-        public void UpdateDetails(string name, string description, string location, int capacity)
+        public void UpdateDetails(string name, string description, string location, int capacity, bool isAvailable)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Resource name is required");

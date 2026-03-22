@@ -36,6 +36,29 @@ namespace ResourceHub.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var booking = await _bookingService.GetBookingByIdAsync(id);
+
+            if (booking == null)
+                return NotFound();
+
+            var result = new BookingDto
+            {
+                Id = booking.Id,
+                ResourceId = booking.ResourceId,
+                ResourceName = booking.Resource.Name,
+                StartTime = booking.StartTime,
+                EndTime = booking.EndTime,
+                BookedBy = booking.BookedBy,
+                Purpose = booking.Purpose
+            };
+
+            return Ok(result);
+        }
+
+        // 
         // GET: api/booking/resource/1
         [HttpGet("resource/{resourceId}")]
         public async Task<IActionResult> GetByResource(int resourceId)
