@@ -83,6 +83,9 @@ namespace ResourceHub.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateBookingDto dto)
         {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var booking = new Booking(
             dto.ResourceId,
             dto.StartTime,
@@ -103,6 +106,9 @@ namespace ResourceHub.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateBookingDto dto)
         {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var success = await _bookingService.UpdateBookingAsync(
                 id,
                 dto.StartTime,
@@ -112,7 +118,7 @@ namespace ResourceHub.Api.Controllers
             );
 
             if (!success)
-                return BadRequest("Update failed due to conflict or booking not found.");
+                return BadRequest("Update failed: conflict or booking not found.");
 
             return Ok("Booking updated successfully.");
         }

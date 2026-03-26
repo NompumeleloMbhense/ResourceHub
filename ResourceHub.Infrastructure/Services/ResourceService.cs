@@ -55,7 +55,7 @@ namespace ResourceHub.Infrastructure.Services
             if(resource == null)
                 return false;
 
-            _context.Resources.RemoveRange(resource);
+            _context.Resources.Remove(resource);
             await _context.SaveChangesAsync();
 
             return true;
