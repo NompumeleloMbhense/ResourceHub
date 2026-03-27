@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ResourceHub.Core.Interfaces;
 using ResourceHub.Infrastructure.Persistence;
 using ResourceHub.Infrastructure.Services;
+using ResourceHub.Api.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IResourceService, ResourceService>();
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
