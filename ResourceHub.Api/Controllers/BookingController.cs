@@ -58,9 +58,6 @@ namespace ResourceHub.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateBookingDto dto)
         {
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var booking = _mapper.Map<Booking>(dto);
 
             var success = await _bookingService.CreateBookingAsync(booking);
@@ -75,9 +72,6 @@ namespace ResourceHub.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateBookingDto dto)
         {
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var success = await _bookingService.UpdateBookingAsync(
                 id,
                 dto.StartTime,

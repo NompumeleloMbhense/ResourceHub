@@ -20,7 +20,7 @@ namespace ResourceHub.Core.Entities
         public Resource(string name, string description, string location, int capacity) 
         {
             if(string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException("Resource name is required");
+                throw new ArgumentException("Resource name is required");
 
             if (capacity <= 0)
                 throw new ArgumentOutOfRangeException("Capacity must be greater than 0");
