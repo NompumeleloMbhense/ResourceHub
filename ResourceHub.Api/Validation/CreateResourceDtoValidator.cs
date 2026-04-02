@@ -1,6 +1,11 @@
 using FluentValidation;
 using ResourceHub.Api.DTOs;
 
+/// <summary>
+/// Validator for CreateResourcDto
+/// Ensure that all required fields are provided and valid when creating a new resource
+/// </summary>
+
 namespace ResourceHub.Api.Validation
 {
     public class CreateResourceDtoValidator : AbstractValidator<CreateResourceDto>
@@ -16,6 +21,7 @@ namespace ResourceHub.Api.Validation
                 .WithMessage("Location is required");
 
             RuleFor(x => x.Capacity)
+                .NotEmpty().WithMessage("Capacity is required")
                 .GreaterThan(0)
                 .WithMessage("Capacity must be greater than 0");
         }

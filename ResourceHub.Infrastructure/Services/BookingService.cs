@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ResourceHub.Core.Entities;
+using ResourceHub.Core.Exceptions;
 using ResourceHub.Core.Interfaces;
 using ResourceHub.Infrastructure.Persistence;
 
@@ -14,15 +15,20 @@ namespace ResourceHub.Infrastructure.Services
             _context = context;
         }
 
-        public async Task<bool> CreateBookingAsync(Booking booking)
+        public async Task CreateBookingAsync(Booking booking)
         {
             // Ensure the resource exists
             var resource = await _context.Resources
                 .Include(r => r.Bookings)
                 .FirstOrDefaultAsync(r => r.Id == booking.ResourceId);
 
-            if (resource == null || !resource.IsAvailable)
-                return false;
+            // Validate resource availability
+            if (resource == null)
+                throw new ResourceNotFoundException("Resource not found");
+
+            // Check if resource that is being booked is available
+            if(!resource.IsAvailable)
+                throw new ArgumentException("Resource is not available");
 
             // Check for booking conflicts
             bool hasConflict = resource.Bookings.Any(b =>
@@ -30,13 +36,14 @@ namespace ResourceHub.Infrastructure.Services
                 booking.EndTime > b.StartTime
             );
 
+            // If there is a conflict, 
+            // throw a custom exception that can be caught by the API layer to return 
+            // a 409 conflict response 
             if (hasConflict)
-                return false;
+                throw new BookingConflictException("This resource is already booked for the selected time slot");
 
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
-
-            return true;
         }
 
         public async Task<List<Booking>> GetAllBookingsAsync()

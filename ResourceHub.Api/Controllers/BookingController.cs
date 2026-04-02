@@ -60,10 +60,7 @@ namespace ResourceHub.Api.Controllers
         {
             var booking = _mapper.Map<Booking>(dto);
 
-            var success = await _bookingService.CreateBookingAsync(booking);
-
-            if (!success)
-                return BadRequest("Booking conflict or resource unavailable");
+            await _bookingService.CreateBookingAsync(booking);
 
             return Ok("Booking created successfully");
         }

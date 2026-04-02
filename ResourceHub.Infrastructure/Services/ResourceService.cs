@@ -48,17 +48,20 @@ namespace ResourceHub.Infrastructure.Services
             return true;
         }
 
-        public async Task<bool> DeleteResourceAsync(int id)
+        public async Task DeleteResourceAsync(int id)
         {
-            var resource = await _context.Resources.FindAsync(id);
+            var resource = await _context.Resources
+            .Include(r => r.Bookings)
+            .FirstOrDefaultAsync(r => r.Id == id);
 
             if(resource == null)
-                return false;
+                throw new KeyNotFoundException("Resource not found");
+
+            if(resource.Bookings.Any())
+                throw new InvalidOperationException("Cannot delete a resource that has existing bookings");
 
             _context.Resources.Remove(resource);
             await _context.SaveChangesAsync();
-
-            return true;
         }
 
 

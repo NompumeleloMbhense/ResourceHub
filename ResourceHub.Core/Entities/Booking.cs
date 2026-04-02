@@ -14,7 +14,7 @@ namespace ResourceHub.Core.Entities
         public int ResourceId { get; private set; }
 
         public DateTime StartTime { get; private set; }
-        public DateTime EndTime { get; private set; } 
+        public DateTime EndTime { get; private set; }
 
         public string BookedBy { get; private set; } = string.Empty;
         public string Purpose { get; private set; } = string.Empty;
@@ -24,8 +24,14 @@ namespace ResourceHub.Core.Entities
 
         public Booking(int resourceId, DateTime startTime, DateTime endTime, string bookedBy, string purpose)
         {
+            if (resourceId <= 0)
+                throw new ArgumentException("Valid ResourceId is required");
+
             if (startTime >= endTime)
                 throw new ArgumentException("End time must be after start time");
+
+            if (string.IsNullOrWhiteSpace(bookedBy))
+                throw new ArgumentException("BookedBy is required");
 
             if (string.IsNullOrWhiteSpace(purpose))
                 throw new ArgumentException("Purpose is required");

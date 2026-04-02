@@ -78,12 +78,19 @@ namespace ResourceHub.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _resourceService.DeleteResourceAsync(id);
-
-            if (!deleted)
-                return NotFound();
-
-            return NoContent();
+            try
+            {
+                await _resourceService.DeleteResourceAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { Message = "Resource not found" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
     }
 }

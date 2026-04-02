@@ -1,6 +1,10 @@
 using FluentValidation;
 using ResourceHub.Api.DTOs;
 
+/// <summary>
+/// Validator for CreateBookingDto
+/// Ensures that all required fields are provided and valid when creating a new booking
+/// </summary>
 namespace ResourceHub.Api.Validation
 {
     public class CreateBookingDtoValidator : AbstractValidator<CreateBookingDto>
@@ -8,14 +12,19 @@ namespace ResourceHub.Api.Validation
         public CreateBookingDtoValidator()
         {
             RuleFor(x => x.ResourceId)
+                .NotEmpty().WithMessage("Resource ID is required")
                 .GreaterThan(0)
                 .WithMessage("Resource ID must be greater than 0");
 
             RuleFor(x => x.StartTime)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage("Start time is required")
                 .LessThan(x => x.EndTime)
                 .WithMessage("Start time must be before end time");
 
             RuleFor(x => x.EndTime)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage("End time is required")
                 .GreaterThan(x => x.StartTime)
                 .WithMessage("End time must be after start time");
 

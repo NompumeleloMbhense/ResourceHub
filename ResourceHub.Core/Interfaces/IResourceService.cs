@@ -12,6 +12,6 @@ namespace ResourceHub.Core.Interfaces
 
         Task<bool> UpdateResourceAsync(int id, string name, string description, string location, int capacity, bool isAvailable);
 
-        Task<bool> DeleteResourceAsync(int id);
+        Task DeleteResourceAsync(int id);
     }
 }

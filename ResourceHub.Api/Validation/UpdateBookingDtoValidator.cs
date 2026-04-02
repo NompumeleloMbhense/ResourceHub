@@ -8,10 +8,14 @@ namespace ResourceHub.Api.Validation
         public UpdateBookingDtoValidator()
         {
             RuleFor(x => x.StartTime)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage("Start time is required")
                 .LessThan(x => x.EndTime)
                 .WithMessage("Start time must be before end time");
 
             RuleFor(x => x.EndTime)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage("End time is required")
                 .GreaterThan(x => x.StartTime)
                 .WithMessage("End time must be after start time");
 
