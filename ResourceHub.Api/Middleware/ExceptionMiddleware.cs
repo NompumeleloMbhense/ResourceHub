@@ -44,10 +44,13 @@ namespace ResourceHub.Api.Middleware
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     result = new { message = ex.Message };
                     break;
-
                 case KeyNotFoundException:
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     result = new { message = "Resource not found" };
+                    break;
+                case BookingNotFoundException ex:
+                    response.StatusCode = (int)HttpStatusCode.NotFound;
+                    result = new { message = ex.Message };
                     break;
                 case BookingConflictException ex:
                     response.StatusCode = (int)HttpStatusCode.Conflict;
@@ -55,6 +58,14 @@ namespace ResourceHub.Api.Middleware
                     break;
                 case ResourceNotFoundException ex:
                     response.StatusCode = (int)HttpStatusCode.NotFound;
+                    result = new { message = ex.Message };
+                    break;
+                case ResourceUnavailableException ex:
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    result = new { message = ex.Message };
+                    break;
+                case ResourceHasBookingsException ex:
+                    response.StatusCode = (int)HttpStatusCode.BadRequest; // or 409 if you prefer
                     result = new { message = ex.Message };
                     break;
                 default:

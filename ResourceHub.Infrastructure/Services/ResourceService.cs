@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ResourceHub.Core.Entities;
+using ResourceHub.Core.Exceptions;
 using ResourceHub.Core.Interfaces;
 using ResourceHub.Infrastructure.Persistence;
 
@@ -33,19 +34,17 @@ namespace ResourceHub.Infrastructure.Services
             return resource;
         }
 
-        public async Task<bool> UpdateResourceAsync(int id, string name, string description, string location, int capacity, bool isAvailable)
+        public async Task UpdateResourceAsync(int id, string name, string description, string location, int capacity, bool isAvailable)
         {
             var resource = await _context.Resources.FindAsync(id);
 
             if (resource == null)
-                return false;
+                throw new ResourceNotFoundException("Resource not found");
 
             // Update fields
             resource.UpdateDetails(name, description, location, capacity, isAvailable);
 
             await _context.SaveChangesAsync();
-
-            return true;
         }
 
         public async Task DeleteResourceAsync(int id)
@@ -55,15 +54,13 @@ namespace ResourceHub.Infrastructure.Services
             .FirstOrDefaultAsync(r => r.Id == id);
 
             if(resource == null)
-                throw new KeyNotFoundException("Resource not found");
+                throw new ResourceNotFoundException("Resource not found");
 
             if(resource.Bookings.Any())
-                throw new InvalidOperationException("Cannot delete a resource that has existing bookings");
+                throw new ResourceHasBookingsException("Cannot delete a resource with existing bookings");
 
             _context.Resources.Remove(resource);
             await _context.SaveChangesAsync();
         }
-
-
     }
 }

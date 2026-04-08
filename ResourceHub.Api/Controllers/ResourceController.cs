@@ -44,22 +44,22 @@ namespace ResourceHub.Api.Controllers
 
         // POST: api/resource
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateResourceDto dto)
+        public async Task<IActionResult> Create(CreateResourceDto dto)
         {
             var resource = _mapper.Map<Resource>(dto);
 
             var created = await _resourceService.CreateResourceAsync(resource);
 
-            var result = _mapper.Map<ResourceDto>(created);
-
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            return CreatedAtAction(nameof(GetById),
+            new { id = created.Id },
+            _mapper.Map<ResourceDto>(created));
         }
 
         // PUT: api/resource/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateResourceDto dto)
+        public async Task<IActionResult> Update(int id, UpdateResourceDto dto)
         {
-            var updated = await _resourceService.UpdateResourceAsync(
+            await _resourceService.UpdateResourceAsync(
                 id,
                 dto.Name,
                 dto.Description,
@@ -68,9 +68,6 @@ namespace ResourceHub.Api.Controllers
                 dto.IsAvailable
             );
 
-            if (!updated)
-                return NotFound();
-
             return NoContent();
         }
 
@@ -78,19 +75,8 @@ namespace ResourceHub.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                await _resourceService.DeleteResourceAsync(id);
-                return NoContent();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound(new { Message = "Resource not found" });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
+            await _resourceService.DeleteResourceAsync(id);
+            return NoContent();
         }
     }
 }

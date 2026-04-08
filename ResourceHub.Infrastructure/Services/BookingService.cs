@@ -15,6 +15,22 @@ namespace ResourceHub.Infrastructure.Services
             _context = context;
         }
 
+        
+        public async Task<List<Booking>> GetAllBookingsAsync()
+        {
+            return await _context.Bookings
+                .Include(b => b.Resource)
+                .ToListAsync();
+        }
+
+        
+        public async Task<Booking?> GetBookingByIdAsync(int bookingId)
+        {
+            return await _context.Bookings
+                .Include(b => b.Resource)
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+        }
+
         public async Task CreateBookingAsync(Booking booking)
         {
             // Ensure the resource exists
@@ -28,7 +44,7 @@ namespace ResourceHub.Infrastructure.Services
 
             // Check if resource that is being booked is available
             if(!resource.IsAvailable)
-                throw new ArgumentException("Resource is not available");
+                throw new ResourceUnavailableException("This resource is currently unavailable for booking");
 
             // Check for booking conflicts
             bool hasConflict = resource.Bookings.Any(b =>
@@ -46,29 +62,8 @@ namespace ResourceHub.Infrastructure.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Booking>> GetAllBookingsAsync()
-        {
-            return await _context.Bookings
-                .Include(b => b.Resource)
-                .ToListAsync();
-        }
 
-        public async Task<Booking?> GetBookingByIdAsync(int bookingId)
-        {
-            return await _context.Bookings
-                .Include(b => b.Resource)
-                .FirstOrDefaultAsync(b => b.Id == bookingId);
-        }
-
-        public async Task<List<Booking>> GetBookingByResourceAsync(int resourceId)
-        {
-            return await _context.Bookings
-                .Include(b => b.Resource)
-                .Where(b => b.ResourceId == resourceId)
-                .ToListAsync();
-        }
-
-        public async Task<bool> UpdateBookingAsync(int bookingId, DateTime startTime, DateTime endTime,
+        public async Task UpdateBookingAsync(int bookingId, DateTime startTime, DateTime endTime,
                                                     string bookedBy, string purpose)
         {
             var booking = await _context.Bookings
@@ -76,7 +71,7 @@ namespace ResourceHub.Infrastructure.Services
                 .FirstOrDefaultAsync(b => b.Id == bookingId);
 
             if (booking == null)
-                return false;
+                throw new BookingNotFoundException("Booking not found");
 
            // Check conflicts excluding current booking
             bool hasConflict = booking.Resource.Bookings
@@ -84,27 +79,34 @@ namespace ResourceHub.Infrastructure.Services
                 .Any(b => startTime < b.EndTime && endTime > b.StartTime);
 
             if (hasConflict)
-                return false;
+                throw new BookingConflictException("This resource is already booked for the selected time slot");
 
             // Update fields
             booking.UpdateTime(startTime, endTime);
             booking.UpdateDetails(bookedBy, purpose);
 
             await _context.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<bool> DeleteBookingAsync(int bookingId)
+        public async Task DeleteBookingAsync(int bookingId)
         {
             var booking = await _context.Bookings.FindAsync(bookingId);
 
             if (booking == null)
-                return false;
+                throw new BookingNotFoundException("Booking not found");
+                
 
             _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
+        }
+        
 
-            return true;
+        public async Task<List<Booking>> GetBookingByResourceAsync(int resourceId)
+        {
+            return await _context.Bookings
+                .Include(b => b.Resource)
+                .Where(b => b.ResourceId == resourceId)
+                .ToListAsync();
         }
 
     }

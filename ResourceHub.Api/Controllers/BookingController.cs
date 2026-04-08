@@ -62,14 +62,15 @@ namespace ResourceHub.Api.Controllers
 
             await _bookingService.CreateBookingAsync(booking);
 
-            return Ok("Booking created successfully");
+            return CreatedAtAction(nameof(GetById), new { id = booking.Id }, 
+                                    _mapper.Map<BookingDto>(booking));
         }
 
         // PUT: api/booking/1
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateBookingDto dto)
         {
-            var success = await _bookingService.UpdateBookingAsync(
+            await _bookingService.UpdateBookingAsync(
                 id,
                 dto.StartTime,
                 dto.EndTime,
@@ -77,22 +78,16 @@ namespace ResourceHub.Api.Controllers
                 dto.Purpose
             );
 
-            if (!success)
-                return BadRequest("Update failed: conflict or booking not found.");
-
-            return Ok("Booking updated successfully.");
+            return NoContent();
         }
 
         // DELETE: api/booking/1
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var success = await _bookingService.DeleteBookingAsync(id);
+            await _bookingService.DeleteBookingAsync(id);
 
-            if (!success)
-                return NotFound("Booking not found.");
-
-            return Ok("Booking deleted successfully.");
+            return NoContent();
         }
     }
 }
