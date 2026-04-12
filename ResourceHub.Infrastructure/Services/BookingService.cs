@@ -143,17 +143,33 @@ namespace ResourceHub.Infrastructure.Services
 
         public async Task<PagedResult<Booking>> GetBookingByResourceAsync(int resourceId, BookingQueryParams query)
         {
+            // BASE QUERY
             var bookingsQuery = _context.Bookings
                 .Include(b => b.Resource)
                 .Where(b => b.ResourceId == resourceId)
                 .AsQueryable();
 
 
+            // SEARCH
+            if (!string.IsNullOrWhiteSpace(query.Search))
+            {
+                var search = query.Search.ToLower();
+
+                bookingsQuery = bookingsQuery.Where(b =>
+                    b.BookedBy.ToLower().Contains(search) ||
+                    b.Purpose.ToLower().Contains(search) ||
+                    b.Resource.Name.ToLower().Contains(search)
+                );
+            }
+
             // FILTERING
+            if (query.ResourceId.HasValue)
+                bookingsQuery = bookingsQuery.Where(b => b.ResourceId == query.ResourceId);
+
             if (!string.IsNullOrWhiteSpace(query.BookedBy))
-                bookingsQuery = bookingsQuery.Where(b => b.BookedBy.Contains(query.BookedBy));
-            
-             if (query.StartDate.HasValue)
+                bookingsQuery = bookingsQuery.Where(b => b.BookedBy.Contains(query.BookedBy.ToLower()));
+
+            if (query.StartDate.HasValue)
                 bookingsQuery = bookingsQuery.Where(b => b.StartTime >= query.StartDate);
 
             if (query.EndDate.HasValue)

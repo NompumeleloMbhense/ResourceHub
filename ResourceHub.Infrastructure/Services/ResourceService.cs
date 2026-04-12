@@ -25,9 +25,23 @@ namespace ResourceHub.Infrastructure.Services
 
         public async Task<PagedResult<Resource>> GetAllResourcesAsync(ResourceQueryParams query)
         {
+            // BASE QUERY
             var resourcesQuery = _context.Resources
                 .OrderBy(r => r.Id)
                 .AsQueryable();
+
+
+            // SEARCH
+            if (!string.IsNullOrWhiteSpace(query.Search))
+            {
+                var search = query.Search.ToLower();
+
+                resourcesQuery = resourcesQuery.Where(r =>
+                    r.Name.ToLower().Contains(search) ||
+                    r.Description.ToLower().Contains(search) ||
+                    r.Location.ToLower().Contains(search)
+                );
+            }
 
 
             // FILTERING

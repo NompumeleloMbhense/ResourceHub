@@ -15,11 +15,14 @@ namespace ResourceHub.Core.QueryParams
             set => _pageSize = value > 50 ? 50 : value; // max limit
         }
 
-        // Filtering
+        // FILTERS
         public string? Name { get; set; }
         public string? Location { get; set; }
         public bool? IsAvailable { get; set; }
         public int? MinCapacity { get; set; }
         public int? MaxCapacity { get; set; }
+
+        // SEARCH
+        public string? Search { get; set; }
     }
 }

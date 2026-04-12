@@ -18,10 +18,15 @@ namespace ResourceHub.Core.QueryParams
             set => _pageSize = value > 50 ? 50 : value;
         }
 
+        // SEARCH
+        public string? Search { get; set; }
+
         // FILTERS
          public int? ResourceId { get; set; }
         public string? BookedBy { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+
+        
     }
 }
