@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ResourceHub.Core.Interfaces;
 using ResourceHub.Core.Entities;
+using ResourceHub.Core.QueryParams;
+using ResourceHub.Core.Pagination;
 using ResourceHub.Api.DTOs;
 using AutoMapper;
 
@@ -20,10 +22,18 @@ namespace ResourceHub.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] ResourceQueryParams query)
         {
-            var resources = await _resourceService.GetAllResourcesAsync();
-            var result = _mapper.Map<IEnumerable<ResourceDto>>(resources);
+            var pagedResources = await _resourceService.GetAllResourcesAsync(query);
+
+            var result = new PagedResult<ResourceDto>
+            {
+                PageNumber = pagedResources.PageNumber,
+                PageSize = pagedResources.PageSize,
+                TotalCount = pagedResources.TotalCount,
+                TotalPages = pagedResources.TotalPages,
+                Data = _mapper.Map<IEnumerable<ResourceDto>>(pagedResources.Data)
+            };
 
             return Ok(result);
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ResourceHub.Core.Interfaces;
 using ResourceHub.Core.Entities;
+using ResourceHub.Core.QueryParams;
 using ResourceHub.Api.DTOs;
 using AutoMapper;
 
@@ -21,10 +22,18 @@ namespace ResourceHub.Api.Controllers
 
         // GET: api/booking
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] BookingQueryParams query)
         {
-            var bookings = await _bookingService.GetAllBookingsAsync();
-            var result = _mapper.Map<IEnumerable<BookingDto>>(bookings);
+            var pagedBookings = await _bookingService.GetAllBookingsAsync(query);
+
+            var result = new
+            {
+                pagedBookings.PageNumber,
+                pagedBookings.PageSize,
+                pagedBookings.TotalCount,
+                pagedBookings.TotalPages,
+                Data = _mapper.Map<IEnumerable<BookingDto>>(pagedBookings.Data)
+            };
 
             return Ok(result);
         }
@@ -45,11 +54,18 @@ namespace ResourceHub.Api.Controllers
 
         // GET: api/booking/resource/1
         [HttpGet("resource/{resourceId}")]
-        public async Task<IActionResult> GetByResource(int resourceId)
+        public async Task<IActionResult> GetBookingByResource(int resourceId, [FromQuery] BookingQueryParams query)
         {
-            var bookings = await _bookingService.GetBookingByResourceAsync(resourceId);
+            var pagedBookings = await _bookingService.GetBookingByResourceAsync(resourceId, query);
 
-            var result = _mapper.Map<IEnumerable<BookingDto>>(bookings);
+            var result = new
+            {
+                pagedBookings.PageNumber,
+                pagedBookings.PageSize,
+                pagedBookings.TotalCount,
+                pagedBookings.TotalPages,
+                Data = _mapper.Map<IEnumerable<BookingDto>>(pagedBookings.Data)
+            };
 
             return Ok(result);
         }
@@ -62,7 +78,7 @@ namespace ResourceHub.Api.Controllers
 
             await _bookingService.CreateBookingAsync(booking);
 
-            return CreatedAtAction(nameof(GetById), new { id = booking.Id }, 
+            return CreatedAtAction(nameof(GetById), new { id = booking.Id },
                                     _mapper.Map<BookingDto>(booking));
         }
 

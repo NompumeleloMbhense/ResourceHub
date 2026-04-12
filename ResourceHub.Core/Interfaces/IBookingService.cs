@@ -1,13 +1,15 @@
 ﻿using ResourceHub.Core.Entities;
+using ResourceHub.Core.QueryParams;
+using ResourceHub.Core.Pagination;
 
 namespace ResourceHub.Core.Interfaces
 {
     public interface IBookingService
     {
         
-        Task<List<Booking>> GetAllBookingsAsync();
+        Task<PagedResult<Booking>> GetAllBookingsAsync(BookingQueryParams query);
         Task<Booking?> GetBookingByIdAsync(int bookingId);
-        Task<List<Booking>> GetBookingByResourceAsync(int resourceId);
+        Task<PagedResult<Booking>> GetBookingByResourceAsync(int resourceId, BookingQueryParams query);
         Task CreateBookingAsync(Booking booking);
         Task UpdateBookingAsync(int bookingId, DateTime startTime, DateTime endTime, string bookedBy, string purpose);
         Task DeleteBookingAsync(int bookingId);
