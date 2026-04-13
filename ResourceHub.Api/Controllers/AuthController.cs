@@ -1,0 +1,33 @@
+using Microsoft.AspNetCore.Mvc;
+using ResourceHub.Api.DTOs;
+using ResourceHub.Core.Interfaces;
+
+namespace ResourceHub.Api.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
+    {
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
+        {
+            _authService = authService;
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterDto dto)
+        {
+            var token = await _authService.RegisterAsync(dto.Username, dto.Email, dto.Password);
+
+            return Ok(token);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            var token = await _authService.LoginAsync(dto.Username, dto.Password);
+            return Ok(new { token });
+        }
+    }
+}

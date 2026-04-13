@@ -10,6 +10,7 @@ namespace ResourceHub.Infrastructure.Persistence
 
         public DbSet<Resource> Resources => Set<Resource>();
         public DbSet<Booking> Bookings => Set<Booking>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,10 @@ namespace ResourceHub.Infrastructure.Persistence
                 .Property(b => b.Purpose)
                 .IsRequired()
                 .HasMaxLength(200);
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
         }
     }
 }

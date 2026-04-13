@@ -194,6 +194,5 @@ namespace ResourceHub.Infrastructure.Services
                 Data = bookings
             };
         }
-
     }
 }

@@ -4,6 +4,7 @@ using ResourceHub.Core.Entities;
 using ResourceHub.Core.QueryParams;
 using ResourceHub.Api.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ResourceHub.Api.Controllers
 {
@@ -71,6 +72,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // POST: api/booking
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateBookingDto dto)
         {
@@ -83,6 +85,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // PUT: api/booking/1
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateBookingDto dto)
         {
@@ -98,6 +101,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // DELETE: api/booking/1
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

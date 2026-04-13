@@ -5,6 +5,7 @@ using ResourceHub.Core.QueryParams;
 using ResourceHub.Core.Pagination;
 using ResourceHub.Api.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ResourceHub.Api.Controllers
 {
@@ -53,6 +54,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // POST: api/resource
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateResourceDto dto)
         {
@@ -66,6 +68,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // PUT: api/resource/1
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateResourceDto dto)
         {
@@ -82,6 +85,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // GET: api/resource/1
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

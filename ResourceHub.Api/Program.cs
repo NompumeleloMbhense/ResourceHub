@@ -7,6 +7,9 @@ using ResourceHub.Api.Validation;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using ResourceHub.Api.Middleware;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Dependency Injection for services
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IResourceService, ResourceService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Controllers 
 builder.Services.AddControllers();
@@ -42,6 +46,27 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateBookingDtoValidator>(
 
 // AutoMapper configuration
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+// Authentication configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is not configured"))
+            )
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

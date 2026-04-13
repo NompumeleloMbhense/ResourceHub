@@ -68,6 +68,10 @@ namespace ResourceHub.Api.Middleware
                     response.StatusCode = (int)HttpStatusCode.BadRequest; // or 409 if you prefer
                     result = new { message = ex.Message };
                     break;
+                case UnauthorizedAccessException ex:
+                    response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    result = new { message = ex.Message };
+                    break;
                 default:
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     result = new { message = "An unexpected error occurred" };
