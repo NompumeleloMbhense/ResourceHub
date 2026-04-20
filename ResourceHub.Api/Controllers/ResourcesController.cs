@@ -3,7 +3,7 @@ using ResourceHub.Core.Interfaces;
 using ResourceHub.Core.Entities;
 using ResourceHub.Core.QueryParams;
 using ResourceHub.Core.Pagination;
-using ResourceHub.Api.DTOs;
+using ResourceHub.Shared.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 
@@ -11,12 +11,12 @@ namespace ResourceHub.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ResourceController : ControllerBase
+    public class ResourcesController : ControllerBase
     {
         private readonly IResourceService _resourceService;
         private readonly IMapper _mapper;
 
-        public ResourceController(IResourceService resourceService, IMapper mapper)
+        public ResourcesController(IResourceService resourceService, IMapper mapper)
         {
             _resourceService = resourceService;
             _mapper = mapper;

@@ -9,9 +9,9 @@ namespace ResourceHub.Client.Services
         private readonly HttpClient _http;
         private readonly ILocalStorageService _localStorage;
 
-        public AuthService(HttpClient http, ILocalStorageService localStorage)
+        public AuthService(IHttpClientFactory factory, ILocalStorageService localStorage)
         {
-            _http = http;
+            _http = factory.CreateClient("ApiClient");
             _localStorage = localStorage;
         }
 

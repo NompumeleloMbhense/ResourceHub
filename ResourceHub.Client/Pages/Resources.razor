@@ -1,0 +1,99 @@
+@page "/resources"
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.QueryParams
+@inject IResourceService ResourceService
+
+<h3 class="page-title">Resources</h3>
+
+<div class="toolbar">
+    <input placeholder="Search name..." @bind="query.Name" class="input" />
+    <input placeholder="Location..." @bind="query.Location" class="input" />
+
+    <button class="btn" @onclick="LoadResources">Search</button>
+</div>
+
+@if (resources == null)
+{
+    <p>Loading...</p>
+}
+else if (!resources.Any())
+{
+    <p>No resources found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Capacity</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in resources)
+            {
+                <tr>
+                    <td>@r.Name</td>
+                    <td>@r.Location</td>
+                    <td>@r.Capacity</td>
+                    <td>
+                        <span class="status @(r.IsAvailable ? "available" : "unavailable")">
+                            @(r.IsAvailable ? "Available" : "Unavailable")
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <button class="btn" @onclick="PrevPage" disabled="@(query.PageNumber == 1)">Prev</button>
+        <span>Page @query.PageNumber</span>
+        <button class="btn" @onclick="NextPage">Next</button>
+    </div>
+}
+
+@code
+{
+    private List<ResourceDto>? resources;
+    private int totalPages;
+
+    private ResourceQueryParams query = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadResources();
+    }
+
+    private async Task LoadResources()
+    {
+        var result = await ResourceService.GetResourcesAsync(query);
+
+        if (result != null)
+        {
+            resources = result.Data.ToList();
+            totalPages = result.TotalPages;
+        }
+    }
+
+     private async Task NextPage()
+    {
+        if (query.PageNumber < totalPages)
+        {
+            query.PageNumber++;
+            await LoadResources();
+        }
+    }
+
+    private async Task PrevPage()
+    {
+        if (query.PageNumber > 1)
+        {
+            query.PageNumber--;
+            await LoadResources();
+        }
+    }
+}

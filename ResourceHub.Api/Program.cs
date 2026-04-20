@@ -68,7 +68,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorClient", policy =>
+    {
+        policy.WithOrigins("http://localhost:5107")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowBlazorClient");
 
 // Global exception handling middleware
 app.UseMiddleware<ExceptionMiddleware>();
