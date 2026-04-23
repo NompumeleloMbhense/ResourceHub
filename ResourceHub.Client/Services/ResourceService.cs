@@ -37,25 +37,25 @@ namespace ResourceHub.Client.Services
             return await _http.GetFromJsonAsync<PagedResult<ResourceDto>>(url);
         }
 
-        public async Task<ResourceDto?> GetByIdAsync(int id)
+        public async Task<ResourceDto?> GetResourceByIdAsync(int id)
         {
             return await _http.GetFromJsonAsync<ResourceDto>($"api/resources/{id}");
         }
 
 
-        public async Task<bool> CreateAsync(CreateResourceDto dto)
+        public async Task<bool> CreateResourceAsync(CreateResourceDto dto)
         {
             var response = await _http.PostAsJsonAsync("api/resources", dto);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateAsync(int id, UpdateResourceDto dto)
+        public async Task<bool> UpdateResourceAsync(int id, UpdateResourceDto dto)
         {
             var response = await _http.PutAsJsonAsync($"api/resources/{id}", dto);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteResourceAsync(int id)
         {
             var response = await _http.DeleteAsync($"api/resources/{id}");
             return response.IsSuccessStatusCode;

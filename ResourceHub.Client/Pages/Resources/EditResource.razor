@@ -1,0 +1,71 @@
+@page "/resources/edit/{id:int}"
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.Forms;
+@using ResourceHub.Client.Services
+@using ResourceHub.Client.Components
+@inject IResourceService ResourceService
+@inject NavigationManager Navigation
+
+<h3 class="page-title">Update Resource</h3>
+
+@if (model == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="form-container">
+        <ResourceForm Model="model"
+                      SubmitText="Update"
+                      ShowAvailability="true"
+                      OnSubmit="HandleUpdate"
+                      OnCancel="Cancel" />
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private ResourceFormModel? model;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var resource = await ResourceService.GetResourceByIdAsync(Id);
+
+        if (resource != null)
+        {
+            model = new ResourceFormModel
+            {
+                Name = resource.Name,
+                Description = resource.Description,
+                Location = resource.Location,
+                Capacity = resource.Capacity,
+                IsAvailable = resource.IsAvailable
+            };
+        }
+    }
+
+    private async Task HandleUpdate(ResourceFormModel model)
+    {
+        if (model == null) return;
+
+        var dto = new UpdateResourceDto
+        {
+            Name = model.Name,
+            Description = model.Description,
+            Location = model.Location,
+            Capacity = model.Capacity,
+            IsAvailable = model.IsAvailable
+        };
+
+        var success = await ResourceService.UpdateResourceAsync(Id, dto);
+
+        if (!success) return;
+
+        Navigation.NavigateTo("/resources");
+    }
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/resources");
+    }
+}

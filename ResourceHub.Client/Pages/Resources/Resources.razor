@@ -1,0 +1,184 @@
+@page "/resources"
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.QueryParams
+@inject IResourceService ResourceService
+@inject NavigationManager Navigation
+
+<h3 class="page-title">Resources</h3>
+
+<div class="toolbar">
+
+    <NavLink href="/resources/create" class="btn">
+        + Add Resource
+    </NavLink>
+
+    <input placeholder="Search name..." @bind="query.Name" class="input" />
+    <input placeholder="Location..." @bind="query.Location" class="input" />
+
+    <!-- Capacity Range -->
+    <input type="number" placeholder="Min Capacity" @bind="query.MinCapacity" class="input small" />
+    <input type="number" placeholder="Max Capacity" @bind="query.MaxCapacity" class="input small" />
+
+    <!-- Availabilty Toggle -->
+    <InputSelect @bind-Value="query.IsAvailable" class="input small">
+        <option value="">All</option>
+        <option value="true">Available</option>
+        <option value="false">Unavailable</option>
+    </InputSelect>
+
+    <button class="btn" @onclick="Search">Search</button>
+    <button class="btn secondary" @onclick="ResetFilters">Reset</button>
+</div>
+
+@if (resources == null)
+{
+    <p>Loading...</p>
+}
+else if (!resources.Any())
+{
+    <p>No resources found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Capacity</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in resources)
+            {
+                <tr>
+                    <td>@r.Name</td>
+                    <td>@r.Location</td>
+                    <td>@r.Capacity</td>
+                    <td>
+                        <span class="status @(r.IsAvailable ? "available" : "unavailable")">
+                            @(r.IsAvailable ? "Available" : "Unavailable")
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn small" @onclick="() => EditResource(r.Id)">
+                            Edit
+                        </button>
+
+                        <button class="btn danger small" @onclick="() => ConfirmDelete(r.Id)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (deleteId != null)
+    {
+        <div class="modal-backdrop">
+            <div class="modal">
+                <h4>Delete Resource?</h4>
+                <p>This action cannot be undone.</p>
+
+                <div class="modal-actions">
+                    <button class="btn danger" @onclick="DeleteResource">Delete</button>
+                    <button class="btn secondary" @onclick="CancelDelete">Cancel</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="pagination">
+        <button class="btn" @onclick="PrevPage" disabled="@(query.PageNumber == 1)">Prev</button>
+        <span>Page @query.PageNumber of @totalPages</span>
+        <button class="btn" @onclick="NextPage" disabled="@(query.PageNumber >= totalPages)">
+            Next
+        </button>
+    </div>
+}
+
+@code
+{
+    private List<ResourceDto>? resources;
+    private int totalPages;
+
+    private ResourceQueryParams query = new();
+    private int? deleteId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadResources();
+    }
+
+    private async Task LoadResources()
+    {
+        var result = await ResourceService.GetResourcesAsync(query);
+
+        if (result != null)
+        {
+            resources = result.Data.ToList();
+            totalPages = result.TotalPages;
+        }
+    }
+
+    private async Task Search()
+    {
+        query.PageNumber = 1;
+        await LoadResources();
+    }
+
+    private async Task ResetFilters()
+    {
+        query = new ResourceQueryParams(); // resets everything
+        await LoadResources();
+    }
+
+
+    private void EditResource(int id)
+    {
+        Navigation.NavigateTo($"/resources/edit/{id}");
+    }
+
+
+    private void ConfirmDelete(int id)
+    {
+        deleteId = id;
+    }
+
+    private async Task DeleteResource()
+    {
+        if (deleteId == null) return;
+
+        await ResourceService.DeleteResourceAsync(deleteId.Value);
+
+        deleteId = null;
+
+        await LoadResources();
+    }
+
+    private void CancelDelete()
+    {
+        deleteId = null;
+    }
+
+    private async Task NextPage()
+    {
+        if (query.PageNumber < totalPages)
+        {
+            query.PageNumber++;
+            await LoadResources();
+        }
+    }
+
+    private async Task PrevPage()
+    {
+        if (query.PageNumber > 1)
+        {
+            query.PageNumber--;
+            await LoadResources();
+        }
+    }
+}

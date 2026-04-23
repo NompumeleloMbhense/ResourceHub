@@ -1,0 +1,42 @@
+@page "/resources/create"
+@using ResourceHub.Client.Components
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.Forms
+@inject IResourceService ResourceService
+@inject NavigationManager Navigation
+
+<h3 class="page-title">Create Resource</h3>
+
+<div class="form-container">
+    <ResourceForm Model="model" SubmitText="Create" OnSubmit="HandleCreate" OnCancel="Cancel" />
+</div>
+
+@code
+{
+    private ResourceFormModel model = new();
+    private string? error;
+
+     private async Task HandleCreate(ResourceFormModel model)
+    {
+        var dto = new CreateResourceDto
+        {
+            Name = model.Name,
+            Description = model.Description,
+            Location = model.Location,
+            Capacity = model.Capacity
+            
+        };
+
+        var success = await ResourceService.CreateResourceAsync(dto);
+
+        if (!success) return;
+
+        Navigation.NavigateTo("/resources");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/resources");
+    }
+}

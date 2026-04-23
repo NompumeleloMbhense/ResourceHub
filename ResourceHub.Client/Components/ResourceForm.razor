@@ -1,0 +1,61 @@
+@using ResourceHub.Shared.Forms
+
+<EditForm Model="Model" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Name</label>
+        <InputText @bind-Value="Model.Name" class="input" />
+    </div>
+
+    <div class="form-group">
+        <label>Description</label>
+        <InputText @bind-Value="Model.Description" class="input" />
+    </div>
+
+    <div class="form-group">
+        <label>Location</label>
+        <InputText @bind-Value="Model.Location" class="input" />
+    </div>
+
+    <div class="form-group">
+        <label>Capacity</label>
+        <InputNumber @bind-Value="Model.Capacity" class="input" />
+    </div>
+
+    @if (ShowAvailability)
+    {
+        <div class="form-group checkbox">
+            <InputCheckbox @bind-Value="Model.IsAvailable" />
+            <label>Available</label>
+        </div>
+    }
+
+    <button type="submit" class="btn" disabled="@isSubmitting">
+        @SubmitText
+    </button>
+    <button type="button" class="btn secondary" @onclick="OnCancel">Cancel</button>
+</EditForm>
+
+@code
+{
+    [Parameter] public ResourceFormModel Model { get; set; } = new();
+
+    [Parameter] public EventCallback<ResourceFormModel> OnSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    [Parameter] public string SubmitText { get; set; } = "Save";
+
+    // Only show checkbox for update (optional)
+    [Parameter] public bool ShowAvailability { get; set; } = false;
+
+    private bool isSubmitting = false;
+
+    private async Task HandleSubmit()
+    {
+        isSubmitting = true;
+        await OnSubmit.InvokeAsync(Model);
+        isSubmitting = false;
+    }
+}
