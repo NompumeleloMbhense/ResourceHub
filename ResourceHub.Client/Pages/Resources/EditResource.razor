@@ -1,8 +1,8 @@
 @page "/resources/edit/{id:int}"
-@using ResourceHub.Shared.DTOs
-@using ResourceHub.Shared.Forms;
-@using ResourceHub.Client.Services
 @using ResourceHub.Client.Components
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.Forms
+@using ResourceHub.Client.Services
 @inject IResourceService ResourceService
 @inject NavigationManager Navigation
 
@@ -10,16 +10,24 @@
 
 @if (model == null)
 {
-    <p>Loading...</p>
+    <p class="loading">Loading resource...</p>
 }
 else
 {
     <div class="form-container">
+        
+        <p class="subtitle">Edit resource details below</p>
+
         <ResourceForm Model="model"
-                      SubmitText="Update"
+                      SubmitText="Update Resource"
                       ShowAvailability="true"
                       OnSubmit="HandleUpdate"
                       OnCancel="Cancel" />
+
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <p class="error">@error</p>
+        }
     </div>
 }
 
@@ -27,6 +35,7 @@ else
     [Parameter] public int Id { get; set; }
 
     private ResourceFormModel? model;
+    private string? error;
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,10 +69,15 @@ else
 
         var success = await ResourceService.UpdateResourceAsync(Id, dto);
 
-        if (!success) return;
+        if (!success)
+        {
+            error = "Failed to update resource";
+            return;
+        }
 
-        Navigation.NavigateTo("/resources");
+        Navigation.NavigateTo("/resources", forceLoad: true);
     }
+
     private void Cancel()
     {
         Navigation.NavigateTo("/resources");

@@ -67,7 +67,8 @@ else
                             Edit
                         </button>
 
-                        <button class="btn danger small" @onclick="() => ConfirmDelete(r.Id)">
+                        <button class="btn danger small"
+                                @onclick='() => Navigation.NavigateTo($"/resources/delete/{r.Id}")'>
                             Delete
                         </button>
                     </td>
@@ -75,21 +76,6 @@ else
             }
         </tbody>
     </table>
-
-    @if (deleteId != null)
-    {
-        <div class="modal-backdrop">
-            <div class="modal">
-                <h4>Delete Resource?</h4>
-                <p>This action cannot be undone.</p>
-
-                <div class="modal-actions">
-                    <button class="btn danger" @onclick="DeleteResource">Delete</button>
-                    <button class="btn secondary" @onclick="CancelDelete">Cancel</button>
-                </div>
-            </div>
-        </div>
-    }
 
     <div class="pagination">
         <button class="btn" @onclick="PrevPage" disabled="@(query.PageNumber == 1)">Prev</button>
@@ -100,13 +86,15 @@ else
     </div>
 }
 
+
+
 @code
 {
     private List<ResourceDto>? resources;
     private int totalPages;
 
     private ResourceQueryParams query = new();
-    private int? deleteId;
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -140,28 +128,6 @@ else
     private void EditResource(int id)
     {
         Navigation.NavigateTo($"/resources/edit/{id}");
-    }
-
-
-    private void ConfirmDelete(int id)
-    {
-        deleteId = id;
-    }
-
-    private async Task DeleteResource()
-    {
-        if (deleteId == null) return;
-
-        await ResourceService.DeleteResourceAsync(deleteId.Value);
-
-        deleteId = null;
-
-        await LoadResources();
-    }
-
-    private void CancelDelete()
-    {
-        deleteId = null;
     }
 
     private async Task NextPage()

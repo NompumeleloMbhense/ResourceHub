@@ -3,6 +3,11 @@
     margin-bottom: 20px;
 }
 
+.subtitle {
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
 /* Form container */
 .form-container {
     max-width: 500px;
@@ -62,8 +67,8 @@
     color: #111827;
 }
 
-/* Error */
 .error {
-    color: red;
-    margin-top: 10px;
+    margin-top: 15px;
+    color: #b91c1c;
+    font-weight: 500;
 }

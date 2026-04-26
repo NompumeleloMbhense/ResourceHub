@@ -1,0 +1,66 @@
+@page "/resources/delete/{id:int}"
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.DTOs
+@inject NavigationManager Navigation
+@inject IResourceService ResourceService
+
+<h3 class="page-title">Delete Resource</h3>
+
+@if (resource == null)
+{
+    <p class="loading">Loading...</p>
+}
+else
+{
+    <div class="form-container">
+        <p class="warning">This action cannot be undone</p>
+
+       <div class="resource-info">
+            <strong>@resource.Name</strong>
+            <p>@resource.Location</p>
+            <p>Capacity: @resource.Capacity</p>
+        </div>
+
+        <div class="actions">
+            <button class="btn danger" @onclick="Delete">Delete</button>
+            <button class="btn secondary" @onclick="Cancel">Cancel</button>
+        </div>
+
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <p class="error">@error</p>
+        }
+    </div>
+}
+
+@code
+{
+    [Parameter] public int Id { get; set; }
+
+    private ResourceDto? resource;
+
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        resource = await ResourceService.GetResourceByIdAsync(Id);
+    }
+
+    private async Task Delete()
+    {
+        var success = await ResourceService.DeleteResourceAsync(Id);
+
+        if (success)
+        {
+            Navigation.NavigateTo("/resources", forceLoad: true);
+        }else
+        {
+            error = "Failed to delete resource";
+        }
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/resources");
+    }
+}

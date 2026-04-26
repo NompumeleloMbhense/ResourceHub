@@ -1,0 +1,103 @@
+.page-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #1f2937;
+}
+
+/* Container */
+.form-container {
+    max-width: 500px;
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+/* Warning text */
+.warning {
+    color: #b91c1c;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* Resource info */
+.resource-info {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.resource-info strong {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.resource-info p {
+    margin: 3px 0;
+    color: #4b5563;
+}
+
+/* Buttons */
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Base button */
+.btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Danger button */
+.btn.danger {
+    background-color: #ef4444;
+    color: white;
+}
+
+.btn.danger:hover {
+    background-color: #dc2626;
+}
+
+/* Secondary */
+.btn.secondary {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+.btn.secondary:hover {
+    background-color: #d1d5db;
+}
+
+/* Error */
+.error {
+    margin-top: 15px;
+    color: #b91c1c;
+    font-weight: 500;
+}
+
+/* Loading state */
+.loading {
+    color: #6b7280;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
