@@ -1,5 +1,5 @@
 using FluentValidation;
-using ResourceHub.Api.DTOs;
+using ResourceHub.Shared.DTOs;
 
 namespace ResourceHub.Api.Validation
 {

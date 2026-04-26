@@ -1,4 +1,4 @@
-﻿namespace ResourceHub.Api.DTOs
+﻿namespace ResourceHub.Shared.DTOs
 {
     public class BookingDto
     {

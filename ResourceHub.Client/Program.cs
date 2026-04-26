@@ -15,6 +15,7 @@ builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IResourceService, ResourceService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 builder.Services.AddScoped<AuthHeaderHandler>();
 

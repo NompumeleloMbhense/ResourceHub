@@ -2,7 +2,7 @@
 using ResourceHub.Core.Interfaces;
 using ResourceHub.Core.Entities;
 using ResourceHub.Core.QueryParams;
-using ResourceHub.Api.DTOs;
+using ResourceHub.Shared.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 
