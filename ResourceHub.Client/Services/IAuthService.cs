@@ -5,5 +5,6 @@ namespace ResourceHub.Client.Services
     public interface IAuthService
     {
         Task<string?> LoginAsync(LoginDto loginDto);
+        Task LogoutAsync();
     }
 }

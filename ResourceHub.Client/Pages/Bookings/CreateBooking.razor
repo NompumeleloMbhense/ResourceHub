@@ -2,6 +2,7 @@
 @using ResourceHub.Client.Services
 @using ResourceHub.Shared.Forms
 @using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.QueryParams;
 @using ResourceHub.Client.Components
 @inject IBookingService BookingService
 @inject IResourceService ResourceService
@@ -17,23 +18,25 @@
 else
 {
     <div class="form-container">
-        <BookingForm Model="model"
-                     Resources="resources"
-                     SubmitText="Create"
-                     OnSubmit="HandleCreate"
-                     OnCancel="Cancel"
+        <BookingForm Model="model" Resources="resources" SubmitText="Create" OnSubmit="HandleCreate" OnCancel="Cancel"
                      Error="error" />
     </div>
 }
 
-@code {
+@code
+{
     private BookingFormModel model = new();
     private List<ResourceDto>? resources;
     private string? error;
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await ResourceService.GetResourcesAsync(new());
+        var result = await ResourceService.GetResourcesAsync(new ResourceQueryParams
+        {
+            PageSize = 100,
+            IsAvailable = true
+        });
+
         resources = result?.Data.ToList();
     }
 

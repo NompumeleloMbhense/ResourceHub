@@ -49,6 +49,9 @@ namespace ResourceHub.Core.Entities
             Description = description;
             Location = location;
             Capacity = capacity;
+            
+            SetAvailability(isAvailable);
+
         }
     }
 }

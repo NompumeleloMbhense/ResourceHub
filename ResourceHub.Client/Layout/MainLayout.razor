@@ -1,4 +1,8 @@
 ﻿@inherits LayoutComponentBase
+@using ResourceHub.Client.Services
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
 
 <div class="app-container">
 
@@ -24,7 +28,7 @@
 
             <div class="user-section">
                 <span class="user">Admin</span>
-                <button class="logout-btn">Logout</button>
+                <button class="logout-btn" @onclick="Logout">Logout</button>
             </div>
         </header>
 
@@ -32,7 +36,16 @@
         <section class="content">
             @Body
         </section>
-
     </div>
-
 </div>
+@code {
+    @code {
+    private async Task Logout()
+    {
+        await AuthService.LogoutAsync();
+
+        // Redirect to login page
+        Navigation.NavigateTo("/login", forceLoad: true);
+    }
+}
+}
