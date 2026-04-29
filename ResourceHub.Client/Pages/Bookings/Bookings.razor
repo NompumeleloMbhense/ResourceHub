@@ -1,0 +1,162 @@
+@page "/bookings"
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.QueryParams
+@inject IBookingService BookingService
+@inject NavigationManager Navigation
+
+<h3 class="page-title">Bookings</h3>
+
+<div class="toolbar">
+
+    <NavLink href="/bookings/create" class="btn">
+        + Add Booking
+    </NavLink>
+
+    <input placeholder="Search..." @bind="query.Search" class="input" />
+    <input placeholder="Booked By..." @bind="query.BookedBy" class="input" />
+
+    <input type="date" @bind="startDate" class="input small" />
+    <input type="date" @bind="endDate" class="input small" />
+
+    <button class="btn" @onclick="Search">Search</button>
+    <button class="btn secondary" @onclick="ResetFilters">Reset</button>
+</div>
+
+@if (bookings == null)
+{
+    <p>Loading...</p>
+}
+else if (!bookings.Any())
+{
+    <p>No bookings found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Resource</th>
+                <th>Booked By</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Purpose</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var b in bookings)
+            {
+                <tr>
+                    <td>@b.ResourceName</td>
+                    <td>@b.BookedBy</td>
+                    <td>@b.StartTime.ToString("g")</td>
+                    <td>@b.EndTime.ToString("g")</td>
+                    <td>@b.Purpose</td>
+                    <td>
+                        <button class="btn small" @onclick="() => EditBooking(b.Id)">
+                            Edit
+                        </button>
+
+                        <button class="btn danger small" @onclick='() => Navigation.NavigateTo($"/bookings/delete/{b.Id}")'>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <button class="btn" @onclick="PrevPage" disabled="@(query.PageNumber == 1)">
+            Prev
+        </button>
+
+        <span>Page @query.PageNumber of @totalPages</span>
+
+        <button class="btn" @onclick="NextPage" disabled="@(query.PageNumber >= totalPages)">
+            Next
+        </button>
+    </div>
+}
+
+@code
+{
+    private List<BookingDto>? bookings;
+    private int totalPages;
+
+    private BookingQueryParams query = new();
+
+    // UI date inputs (separate from query)
+    private DateTime? startDate;
+    private DateTime? endDate;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBookings();
+    }
+
+    private async Task LoadBookings()
+    {
+        query.StartDate = startDate;
+        query.EndDate = endDate;
+
+        var result = await BookingService.GetBookingsAsync(query);
+
+        if (result != null)
+        {
+            bookings = result.Data.ToList();
+            totalPages = result.TotalPages;
+        }
+    }
+
+    private async Task Search()
+    {
+        query.PageNumber = 1;
+        await LoadBookings();
+    }
+
+    private async Task ResetFilters()
+    {
+        query = new BookingQueryParams();
+        startDate = null;
+        endDate = null;
+
+        await LoadBookings();
+    }
+
+    private void EditBooking(int id)
+    {
+        Navigation.NavigateTo($"/bookings/edit/{id}");
+    }
+
+    private async Task DeleteBooking(int id)
+    {
+        var success = await BookingService.DeleteBookingAsync(id);
+
+        if (success)
+        {
+            await LoadBookings();
+        }
+    }
+
+    private async Task NextPage()
+    {
+        if (query.PageNumber < totalPages)
+        {
+            query.PageNumber++;
+            await LoadBookings();
+        }
+    }
+
+    private async Task PrevPage()
+    {
+        if (query.PageNumber > 1)
+        {
+            query.PageNumber--;
+            await LoadBookings();
+        }
+    }
+}
+
+

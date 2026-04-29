@@ -1,0 +1,108 @@
+.page-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #1f2937;
+}
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    width: 200px;
+}
+
+.input.small {
+    width: 140px;
+}
+
+.input:focus {
+    border-color: #7c3aed;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 16px;
+    background-color: #7c3aed;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #6d28d9;
+}
+
+.btn.secondary {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+.btn.secondary:hover {
+    background-color: #d1d5db;
+}
+
+.btn.small {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.btn.danger {
+    background-color: #ef4444;
+}
+
+.btn.danger:hover {
+    background-color: #dc2626;
+}
+
+/* Table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table th {
+    background: #f3f4f6;
+    text-align: left;
+    padding: 12px;
+}
+
+.table td {
+    padding: 12px;
+    border-top: 1px solid #eee;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .input {
+        width: 100%;
+    }
+
+    .table {
+        font-size: 14px;
+    }
+}

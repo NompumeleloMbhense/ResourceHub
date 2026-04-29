@@ -1,0 +1,80 @@
+@page "/bookings/edit/{id:int}"
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.Forms
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Client.Components
+@inject IBookingService BookingService
+@inject IResourceService ResourceService
+@inject NavigationManager Navigation
+
+<h3 class="page-title">Edit Booking</h3>
+
+@if (model == null || resources == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="form-container">
+        <BookingForm Model="model"
+                     Resources="resources"
+                     SubmitText="Update"
+                     OnSubmit="HandleUpdate"
+                     OnCancel="Cancel"
+                     Error="error" />
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private BookingFormModel? model;
+    private List<ResourceDto>? resources;
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var booking = await BookingService.GetBookingByIdAsync(Id);
+
+        if (booking != null)
+        {
+            model = new BookingFormModel
+            {
+                ResourceId = booking.ResourceId,
+                StartTime = booking.StartTime,
+                EndTime = booking.EndTime,
+                BookedBy = booking.BookedBy,
+                Purpose = booking.Purpose
+            };
+        }
+
+        var result = await ResourceService.GetResourcesAsync(new());
+        resources = result?.Data.ToList();
+    }
+
+    private async Task HandleUpdate(BookingFormModel model)
+    {
+        var dto = new UpdateBookingDto
+        {
+            StartTime = model.StartTime,
+            EndTime = model.EndTime,
+            BookedBy = model.BookedBy,
+            Purpose = model.Purpose
+        };
+
+        var success = await BookingService.UpdateBookingAsync(Id, dto);
+
+        if (!success)
+        {
+            error = "Failed to update booking";
+            return;
+        }
+
+        Navigation.NavigateTo("/bookings");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/bookings");
+    }
+}

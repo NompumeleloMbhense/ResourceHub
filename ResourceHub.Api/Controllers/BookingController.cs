@@ -10,12 +10,12 @@ namespace ResourceHub.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BookingController : ControllerBase
+    public class BookingsController : ControllerBase
     {
         private readonly IBookingService _bookingService;
         private readonly IMapper _mapper;
 
-        public BookingController(IBookingService bookingService, IMapper mapper)
+        public BookingsController(IBookingService bookingService, IMapper mapper)
         {
             _bookingService = bookingService;
             _mapper = mapper;

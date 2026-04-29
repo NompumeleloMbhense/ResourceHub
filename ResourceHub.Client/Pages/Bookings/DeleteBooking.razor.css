@@ -1,0 +1,72 @@
+.page-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #1f2937;
+}
+
+/* Container */
+.form-container {
+    max-width: 500px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* Warning */
+.warning {
+    color: #b91c1c;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* Booking summary */
+.booking-summary {
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.booking-summary h4 {
+    margin-bottom: 10px;
+    color: #111827;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn.danger {
+    background-color: #ef4444;
+    color: white;
+}
+
+.btn.danger:hover {
+    background-color: #dc2626;
+}
+
+.btn.secondary {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+.btn.secondary:hover {
+    background-color: #d1d5db;
+}
+
+/* Error */
+.error {
+    color: red;
+    margin-top: 10px;
+}

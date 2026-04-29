@@ -1,0 +1,67 @@
+@page "/bookings/create"
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.Forms
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Client.Components
+@inject IBookingService BookingService
+@inject IResourceService ResourceService
+@inject NavigationManager Navigation
+
+
+<h3 class="page-title">Create Booking</h3>
+
+@if (resources == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="form-container">
+        <BookingForm Model="model"
+                     Resources="resources"
+                     SubmitText="Create"
+                     OnSubmit="HandleCreate"
+                     OnCancel="Cancel"
+                     Error="error" />
+    </div>
+}
+
+@code {
+    private BookingFormModel model = new();
+    private List<ResourceDto>? resources;
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ResourceService.GetResourcesAsync(new());
+        resources = result?.Data.ToList();
+    }
+
+    private async Task HandleCreate(BookingFormModel model)
+    {
+        var dto = new CreateBookingDto
+        {
+            ResourceId = model.ResourceId,
+            StartTime = model.StartTime,
+            EndTime = model.EndTime,
+            BookedBy = model.BookedBy,
+            Purpose = model.Purpose
+        };
+
+        var success = await BookingService.CreateBookingAsync(dto);
+
+        if (!success)
+        {
+            error = "Failed to create booking";
+            return;
+        }
+
+        Navigation.NavigateTo("/bookings");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/bookings");
+    }
+}
+

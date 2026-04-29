@@ -1,0 +1,83 @@
+@using ResourceHub.Shared.Forms
+@using ResourceHub.Shared.DTOs
+
+<EditForm Model="Model" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <!-- Resource -->
+    <div class="form-group">
+        <label>Resource</label>
+        <InputSelect @bind-Value="Model.ResourceId" class="input">
+            <option value="">-- Select Resource --</option>
+            @foreach (var r in Resources)
+            {
+                <option value="@r.Id">@r.Name</option>
+            }
+        </InputSelect>
+    </div>
+
+    <!-- Booked By -->
+    <div class="form-group">
+        <label>Booked By</label>
+        <InputText @bind-Value="Model.BookedBy" class="input" />
+    </div>
+
+    <!-- Purpose -->
+    <div class="form-group">
+        <label>Purpose</label>
+        <InputText @bind-Value="Model.Purpose" class="input" />
+    </div>
+
+    <!-- Start -->
+    <div class="form-group">
+        <label>Start Time</label>
+        <InputDate @bind-Value="Model.StartTime" class="input" />
+    </div>
+
+    <!-- End -->
+    <div class="form-group">
+        <label>End Time</label>
+        <InputDate @bind-Value="Model.EndTime" class="input" />
+    </div>
+
+    <button type="submit" class="btn" disabled="@isSubmitting">
+        @SubmitText
+    </button>
+
+    <button type="button" class="btn secondary" @onclick="OnCancel">
+        Cancel
+    </button>
+
+    @if (!string.IsNullOrEmpty(Error))
+    {
+        <p class="error">@Error</p>
+    }
+</EditForm>
+
+
+@code {
+    [Parameter] public BookingFormModel Model { get; set; } = new();
+
+    [Parameter] public List<ResourceDto> Resources { get; set; } = new();
+
+    [Parameter] public EventCallback<BookingFormModel> OnSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    [Parameter] public string SubmitText { get; set; } = "Save";
+    [Parameter] public string? Error { get; set; }
+
+    private bool isSubmitting = false;
+
+    private async Task HandleSubmit()
+    {
+        if (Model.EndTime <= Model.StartTime)
+        {
+            return; // basic validation
+        }
+
+        isSubmitting = true;
+        await OnSubmit.InvokeAsync(Model);
+        isSubmitting = false;
+    }
+}
