@@ -1,0 +1,55 @@
+@page "/bookings/{id:int}"
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.DTOs
+@inject IBookingService BookingService
+@inject NavigationManager Navigation
+
+<h3 class="page-title">Booking Details</h3>
+
+@if (booking == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="details-card">
+        <h2>@booking.ResourceName</h2>
+
+        <p><strong>Booked By:</strong> @booking.BookedBy</p>
+        <p><strong>Purpose:</strong> @booking.Purpose</p>
+
+        <p><strong>Start:</strong> @booking.StartTime</p>
+        <p><strong>End:</strong> @booking.EndTime</p>
+
+        <div class="actions">
+            <button class="btn" @onclick="EditBooking">
+                Edit
+            </button>
+
+            <button class="btn secondary" @onclick="GoBack">
+                Back
+            </button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private BookingDto? booking;
+
+    protected override async Task OnInitializedAsync()
+    {
+        booking = await BookingService.GetBookingByIdAsync(Id);
+    }
+
+    private void EditBooking()
+    {
+        Navigation.NavigateTo($"/resources/edit/{booking!.Id}");
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/bookings");
+    }
+}

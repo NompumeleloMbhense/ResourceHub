@@ -1,0 +1,32 @@
+.details-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.details-card h2 {
+    margin-bottom: 15px;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.section-title {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.past {
+    opacity: 0.6;
+    background-color: #f03b3b;
+}
+
+.upcoming {
+    background-color: #1efd95;
+}

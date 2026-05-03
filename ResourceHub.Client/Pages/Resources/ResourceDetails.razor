@@ -1,0 +1,106 @@
+@page "/resources/{id:int}"
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.QueryParams
+@inject IResourceService ResourceService
+@inject IBookingService BookingService
+@inject NavigationManager Navigation
+
+<h3 class="page-title">Resource Details</h3>
+
+@if (resource == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="details-card">
+        <h2>@resource.Name</h2>
+
+        <p><strong>Description:</strong> @resource.Description</p>
+        <p><strong>Location:</strong> @resource.Location</p>
+        <p><strong>Capacity:</strong> @resource.Capacity</p>
+
+        <p>
+            <strong>Status:</strong>
+            <span class="status @(resource.IsAvailable ? "available" : "unavailable")">
+                @(resource.IsAvailable ? "Available" : "Unavailable")
+            </span>
+        </p>
+
+        <div class="actions">
+            <button class="btn" @onclick="EditResource">
+                Edit
+            </button>
+
+            <button class="btn secondary" @onclick="GoBack">
+                Back
+            </button>
+        </div>
+    </div>
+
+    <h4 class="section-title">Bookings</h4>
+
+    @if (!bookings.Any())
+    {
+        <p>No bookings for this resource.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Booked By</th>
+                    <th>Purpose</th>
+                    <th>Start</th>
+                    <th>End</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in bookings)
+                {
+                    <tr class="@(b.EndTime < DateTime.Now ? "past" : "upcoming")">
+                        <td>@b.BookedBy</td>
+                        <td>@b.Purpose</td>
+                        <td>@b.StartTime.ToString("g")</td>
+                        <td>@b.EndTime.ToString("g")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code
+{
+    [Parameter] public int Id { get; set; }
+
+    private ResourceDto? resource;
+
+    private List<BookingDto> bookings = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load Resource
+        resource = await ResourceService.GetResourceByIdAsync(Id);
+
+        // Load bookings for this resource
+        var result = await BookingService.GetBookingsAsync(new BookingQueryParams
+        {
+            ResourceId = Id,
+            PageSize = 50
+        });
+
+        bookings = result?.Data.ToList() ?? new();
+    }
+
+    private void EditResource()
+    {
+        Navigation.NavigateTo($"/resources/edit/{resource!.Id}");
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/resources");
+    }
+}

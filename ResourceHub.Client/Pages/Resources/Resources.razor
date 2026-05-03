@@ -54,7 +54,9 @@ else
             @foreach (var r in resources)
             {
                 <tr>
-                    <td>@r.Name</td>
+                    <td>
+                        <a href="@($"/resources/{r.Id}")">@r.Name</a>
+                    </td>
                     <td>@r.Location</td>
                     <td>@r.Capacity</td>
                     <td>
@@ -67,8 +69,7 @@ else
                             Edit
                         </button>
 
-                        <button class="btn danger small"
-                                @onclick='() => Navigation.NavigateTo($"/resources/delete/{r.Id}")'>
+                        <button class="btn danger small" @onclick='() => Navigation.NavigateTo($"/resources/delete/{r.Id}")'>
                             Delete
                         </button>
                     </td>
@@ -94,8 +95,8 @@ else
     private int totalPages;
 
     private ResourceQueryParams query = new();
-    
 
+    
     protected override async Task OnInitializedAsync()
     {
         await LoadResources();

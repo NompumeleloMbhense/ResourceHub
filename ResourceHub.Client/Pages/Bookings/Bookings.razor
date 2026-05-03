@@ -48,7 +48,9 @@ else
             @foreach (var b in bookings)
             {
                 <tr>
-                    <td>@b.ResourceName</td>
+                    <td>
+                        <a href="@($"/bookings/{b.Id}")">@b.ResourceName</a>
+                    </td>
                     <td>@b.BookedBy</td>
                     <td>@b.StartTime.ToString("g")</td>
                     <td>@b.EndTime.ToString("g")</td>
