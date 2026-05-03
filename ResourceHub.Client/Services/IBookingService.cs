@@ -10,7 +10,7 @@ namespace ResourceHub.Client.Services
 
         Task<BookingDto?> GetBookingByIdAsync(int id);
 
-        Task<bool> CreateBookingAsync(CreateBookingDto dto);
+        Task<HttpResponseMessage> CreateBookingAsync(CreateBookingDto dto);
 
         Task<bool> UpdateBookingAsync(int id, UpdateBookingDto dto);
 

@@ -17,9 +17,18 @@
 }
 else
 {
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <p class="error">@error</p>
+    }
+
     <div class="form-container">
-        <BookingForm Model="model" Resources="resources" SubmitText="Create" OnSubmit="HandleCreate" OnCancel="Cancel"
-                     Error="error" />
+        <BookingForm Model="model" 
+                    Resources="resources" 
+                    SubmitText="Create" 
+                    OnSubmit="HandleCreate" 
+                    OnCancel="Cancel"
+        />
     </div>
 }
 
@@ -42,6 +51,8 @@ else
 
     private async Task HandleCreate(BookingFormModel model)
     {
+        error = null;
+
         var dto = new CreateBookingDto
         {
             ResourceId = model.ResourceId,
@@ -51,15 +62,22 @@ else
             Purpose = model.Purpose
         };
 
-        var success = await BookingService.CreateBookingAsync(dto);
+        var response = await BookingService.CreateBookingAsync(dto);
 
-        if (!success)
+        if (response.IsSuccessStatusCode)
         {
-            error = "Failed to create booking";
+            Navigation.NavigateTo("/bookings");
             return;
         }
 
-        Navigation.NavigateTo("/bookings");
+        if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+        {
+            error = "This resource is already booked for the selected time.";
+            return;
+        }
+
+        error = "Something went wrong while creating the booking.";
+        
     }
 
     private void Cancel()

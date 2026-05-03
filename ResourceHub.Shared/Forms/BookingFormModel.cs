@@ -4,8 +4,8 @@ namespace ResourceHub.Shared.Forms
     {
         public int ResourceId { get; set; }
 
-        public DateTime StartTime { get; set; } = DateTime.Now;
-        public DateTime EndTime { get; set; } = DateTime.Now.AddHours(1);
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         public string BookedBy { get; set; } = string.Empty;
         public string Purpose { get; set; } = string.Empty;

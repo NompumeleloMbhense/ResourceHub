@@ -9,7 +9,7 @@
     <div class="form-group">
         <label>Resource</label>
         <InputSelect @bind-Value="Model.ResourceId" class="input">
-            <option value="">-- Select Resource --</option>
+            <option value="0">-- Select Resource --</option>
             @foreach (var r in Resources)
             {
                 <option value="@r.Id">@r.Name</option>
@@ -32,13 +32,19 @@
     <!-- Start -->
     <div class="form-group">
         <label>Start Time</label>
-        <InputDate @bind-Value="Model.StartTime" class="input" />
+        <input type="datetime-local"
+                value="@StartTimeString"
+                @onchange="OnStartChanged"
+                class="input" />
     </div>
 
     <!-- End -->
     <div class="form-group">
         <label>End Time</label>
-        <InputDate @bind-Value="Model.EndTime" class="input" />
+        <input type="datetime-local"
+                value="@EndTimeString"
+                @onchange="OnEndChanged"
+                class="input" />
     </div>
 
     <button type="submit" class="btn" disabled="@isSubmitting">
@@ -48,16 +54,17 @@
     <button type="button" class="btn secondary" @onclick="OnCancel">
         Cancel
     </button>
-
-    @if (!string.IsNullOrEmpty(Error))
-    {
-        <p class="error">@Error</p>
-    }
 </EditForm>
 
+@if (!string.IsNullOrEmpty(error))
+{
+    <p class="error">@error</p>
+}
 
-@code {
-    [Parameter] public BookingFormModel Model { get; set; } = new();
+
+@code
+{
+    [Parameter] public BookingFormModel Model { get; set; } = default!;
 
     [Parameter] public List<ResourceDto> Resources { get; set; } = new();
 
@@ -65,19 +72,50 @@
     [Parameter] public EventCallback OnCancel { get; set; }
 
     [Parameter] public string SubmitText { get; set; } = "Save";
-    [Parameter] public string? Error { get; set; }
-
+    
     private bool isSubmitting = false;
+
+    private string? error;
+
+    private string StartTimeString =>
+    Model.StartTime == default
+        ? ""
+        : Model.StartTime.ToString("yyyy-MM-ddTHH:mm");
+
+    private string EndTimeString =>
+    Model.EndTime == default
+        ? ""
+        : Model.EndTime.ToString("yyyy-MM-ddTHH:mm");
+
 
     private async Task HandleSubmit()
     {
+        error = null;
+
         if (Model.EndTime <= Model.StartTime)
         {
-            return; // basic validation
+            error = "End time must be after start time";
+            return;
         }
 
         isSubmitting = true;
         await OnSubmit.InvokeAsync(Model);
         isSubmitting = false;
+    }
+
+    private void OnStartChanged(ChangeEventArgs e)
+    {
+        if (DateTime.TryParse(e.Value?.ToString(), out var date))
+        {
+            Model.StartTime = date;
+        }
+    }
+
+    private void OnEndChanged(ChangeEventArgs e)
+    {
+        if (DateTime.TryParse(e.Value?.ToString(), out var date))
+        {
+            Model.EndTime = date;
+        }
     }
 }
