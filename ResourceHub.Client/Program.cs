@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ResourceHub.Client;
 using ResourceHub.Client.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -19,10 +20,16 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 
 builder.Services.AddScoped<AuthHeaderHandler>();
 
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+
+builder.Services.AddAuthorizationCore();
+builder.Services.AddCascadingAuthenticationState();
+
 builder.Services.AddHttpClient("ApiClient", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5089");
 })
 .AddHttpMessageHandler<AuthHeaderHandler>();
+
 
 await builder.Build().RunAsync();

@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using ResourceHub.Client.Services
+@using Microsoft.AspNetCore.Components.Authorization
 @inject IAuthService AuthService
+@inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 
 
@@ -13,9 +15,15 @@
         </div>
 
         <nav class="nav">
-            <a href="/" class="nav-item">Dashboard</a>
-            <a href="/resources" class="nav-item">Resources</a>
-            <a href="/bookings" class="nav-item">Bookings</a>
+            <NavLink href="/" class="nav-item" Match="NavLinkMatch.All">
+                Dashboard
+            </NavLink>
+            <NavLink href="/resources" class="nav-item">
+                Resources
+            </NavLink>
+            <NavLink href="/bookings" class="nav-item">
+                Bookings
+            </NavLink>
         </nav>
     </aside>
 
@@ -27,7 +35,7 @@
             <div class="page-title">Dashboard</div>
 
             <div class="user-section">
-                <span class="user">Admin</span>
+                <span class="user">@username</span>
                 <button class="logout-btn" @onclick="Logout">Logout</button>
             </div>
         </header>
@@ -38,8 +46,21 @@
         </section>
     </div>
 </div>
-@code {
-    @code {
+@code
+{
+
+    private string? username;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        username = user.Identity?.IsAuthenticated == true
+            ? user.Identity.Name
+            : "Guest";
+    }
+
     private async Task Logout()
     {
         await AuthService.LogoutAsync();
@@ -47,5 +68,5 @@
         // Redirect to login page
         Navigation.NavigateTo("/login", forceLoad: true);
     }
-}
+    
 }

@@ -1,4 +1,6 @@
 @page "/resources/{id:int}"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
 @using ResourceHub.Client.Services
 @using ResourceHub.Shared.DTOs
 @using ResourceHub.Shared.QueryParams

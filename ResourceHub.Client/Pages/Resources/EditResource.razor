@@ -1,4 +1,6 @@
 @page "/resources/edit/{id:int}"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
 @using ResourceHub.Client.Components
 @using ResourceHub.Shared.DTOs
 @using ResourceHub.Shared.Forms

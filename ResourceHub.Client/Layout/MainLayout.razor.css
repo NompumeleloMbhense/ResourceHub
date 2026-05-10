@@ -1,7 +1,7 @@
 .app-container {
     display: flex;
     height: 100vh;
-    background: #7c99da;
+    background: #0F172A;
     color: white;
 }
 
@@ -34,6 +34,11 @@
     padding: 0.6rem;
     border-radius: 6px;
     transition: 0.2s;
+}
+
+.nav-item.active {
+    background: #1F2937;
+    color: #10B981;
 }
 
 .nav-item:hover {
