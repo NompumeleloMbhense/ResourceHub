@@ -1,0 +1,36 @@
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.stat-card h3 {
+    margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.action-card {
+    padding: 1rem 1.5rem;
+    background: #1f2937;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+}

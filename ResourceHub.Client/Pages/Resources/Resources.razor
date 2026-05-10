@@ -21,7 +21,7 @@
     <input type="number" placeholder="Max Capacity" @bind="query.MaxCapacity" class="input small" />
 
     <!-- Availabilty Toggle -->
-    <InputSelect @bind-Value="query.IsAvailable" class="input small">
+    <InputSelect TValue="bool?" @bind-Value="query.IsAvailable" class="input small">
         <option value="">All</option>
         <option value="true">Available</option>
         <option value="false">Unavailable</option>

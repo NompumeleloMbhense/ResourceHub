@@ -26,7 +26,7 @@ namespace ResourceHub.Client.Services
                 url += $"&location={query.Location}";
 
             if (query.IsAvailable.HasValue)
-                url += $"&isAvailable={query.IsAvailable}";
+                url += $"&isAvailable={query.IsAvailable.Value}";
 
             if (query.MinCapacity.HasValue)
                 url += $"&minCapacity={query.MinCapacity}";

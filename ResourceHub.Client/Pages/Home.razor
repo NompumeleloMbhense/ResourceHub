@@ -1,7 +1,63 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Dashboard</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1 class="page-title">Dashboard</h1>
 
-Welcome to your new app.
+<div class="dashboard-grid">
+
+    <div class="stat-card">
+        <h3>Total Resources</h3>
+        <p>@totalResources</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Available Resources</h3>
+        <p>@availableResources</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total Bookings</h3>
+        <p>@totalBookings</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Upcoming Bookings</h3>
+        <p>@upcomingBookings</p>
+    </div>
+
+</div>
+
+<div class="quick-actions">
+
+    <NavLink href="/resources" class="action-card">
+        Manage Resources
+    </NavLink>
+
+    <NavLink href="/bookings" class="action-card">
+        View Bookings
+    </NavLink>
+
+    <NavLink href="/resources/create" class="action-card">
+        Add Resource
+    </NavLink>
+
+</div>
+
+@code {
+
+    private int totalResources;
+    private int availableResources;
+    private int totalBookings;
+    private int upcomingBookings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // temporary mock data for now
+
+        totalResources = 12;
+        availableResources = 9;
+        totalBookings = 24;
+        upcomingBookings = 5;
+    }
+}
