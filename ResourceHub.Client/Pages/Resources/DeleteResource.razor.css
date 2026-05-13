@@ -1,96 +1,152 @@
+/* PAGE HEADER */
+.page-header {
+    margin-bottom: 2rem;
+}
+
 .page-title {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #1f2937;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0;
 }
 
-/* Container */
-.form-container {
-    max-width: 500px;
+.page-subtitle {
+    margin-top: 0.35rem;
+    color: #64748B;
+    font-size: 0.95rem;
+}
+
+/* DELETE CARD */
+.delete-card {
+    max-width: 650px;
     background: white;
-    padding: 25px;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+/* WARNING BOX */
+.warning-box {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
     border-radius: 14px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
-/* Warning text */
-.warning {
-    color: #b91c1c;
-    font-weight: 600;
-    margin-bottom: 15px;
+.warning-box h3 {
+    color: #B91C1C;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
 }
 
-/* Resource info */
+.warning-box p {
+    color: #7F1D1D;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* RESOURCE INFO */
 .resource-info {
-    background: #f9fafb;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
 }
 
 .resource-info strong {
     display: block;
-    font-size: 18px;
-    margin-bottom: 5px;
+    font-size: 1.2rem;
+    color: #0F172A;
+    margin-bottom: 0.75rem;
 }
 
 .resource-info p {
-    margin: 3px 0;
-    color: #4b5563;
+    margin: 0.35rem 0;
+    color: #475569;
 }
 
-/* Buttons */
+/* STATUS */
+.status-wrapper {
+    margin-top: 1rem;
+}
+
+.status {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.available {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.unavailable {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+/* ACTIONS */
 .actions {
     display: flex;
-    gap: 10px;
+    gap: 1rem;
 }
 
-/* Base button */
+/* BUTTONS */
 .btn {
-    padding: 10px 16px;
-    border-radius: 8px;
     border: none;
+    padding: 0.85rem 1.2rem;
+    border-radius: 10px;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: 500;
+    transition: 0.2s ease;
 }
 
-/* Danger button */
 .btn.danger {
-    background-color: #ef4444;
+    background: #DC2626;
     color: white;
 }
 
 .btn.danger:hover {
-    background-color: #dc2626;
+    background: #B91C1C;
 }
 
-/* Secondary */
 .btn.secondary {
-    background-color: #e5e7eb;
-    color: #111827;
+    background: #E2E8F0;
+    color: #334155;
 }
 
 .btn.secondary:hover {
-    background-color: #d1d5db;
+    background: #CBD5E1;
 }
 
-/* Error */
+/* ERROR */
 .error {
-    margin-top: 15px;
-    color: #b91c1c;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #B91C1C;
     font-weight: 500;
 }
 
-/* Loading state */
+/* LOADING */
 .loading {
-    color: #6b7280;
-    font-style: italic;
+    color: #64748B;
+    font-size: 0.95rem;
 }
 
-/* Responsive */
+/* MOBILE */
 @media (max-width: 768px) {
-    .form-container {
-        padding: 20px;
+
+    .delete-card {
+        padding: 1.5rem;
     }
 
     .actions {

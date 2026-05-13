@@ -1,32 +1,156 @@
+/* PAGE TITLE */
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 2rem;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-subtitle {
+    color: #64748B;
+    margin-top: 0.35rem;
+}
+
+/* DETAILS CARD */
 .details-card {
     background: white;
-    padding: 25px;
-    border-radius: 12px;
-    max-width: 600px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    margin-bottom: 2rem;
 }
 
 .details-card h2 {
-    margin-bottom: 15px;
+    font-size: 1.8rem;
+    color: #0F172A;
+    margin-bottom: 1.5rem;
 }
 
+.details-card p {
+    margin-bottom: 1rem;
+    color: #475569;
+    line-height: 1.6;
+}
+
+.details-card strong {
+    color: #0F172A;
+}
+
+/* STATUS BADGES */
+.status {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.available {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.unavailable {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+/* ACTION BUTTONS */
 .actions {
-    margin-top: 20px;
+    margin-top: 2rem;
     display: flex;
-    gap: 10px;
+    gap: 1rem;
 }
 
+.btn {
+    border: none;
+    padding: 0.85rem 1.2rem;
+    border-radius: 10px;
+    background: #2563EB;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn:hover {
+    background: #1D4ED8;
+}
+
+.btn.secondary {
+    background: #E2E8F0;
+    color: #334155;
+}
+
+.btn.secondary:hover {
+    background: #CBD5E1;
+}
+
+/* SECTION TITLE */
 .section-title {
-    margin-top: 30px;
-    margin-bottom: 10px;
-    font-size: 20px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 1rem;
 }
 
+/* TABLE */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.table th {
+    background: #F8FAFC;
+    color: #475569;
+    text-align: left;
+    padding: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.table td {
+    padding: 1rem;
+    border-top: 1px solid #E2E8F0;
+    color: #334155;
+}
+
+/* BOOKING ROW STATES */
 .past {
-    opacity: 0.6;
-    background-color: #f03b3b;
+    background: #F8FAFC;
+    opacity: 0.7;
 }
 
 .upcoming {
-    background-color: #1efd95;
+    background: #FFFFFF;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+    .details-card {
+        padding: 1.5rem;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .table {
+        display: block;
+        overflow-x: auto;
+    }
 }

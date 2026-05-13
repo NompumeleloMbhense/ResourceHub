@@ -1,108 +1,203 @@
-.page-title {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #1f2937;
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-/* Toolbar */
+.page-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.subtitle {
+    margin-top: 4px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* Top Add Button */
+.create-btn {
+    background: #2563eb;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.create-btn:hover {
+    background: #1d4ed8;
+}
+
+/* Filter Card */
 .toolbar {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 14px;
+    align-items: end;
 }
 
+/* Inputs */
 .input {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
     outline: none;
-    width: 200px;
+    min-width: 200px;
+    background: white;
+    color: #111827;
+    transition: 0.2s ease;
 }
 
 .input.small {
-    width: 140px;
+    min-width: 160px;
 }
 
 .input:focus {
-    border-color: #7c3aed;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 /* Buttons */
 .btn {
-    padding: 10px 16px;
-    background-color: #7c3aed;
-    color: white;
+    padding: 12px 18px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+/* Primary */
+.btn {
+    background: #2563eb;
+    color: white;
 }
 
 .btn:hover {
-    background-color: #6d28d9;
+    background: #1d4ed8;
 }
 
+/* Secondary */
 .btn.secondary {
-    background-color: #e5e7eb;
+    background: #f3f4f6;
     color: #111827;
 }
 
 .btn.secondary:hover {
-    background-color: #d1d5db;
+    background: #e5e7eb;
 }
 
+/* Small Buttons */
 .btn.small {
-    padding: 6px 10px;
-    font-size: 12px;
+    padding: 8px 12px;
+    font-size: 13px;
 }
 
+/* Danger */
 .btn.danger {
-    background-color: #ef4444;
+    background: #ef4444;
 }
 
 .btn.danger:hover {
-    background-color: #dc2626;
+    background: #dc2626;
+}
+
+/* Table Container */
+.table-wrapper {
+    background: white;
+    border-radius: 16px;
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
 }
 
 /* Table */
 .table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
 }
 
 .table th {
-    background: #f3f4f6;
+    background: #f9fafb;
+    padding: 14px;
     text-align: left;
-    padding: 12px;
+    font-size: 14px;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .table td {
-    padding: 12px;
-    border-top: 1px solid #eee;
+    padding: 16px 14px;
+    border-bottom: 1px solid #f3f4f6;
+    color: #111827;
+}
+
+.table tr:hover {
+    background: #f9fafb;
+}
+
+/* Links */
+.table a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.table a:hover {
+    text-decoration: underline;
 }
 
 /* Pagination */
 .pagination {
-    margin-top: 20px;
+    margin-top: 24px;
+
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
     align-items: center;
+
+    background: white;
+    border: 1px solid #e5e7eb;
+    padding: 16px 20px;
+    border-radius: 14px;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .create-btn {
+        text-align: center;
+    }
+
     .toolbar {
         flex-direction: column;
+        align-items: stretch;
     }
 
-    .input {
+    .input,
+    .input.small {
         width: 100%;
+        min-width: unset;
     }
 
-    .table {
-        font-size: 14px;
+    .pagination {
+        flex-direction: column;
+        gap: 12px;
     }
 }

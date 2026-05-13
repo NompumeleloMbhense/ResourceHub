@@ -3,70 +3,107 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #0F172A;
+    background: #F8FAFC;
+    padding: 1rem;
 }
 
+/* LOGIN CARD */
 .login-card {
     width: 100%;
-    max-width: 400px;
-    background: #111827;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid #1F2937;
+    max-width: 420px;
+    background: white;
+    padding: 2.5rem;
+    border-radius: 18px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
 }
 
+/* TITLE */
 .title {
     text-align: center;
-    color: #10B981;
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 0.5rem;
 }
 
+/* OPTIONAL SUBTITLE */
+.subtitle {
+    text-align: center;
+    color: #64748B;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+/* FORM GROUP */
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 }
 
+/* LABELS */
 label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #E5E7EB;
+    color: #334155;
+    font-weight: 600;
     font-size: 0.9rem;
 }
 
+/* INPUTS */
 .input {
     width: 100%;
-    padding: 0.75rem;
-    border-radius: 8px;
-    border: 1px solid #374151;
-    background: #1F2937;
-    color: white;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #CBD5E1;
+    background: white;
+    color: #0F172A;
     outline: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
 .input:focus {
-    border-color: #10B981;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+    border-color: #2563EB;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
+/* LOGIN BUTTON */
 .btn {
     width: 100%;
-    padding: 0.75rem;
-    background: #10B981;
+    padding: 0.9rem;
+    background: #2563EB;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
     cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
+    transition: background 0.2s ease;
+    margin-top: 0.5rem;
 }
 
 .btn:hover {
-    background: #059669;
+    background: #1D4ED8;
 }
 
+/* VALIDATION */
+.validation-message,
 .error {
-    color: #F87171;
-    margin-top: 0.5rem;
+    color: #DC2626;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
     text-align: center;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+
+    .login-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .title {
+        font-size: 1.7rem;
+    }
 }

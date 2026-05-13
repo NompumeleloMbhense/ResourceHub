@@ -8,7 +8,15 @@
 @inject IBookingService BookingService
 @inject NavigationManager Navigation
 
-<h3 class="page-title">Resource Details</h3>
+<div class="page-header">
+    <div>
+        <h1 class="page-title">@resource?.Name</h1>
+        <p class="page-subtitle">
+            Resource information and booking history
+        </p>
+    </div>
+</div>
+
 
 @if (resource == null)
 {

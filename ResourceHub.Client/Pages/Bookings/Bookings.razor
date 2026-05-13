@@ -7,13 +7,18 @@
 @inject IBookingService BookingService
 @inject NavigationManager Navigation
 
-<h3 class="page-title">Bookings</h3>
+<div class="page-header">
+    <div>
+        <h3 class="page-title">Bookings</h3>
+        <p class="subtitle">Manage and track all resource bookings</p>
+    </div>
 
-<div class="toolbar">
-
-    <NavLink href="/bookings/create" class="btn">
+    <NavLink href="/bookings/create" class="create-btn">
         + Add Booking
     </NavLink>
+</div>
+
+<div class="toolbar">
 
     <input placeholder="Search..." @bind="query.Search" class="input" />
     <input placeholder="Booked By..." @bind="query.BookedBy" class="input" />
@@ -23,6 +28,7 @@
 
     <button class="btn" @onclick="Search">Search</button>
     <button class="btn secondary" @onclick="ResetFilters">Reset</button>
+
 </div>
 
 @if (bookings == null)
@@ -35,41 +41,48 @@ else if (!bookings.Any())
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Resource</th>
-                <th>Booked By</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Purpose</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var b in bookings)
-            {
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        <a href="@($"/bookings/{b.Id}")">@b.ResourceName</a>
-                    </td>
-                    <td>@b.BookedBy</td>
-                    <td>@b.StartTime.ToString("g")</td>
-                    <td>@b.EndTime.ToString("g")</td>
-                    <td>@b.Purpose</td>
-                    <td>
-                        <button class="btn small" @onclick="() => EditBooking(b.Id)">
-                            Edit
-                        </button>
-
-                        <button class="btn danger small" @onclick='() => Navigation.NavigateTo($"/bookings/delete/{b.Id}")'>
-                            Delete
-                        </button>
-                    </td>
+                    <th>Resource</th>
+                    <th>Booked By</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Purpose</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+                @foreach (var b in bookings)
+                {
+                    <tr>
+                        <td>
+                            <a href="@($"/bookings/{b.Id}")">
+                                @b.ResourceName
+                            </a>
+                        </td>
+
+                        <td>@b.BookedBy</td>
+                        <td>@b.StartTime.ToString("g")</td>
+                        <td>@b.EndTime.ToString("g")</td>
+                        <td>@b.Purpose</td>
+
+                        <td>
+                            <button class="btn small" @onclick="() => EditBooking(b.Id)">
+                                Edit
+                            </button>
+
+                            <button class="btn danger small" @onclick='() => Navigation.NavigateTo($"/bookings/delete/{b.Id}")'>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
     <div class="pagination">
         <button class="btn" @onclick="PrevPage" disabled="@(query.PageNumber == 1)">

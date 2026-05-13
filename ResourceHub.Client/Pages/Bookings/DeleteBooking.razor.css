@@ -1,72 +1,136 @@
+/* PAGE HEADER */
+.page-header {
+    margin-bottom: 2rem;
+}
+
 .page-title {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #1f2937;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0;
 }
 
-/* Container */
-.form-container {
-    max-width: 500px;
+.page-subtitle {
+    margin-top: 0.35rem;
+    color: #64748B;
+    font-size: 0.95rem;
+}
+
+/* DELETE CARD */
+.delete-card {
+    max-width: 650px;
     background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
-/* Warning */
-.warning {
-    color: #b91c1c;
-    font-weight: 600;
-    margin-bottom: 15px;
+/* WARNING BOX */
+.warning-box {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
-/* Booking summary */
-.booking-summary {
-    background: #f9fafb;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+.warning-box h3 {
+    color: #B91C1C;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
 }
 
-.booking-summary h4 {
-    margin-bottom: 10px;
-    color: #111827;
+.warning-box p {
+    color: #7F1D1D;
+    margin: 0;
+    line-height: 1.5;
 }
 
-/* Actions */
+/* INFO */
+.resource-info {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.resource-info strong {
+    display: block;
+    font-size: 1.2rem;
+    color: #0F172A;
+    margin-bottom: 0.75rem;
+}
+
+.resource-info p {
+    margin: 0.35rem 0;
+    color: #475569;
+}
+
+/* ACTIONS */
 .actions {
     display: flex;
-    gap: 10px;
+    gap: 1rem;
 }
 
-/* Buttons */
+/* BUTTONS */
 .btn {
-    padding: 10px 16px;
     border: none;
-    border-radius: 8px;
+    padding: 0.85rem 1.2rem;
+    border-radius: 10px;
+    font-weight: 600;
     cursor: pointer;
+    transition: 0.2s ease;
 }
 
 .btn.danger {
-    background-color: #ef4444;
+    background: #DC2626;
     color: white;
 }
 
 .btn.danger:hover {
-    background-color: #dc2626;
+    background: #B91C1C;
 }
 
 .btn.secondary {
-    background-color: #e5e7eb;
-    color: #111827;
+    background: #E2E8F0;
+    color: #334155;
 }
 
 .btn.secondary:hover {
-    background-color: #d1d5db;
+    background: #CBD5E1;
 }
 
-/* Error */
+/* ERROR */
 .error {
-    color: red;
-    margin-top: 10px;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #B91C1C;
+    font-weight: 500;
+}
+
+/* LOADING */
+.loading {
+    color: #64748B;
+    font-size: 0.95rem;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .delete-card {
+        padding: 1.5rem;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
 }

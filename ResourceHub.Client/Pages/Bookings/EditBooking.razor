@@ -10,21 +10,38 @@
 @inject IResourceService ResourceService
 @inject NavigationManager Navigation
 
-<h3 class="page-title">Edit Booking</h3>
 
 @if (model == null || resources == null)
 {
-    <p>Loading...</p>
+    <p class="loading">Loading booking...</p>
 }
 else
 {
+    <div class="page-header">
+
+        <div>
+            <h1 class="page-title">Edit Booking</h1>
+
+            <p class="page-subtitle">
+                Update booking details and time allocation
+            </p>
+        </div>
+
+    </div>
+
     <div class="form-container">
-        <BookingForm Model="model" 
-        Resources="resources" 
-        SubmitText="Update" 
-        OnSubmit="HandleUpdate"
-        OnCancel="Cancel"
-        />
+
+        <BookingForm Model="model"
+                     Resources="resources"
+                     SubmitText="Update Booking"
+                     OnSubmit="HandleUpdate"
+                     OnCancel="Cancel" />
+
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <p class="error">@error</p>
+        }
+
     </div>
 }
 
@@ -35,7 +52,6 @@ else
     private BookingFormModel? model;
     private List<ResourceDto>? resources;
     private string? error;
-    
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,7 +74,7 @@ else
             PageSize = 100,
             IsAvailable = true
         });
-        
+
         resources = result?.Data.ToList();
     }
 
@@ -80,7 +96,7 @@ else
             return;
         }
 
-        Navigation.NavigateTo("/bookings");
+        Navigation.NavigateTo("/bookings", forceLoad: true);
     }
 
     private void Cancel()

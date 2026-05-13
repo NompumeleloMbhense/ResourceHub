@@ -1,27 +1,29 @@
 .app-container {
     display: flex;
     height: 100vh;
-    background: #0F172A;
-    color: white;
+    background: #F8FAFC;
+    color: #1E293B;
+    font-family: Arial, sans-serif;
 }
 
 /* SIDEBAR */
 .sidebar {
-    width: 240px;
-    background: #111827;
+    width: 250px;
+    background: white;
+    border-right: 1px solid #E2E8F0;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid #1F2937;
 }
 
 .logo {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    color: #10B981;
+    color: #2563EB;
     margin-bottom: 2rem;
 }
 
+/* NAVIGATION */
 .nav {
     display: flex;
     flex-direction: column;
@@ -29,21 +31,22 @@
 }
 
 .nav-item {
-    color: #D1D5DB;
     text-decoration: none;
-    padding: 0.6rem;
-    border-radius: 6px;
-    transition: 0.2s;
-}
-
-.nav-item.active {
-    background: #1F2937;
-    color: #10B981;
+    color: #475569;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    font-weight: 500;
 }
 
 .nav-item:hover {
-    background: #1F2937;
-    color: #10B981;
+    background: #EFF6FF;
+    color: #2563EB;
+}
+
+.nav-item.active {
+    background: #DBEAFE;
+    color: #2563EB;
 }
 
 /* MAIN AREA */
@@ -53,22 +56,24 @@
     flex-direction: column;
 }
 
-/* NAVBAR */
+/* TOP NAVBAR */
 .navbar {
-    height: 60px;
-    background: #111827;
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #E2E8F0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1.5rem;
-    border-bottom: 1px solid #1F2937;
+    padding: 0 2rem;
 }
 
 .page-title {
-    font-size: 1.1rem;
-    color: #E5E7EB;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0F172A;
 }
 
+/* USER SECTION */
 .user-section {
     display: flex;
     align-items: center;
@@ -76,89 +81,61 @@
 }
 
 .user {
-    color: #9CA3AF;
+    color: #475569;
+    font-weight: 500;
 }
 
 .logout-btn {
-    background: #EF4444;
     border: none;
-    padding: 0.4rem 0.8rem;
+    background: #2563EB;
     color: white;
-    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
     cursor: pointer;
+    transition: 0.2s ease;
 }
 
 .logout-btn:hover {
-    background: #DC2626;
+    background: #1D4ED8;
 }
 
 /* CONTENT */
 .content {
-    padding: 1.5rem;
-    overflow-y: auto;
     flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
 }
 
-/* =========================
-   MOBILE RESPONSIVE DESIGN
-   ========================= */
-
+/* MOBILE */
 @media (max-width: 768px) {
 
     .app-container {
         flex-direction: column;
     }
 
-    /* SIDEBAR becomes top bar */
     .sidebar {
         width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #E2E8F0;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        padding: 1rem;
-        border-right: none;
-        border-bottom: 1px solid #1F2937;
     }
 
     .logo {
         margin-bottom: 0;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
     .nav {
         flex-direction: row;
-        gap: 0.5rem;
     }
 
-    .nav-item {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.85rem;
-    }
-
-    /* MAIN AREA */
-    .main {
-        width: 100%;
-    }
-
-    /* NAVBAR */
     .navbar {
-        flex-direction: column;
-        height: auto;
-        gap: 0.5rem;
         padding: 1rem;
-        text-align: center;
+        height: auto;
     }
 
-    .page-title {
-        font-size: 1rem;
-    }
-
-    .user-section {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    /* CONTENT spacing */
     .content {
         padding: 1rem;
     }

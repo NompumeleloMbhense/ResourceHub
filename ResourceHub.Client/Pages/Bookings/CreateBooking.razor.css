@@ -26,6 +26,12 @@
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
+/* LOADING */
+.loading {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
 /* ERROR */
 .error {
   margin-top: 1rem;
