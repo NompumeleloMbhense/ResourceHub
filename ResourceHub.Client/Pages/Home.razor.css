@@ -1,66 +1,102 @@
-.page-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #0F172A;
+/* PAGE HEADER */
+.page-header {
     margin-bottom: 2rem;
 }
 
-/* GRID */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
-}
-
-/* STAT CARDS */
-.stat-card {
-    background: white;
-    border: 1px solid #E2E8F0;
-    border-radius: 16px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-    transition: transform 0.2s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-2px);
-}
-
-.stat-card h3 {
-    color: #64748B;
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-}
-
-.stat-card p {
-    font-size: 2.2rem;
+.page-title {
+    font-size: 2rem;
     font-weight: 700;
     color: #0F172A;
     margin: 0;
 }
 
+.page-subtitle {
+    margin-top: 0.35rem;
+    color: #64748B;
+    font-size: 0.95rem;
+}
+
+/* LOADING */
+.loading {
+    color: #64748B;
+    font-size: 0.95rem;
+}
+
+/* DASHBOARD GRID */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* STAT CARD */
+.stat-card {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.stat-card h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.stat-card p {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #0F172A;
+}
+
 /* QUICK ACTIONS */
 .quick-actions {
     display: flex;
-    flex-wrap: wrap;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
-/* ACTION BUTTONS */
+/* ACTION CARDS */
 .action-card {
-    background: white;
-    border: 1px solid #E2E8F0;
-    color: #2563EB;
+    background: #0F172A;
+    color: white;
     text-decoration: none;
     padding: 1rem 1.4rem;
-    border-radius: 12px;
+    border-radius: 14px;
     font-weight: 600;
-    transition: all 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .action-card:hover {
-    background: #EFF6FF;
-    border-color: #BFDBFE;
+    background: #1E293B;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .page-title {
+        font-size: 1.7rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+    }
+
+    .stat-card p {
+        font-size: 1.9rem;
+    }
+
+    .quick-actions {
+        flex-direction: column;
+    }
+
+    .action-card {
+        width: 100%;
+        text-align: center;
+    }
 }

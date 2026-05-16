@@ -42,3 +42,11 @@
     background-color: #e5e7eb;
     color: #111827;
 }
+
+.validation-message {
+    color: #DC2626;
+    font-size: 0.85rem;
+    margin-top: 0.35rem;
+    display: block;
+    font-weight: 500;
+}
