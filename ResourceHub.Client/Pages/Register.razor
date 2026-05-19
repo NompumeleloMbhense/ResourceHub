@@ -1,0 +1,85 @@
+@page "/register"
+@layout AuthLayout
+
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.Forms
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Client.Pages.Shared
+
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <h1 class="title">Create Account</h1>
+
+        <p class="subtitle">
+            Register a new ResourceHub account
+        </p>
+
+        <EditForm Model="model" OnValidSubmit="HandleRegister">
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <label>Username</label>
+                <InputText @bind-Value="model.Username" class="input" />
+                <ValidationMessage For="@(() => model.Username)" />
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <InputText @bind-Value="model.Email" class="input" />
+                <ValidationMessage For="@(() => model.Email)" />
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <InputText @bind-Value="model.Password" type="password" class="input" />
+                <ValidationMessage For="@(() => model.Password)" />
+            </div>
+
+            <button type="submit" class="btn">
+                Register
+            </button>
+
+            @if (!string.IsNullOrEmpty(error))
+            {
+                <p class="error">@error</p>
+            }
+
+        </EditForm>
+
+    </div>
+
+</div>
+
+
+@code
+{
+
+    private RegisterFormModel model = new();
+    private string? error;
+
+    private async Task HandleRegister()
+    {
+        var dto = new RegisterDto
+        {
+            Username = model.Username,
+            Email = model.Email,
+            Password = model.Password
+        };
+
+        var token = await AuthService.RegisterAsync(dto);
+
+        if (token == null)
+        {
+            error = "Failed to register account";
+            return;
+        }
+
+        Navigation.NavigateTo("/");
+    }
+}

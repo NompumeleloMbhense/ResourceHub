@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using ResourceHub.Api.DTOs;
 using ResourceHub.Shared.DTOs;
 using ResourceHub.Core.Interfaces;
 
@@ -21,7 +20,7 @@ namespace ResourceHub.Api.Controllers
         {
             var token = await _authService.RegisterAsync(dto.Username, dto.Email, dto.Password);
 
-            return Ok(token);
+            return Ok(new { token});
         }
 
         [HttpPost("login")]

@@ -6,5 +6,6 @@ namespace ResourceHub.Client.Services
     {
         Task<string?> LoginAsync(LoginDto loginDto);
         Task LogoutAsync();
+        Task<string?> RegisterAsync(RegisterDto registerDto);
     }
 }

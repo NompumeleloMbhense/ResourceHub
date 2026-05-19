@@ -38,6 +38,28 @@ namespace ResourceHub.Client.Services
             return result?.Token;
         }
 
+        public async Task<string?> RegisterAsync(RegisterDto registerDto)
+        {
+            var response = await _http.PostAsJsonAsync("api/auth/register", registerDto);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = await response.Content.ReadFromJsonAsync<AuthResponse>();
+
+            await _localStorage.SetItemAsync("authToken", result!.Token);
+
+            if (_authProvider is CustomAuthStateProvider customProvider)
+            {
+                customProvider.NotifyUserLoggedIn("User");
+            }
+
+            return result?.Token;
+        }
+
+
         public async Task<string?> GetTokenAsync()
         {
             return await _localStorage.GetItemAsync<string>("authToken");

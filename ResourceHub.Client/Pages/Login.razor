@@ -1,6 +1,7 @@
 @page "/login"
 @layout AuthLayout
 @using ResourceHub.Client.Services
+@using ResourceHub.Shared.Forms
 @using ResourceHub.Shared.DTOs
 @using ResourceHub.Client.Pages.Shared
 @inject IAuthService AuthService
@@ -17,16 +18,18 @@
 
         <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
             <DataAnnotationsValidator />
-            <ValidationSummary />
+            
 
             <div class="form-group">
                 <label>Username or Email</label>
                 <InputText @bind-Value="loginModel.UsernameOrEmail" class="input" />
+                <ValidationMessage For="@(() => loginModel.UsernameOrEmail)" />
             </div>
 
             <div class="form-group">
                 <label>Password</label>
                 <InputText @bind-Value="loginModel.Password" type="password" class="input" />
+                <ValidationMessage For="@(() => loginModel.Password)" />
             </div>
 
             <button type="submit" class="btn">Login</button>
@@ -42,19 +45,24 @@
 
 @code
 {
-    private LoginDto loginModel = new();
+    private LoginFormModel loginModel = new();
     private string? errorMessage;
 
     private async Task HandleLogin()
     {
-        var token = await AuthService.LoginAsync(loginModel);
+        var dto = new LoginDto
+        {
+            UsernameOrEmail = loginModel.UsernameOrEmail,
+            Password = loginModel.Password
+        };
+
+        var token = await AuthService.LoginAsync(dto);
 
         if (token == null)
         {
-            errorMessage = "Invalid username or password";
+            errorMessage = "Invalid username/email or password";
             return;
         }
-
         Navigation.NavigateTo("/");
     }
 }

@@ -65,7 +65,7 @@ namespace ResourceHub.Api.Middleware
                     result = new { message = ex.Message };
                     break;
                 case ResourceHasBookingsException ex:
-                    response.StatusCode = (int)HttpStatusCode.BadRequest; // or 409 if you prefer
+                    response.StatusCode = (int)HttpStatusCode.BadRequest; 
                     result = new { message = ex.Message };
                     break;
                 case UnauthorizedAccessException ex:
