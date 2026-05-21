@@ -10,10 +10,9 @@ namespace ResourceHub.Core.Interfaces
 
         Task<Resource?> GetResourceByIdAsync(int id);
 
-        Task<Resource> CreateResourceAsync(Resource resource);
+        Task CreateResourceAsync(Resource resource);
 
-        Task UpdateResourceAsync(int id, string name, string description, string location, int capacity, bool isAvailable);
-
+        Task UpdateResourceAsync(int id, Resource updatedResource);
         Task DeleteResourceAsync(int id);
     }
 }

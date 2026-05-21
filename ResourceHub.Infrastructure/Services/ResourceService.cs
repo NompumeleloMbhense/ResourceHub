@@ -1,139 +1,64 @@
-using Microsoft.EntityFrameworkCore;
 using ResourceHub.Core.Entities;
 using ResourceHub.Core.Exceptions;
 using ResourceHub.Core.Interfaces;
-using ResourceHub.Core.QueryParams;
 using ResourceHub.Core.Pagination;
-using ResourceHub.Infrastructure.Persistence;
-
-/// <summary>
-/// Implements resource management logic, including CRUD operations and pagination.
-/// This service interacts with database context to perform operations on resources
-/// </summary>
+using ResourceHub.Core.QueryParams;
 
 namespace ResourceHub.Infrastructure.Services
 {
     public class ResourceService : IResourceService
     {
+        private readonly IResourceRepository _resourceRepository;
 
-        private readonly ApplicationDbContext _context;
-
-        public ResourceService(ApplicationDbContext context)
+        public ResourceService(IResourceRepository resourceRepository)
         {
-            _context = context;
+            _resourceRepository = resourceRepository;
         }
 
-        public async Task<PagedResult<Resource>> GetAllResourcesAsync(ResourceQueryParams query)
+        public Task<PagedResult<Resource>> GetAllResourcesAsync(ResourceQueryParams query)
         {
-            // BASE QUERY
-            var resourcesQuery = _context.Resources
-                .OrderBy(r => r.Id)
-                .AsQueryable();
-
-
-            // SEARCH
-            if (!string.IsNullOrWhiteSpace(query.Search))
-            {
-                var search = query.Search.ToLower();
-
-                resourcesQuery = resourcesQuery.Where(r =>
-                    r.Name.ToLower().Contains(search) ||
-                    r.Description.ToLower().Contains(search) ||
-                    r.Location.ToLower().Contains(search)
-                );
-            }
-
-
-            // FILTERING
-            if (!string.IsNullOrWhiteSpace(query.Name))
-            {
-                resourcesQuery = resourcesQuery
-                    .Where(r => r.Name.Contains(query.Name));
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.Location))
-            {
-                resourcesQuery = resourcesQuery
-                    .Where(r => r.Location.Contains(query.Location));
-            }
-
-            if (query.IsAvailable.HasValue)
-            {
-                resourcesQuery = resourcesQuery
-                    .Where(r => r.IsAvailable == query.IsAvailable.Value);
-            }
-
-            if (query.MinCapacity.HasValue)
-            {
-                resourcesQuery = resourcesQuery
-                    .Where(r => r.Capacity >= query.MinCapacity.Value);
-            }
-
-            if (query.MaxCapacity.HasValue)
-            {
-                resourcesQuery = resourcesQuery
-                    .Where(r => r.Capacity <= query.MaxCapacity.Value);
-            }
-
-            var totalCount = await resourcesQuery.CountAsync();
-
-            // PAGINATION
-            var items = await resourcesQuery
-                .OrderBy(r => r.Id)
-                .Skip((query.PageNumber - 1) * query.PageSize)
-                .Take(query.PageSize)
-                .ToListAsync();
-
-            return new PagedResult<Resource>
-            {
-                PageNumber = query.PageNumber,
-                PageSize = query.PageSize,
-                TotalCount = totalCount,
-                TotalPages = (int)Math.Ceiling((double)totalCount / query.PageSize),
-                Data = items
-            };
+            return _resourceRepository.GetAllAsync(query);
         }
 
-        public async Task<Resource?> GetResourceByIdAsync(int id)
+        public Task<Resource?> GetResourceByIdAsync(int id)
         {
-            return await _context.Resources.FindAsync(id);
+            return _resourceRepository.GetByIdAsync(id);
         }
 
-        public async Task<Resource> CreateResourceAsync(Resource resource)
+        public async Task CreateResourceAsync(Resource resource)
         {
-            _context.Resources.Add(resource);
-            await _context.SaveChangesAsync();
-
-            return resource;
+            await _resourceRepository.AddAsync(resource);
+            await _resourceRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateResourceAsync(int id, string name, string description, string location, int capacity, bool isAvailable)
+        public async Task UpdateResourceAsync(int id, Resource updated)
         {
-            var resource = await _context.Resources.FindAsync(id);
+            var resource = await _resourceRepository.GetByIdAsync(id);
 
             if (resource == null)
                 throw new ResourceNotFoundException("Resource not found");
 
-            // Update fields
-            resource.UpdateDetails(name, description, location, capacity, isAvailable);
+            resource.UpdateDetails(
+                updated.Name,
+                updated.Description,
+                updated.Location,
+                updated.Capacity,
+                updated.IsAvailable
+            );
 
-            await _context.SaveChangesAsync();
+            
+            await _resourceRepository.SaveChangesAsync();
         }
 
         public async Task DeleteResourceAsync(int id)
         {
-            var resource = await _context.Resources
-            .Include(r => r.Bookings)
-            .FirstOrDefaultAsync(r => r.Id == id);
+            var resource = await _resourceRepository.GetByIdAsync(id);
 
             if (resource == null)
                 throw new ResourceNotFoundException("Resource not found");
 
-            if (resource.Bookings.Any())
-                throw new ResourceHasBookingsException("Cannot delete a resource with existing bookings");
-
-            _context.Resources.Remove(resource);
-            await _context.SaveChangesAsync();
+            _resourceRepository.Delete(resource);
+            await _resourceRepository.SaveChangesAsync();
         }
     }
 }

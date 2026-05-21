@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ResourceHub.Core.Interfaces;
 using ResourceHub.Infrastructure.Persistence;
 using ResourceHub.Infrastructure.Services;
+using ResourceHub.Infrastructure.Repositories;
 using ResourceHub.Api.Mappings;
 using ResourceHub.Api.Validation;
 using FluentValidation;
@@ -16,6 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 // DbContext configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ResourceHubConnection")));
+
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IResourceRepository, ResourceRepository>();
 
 // Dependency Injection for services
 builder.Services.AddScoped<IBookingService, BookingService>();
