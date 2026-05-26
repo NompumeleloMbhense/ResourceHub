@@ -15,5 +15,8 @@ namespace ResourceHub.Client.Services
         Task<bool> UpdateBookingAsync(int id, UpdateBookingDto dto);
 
         Task<bool> DeleteBookingAsync(int id);
+
+        Task<bool> MoveBookingAsync(int bookingId, int newResourceId);
+
     }
 }

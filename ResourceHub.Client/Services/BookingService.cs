@@ -44,7 +44,7 @@ namespace ResourceHub.Client.Services
         public async Task<HttpResponseMessage> CreateBookingAsync(CreateBookingDto dto)
         {
             return await _http.PostAsJsonAsync("api/bookings", dto);
-            
+
         }
 
         public async Task<bool> UpdateBookingAsync(int id, UpdateBookingDto dto)
@@ -56,6 +56,14 @@ namespace ResourceHub.Client.Services
         public async Task<bool> DeleteBookingAsync(int id)
         {
             var response = await _http.DeleteAsync($"api/bookings/{id}");
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> MoveBookingAsync(int bookingId, int newResourceId)
+        {
+            var response = await _http.PutAsJsonAsync(
+            $"api/bookings/{bookingId}/move", new { newResourceId });
+
             return response.IsSuccessStatusCode;
         }
     }
