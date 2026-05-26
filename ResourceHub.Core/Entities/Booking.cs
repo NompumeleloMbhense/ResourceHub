@@ -64,5 +64,14 @@ namespace ResourceHub.Core.Entities
             BookedBy = bookedBy;
             Purpose = purpose;
         }
+
+        // Move booking to a different resource
+        public void MoveToResource(int resourceId)
+        {
+            if(resourceId <= 0)
+                throw new ArgumentException("Valid ReourceId is required");
+
+            ResourceId = resourceId;
+        }
     }
 }

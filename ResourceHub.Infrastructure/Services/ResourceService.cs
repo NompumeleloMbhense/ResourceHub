@@ -4,6 +4,12 @@ using ResourceHub.Core.Interfaces;
 using ResourceHub.Core.Pagination;
 using ResourceHub.Core.QueryParams;
 
+/// <summary>
+/// Service layer for managing reources. Handles business logic and validation 
+/// for resource operations, including creating, updating and deleting resources
+/// as well as retrieving resource information. Ensures that resources are valid.
+/// </summary>
+
 namespace ResourceHub.Infrastructure.Services
 {
     public class ResourceService : IResourceService

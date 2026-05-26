@@ -107,5 +107,14 @@ namespace ResourceHub.Api.Controllers
 
             return NoContent();
         }
+
+        [Authorize]
+        [HttpPut("{id}/move")]
+        public async Task<IActionResult> Move(int id, MoveBookingDto dto)
+        {
+            await _bookingService.MoveBookingAsync(id, dto.NewResourceId);
+
+            return NoContent();
+        }
     }
 }

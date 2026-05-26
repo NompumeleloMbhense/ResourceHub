@@ -28,4 +28,9 @@
         public string BookedBy { get; set; } = string.Empty;
         public string Purpose { get; set; } = string.Empty;
     }
+
+    public class MoveBookingDto
+    {
+        public int NewResourceId { get; set; }
+    }
 }
