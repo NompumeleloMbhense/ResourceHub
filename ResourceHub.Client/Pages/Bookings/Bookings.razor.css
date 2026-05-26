@@ -173,6 +173,14 @@
     border-radius: 14px;
 }
 
+.move-panel {
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
 
