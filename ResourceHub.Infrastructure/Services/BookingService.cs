@@ -41,32 +41,12 @@ namespace ResourceHub.Infrastructure.Services
 
         public async Task CreateBookingAsync(Booking booking)
         {
-            var resource = await _resourceRepository.GetByIdAsync(booking.ResourceId);
+            await GetAvailableResourceOrThrowAsync(booking.ResourceId);
 
-            if (resource == null)
-                throw new ResourceNotFoundException("Resource not found");
-
-
-            if (!resource.IsAvailable)
-                throw new ResourceUnavailableException("This resource is currently unavailable for booking");
-
-
-            var existingBookings = await _bookingRepository.GetByResourceAsync(
+            await ValidateBookingConflictAsync(
                     booking.ResourceId,
-                    new BookingQueryParams
-                    {
-                        PageNumber = 1,
-                        PageSize = int.MaxValue
-                    });
-
-            bool hasConflict = existingBookings.Data.Any(b =>
-                booking.StartTime < b.EndTime &&
-                booking.EndTime > b.StartTime
-            );
-
-            if (hasConflict)
-                throw new BookingConflictException("This resource is already booked for the selected time slot");
-
+                    booking.StartTime,
+                    booking.EndTime);
 
             await _bookingRepository.AddAsync(booking);
 
@@ -80,29 +60,13 @@ namespace ResourceHub.Infrastructure.Services
             string bookedBy,
             string purpose)
         {
-            var booking = await _bookingRepository.GetByIdAsync(bookingId);
+            var booking = await GetBookingOrThrowAsync(bookingId);
 
-            if (booking == null)
-                throw new BookingNotFoundException("Booking not found");
-
-            var existingBookings = await _bookingRepository.GetByResourceAsync(
-                    booking.ResourceId,
-                    new BookingQueryParams
-                    {
-                        PageNumber = 1,
-                        PageSize = int.MaxValue
-                    });
-
-            bool hasConflict = existingBookings.Data
-                .Where(b => b.Id != bookingId)
-                .Any(b =>
-                    startTime < b.EndTime &&
-                    endTime > b.StartTime
-                );
-
-            if (hasConflict)
-                throw new BookingConflictException("This resource is already booked for the selected time slot");
-
+            await ValidateBookingConflictAsync(
+                booking.ResourceId,
+                startTime,
+                endTime,
+                bookingId);
 
             booking.UpdateTime(startTime, endTime);
 
@@ -115,11 +79,7 @@ namespace ResourceHub.Infrastructure.Services
 
         public async Task DeleteBookingAsync(int bookingId)
         {
-            var booking = await _bookingRepository.GetByIdAsync(bookingId);
-
-            if (booking == null)
-                throw new BookingNotFoundException("Booking not found");
-
+            var booking = await GetBookingOrThrowAsync(bookingId);
 
             _bookingRepository.Delete(booking);
 
@@ -131,37 +91,15 @@ namespace ResourceHub.Infrastructure.Services
         // room without changing the time or other details
         public async Task MoveBookingAsync(int bookingId, int newResourceId)
         {
-            var booking = await _bookingRepository.GetByIdAsync(bookingId);
+            var booking = await GetBookingOrThrowAsync(bookingId);
 
-            if (booking == null)
-                throw new BookingNotFoundException("Booking not found");
+            await GetAvailableResourceOrThrowAsync(newResourceId);
 
-            var resource = await _resourceRepository.GetByIdAsync(newResourceId);
-
-            if (resource == null)
-                throw new ResourceNotFoundException("Resource not found");
-
-            if (!resource.IsAvailable)
-                throw new ResourceUnavailableException("This resource is currently unavailable for booking");
-
-            var existingBookings = _bookingRepository.GetByResourceAsync(
-                newResourceId, new BookingQueryParams
-                {
-                    PageNumber = 1,
-                    PageSize = int.MaxValue
-                });
-
-            // Check for scheduling conflicts on the new resource
-            bool hasConflict = existingBookings.Result.Data.Any(b =>
-                b.Id != bookingId &&
-                booking.StartTime < b.EndTime &&
-                booking.EndTime > b.StartTime
-            );
-
-            if (hasConflict)
-                throw new BookingConflictException(
-                     "Target resource already booked for this time slot"
-                );
+            await ValidateBookingConflictAsync(
+                    newResourceId,
+                    booking.StartTime,
+                    booking.EndTime,
+                    bookingId);
 
             booking.MoveToResource(newResourceId);
 
@@ -171,5 +109,60 @@ namespace ResourceHub.Infrastructure.Services
         }
 
 
+        // ------------------------ Private Helper Methods -----------------------------------------------//
+
+        // Helper method to retrieve a booking or throw an exception if not found
+        private async Task<Booking> GetBookingOrThrowAsync(int bookingId)
+        {
+            var booking = await _bookingRepository.GetByIdAsync(bookingId);
+
+            if (booking == null)
+                throw new BookingNotFoundException("Booking not found");
+
+            return booking;
+        }
+
+        // Helper method to get a resource or throw an exception if not found or unavailable
+        private async Task<Resource> GetAvailableResourceOrThrowAsync(int resourceId)
+        {
+            var resource = await _resourceRepository.GetByIdAsync(resourceId);
+
+            if (resource == null)
+                throw new ResourceNotFoundException("Resource not found");
+
+            if (!resource.IsAvailable)
+                throw new ResourceUnavailableException(
+                    "This resource is currently unavailable for booking");
+
+            return resource;
+        }
+
+        // Helper method to check for booking conflicts for a given reource and 
+        // time slot, excluding a specific booking ID (used for updates)
+        private async Task ValidateBookingConflictAsync(
+                int resourceId,
+                DateTime startTime,
+                DateTime endTime,
+                int? excludeBookingId = null
+        )
+        {
+            var existingBookings = await _bookingRepository.GetByResourceAsync(
+                resourceId,
+                new BookingQueryParams
+                {
+                    PageNumber = 1,
+                    PageSize = int.MaxValue
+                });
+
+            bool hasConflict = existingBookings.Data.Any(b =>
+                    b.Id != excludeBookingId &&
+                    startTime < b.EndTime &&
+                    endTime > b.StartTime
+                    );
+            if (hasConflict)
+                throw new BookingConflictException(
+                    "This resource is already booked for the selected time slot");
+
+        }
     }
 }
