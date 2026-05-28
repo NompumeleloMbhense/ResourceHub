@@ -8,16 +8,30 @@
 @inject IResourceService ResourceService
 @inject NavigationManager Navigation
 
+
 <div class="page-header">
+
     <div>
-        <h3 class="page-title">Bookings</h3>
-        <p class="subtitle">Manage and track all resource bookings</p>
+        <h1 class="page-title">Bookings</h1>
+        <p class="page-subtitle">Manage and track all resource bookings</p>
     </div>
 
-    <NavLink href="/bookings/create" class="create-btn">
-        + Add Booking
+    <NavLink href="/bookings/create" class="add-btn">
+        Add Booking
     </NavLink>
+
 </div>
+
+<!---Resource Page Layout--->
+
+
+
+    <div>
+        <h1 class="page-title">Resources</h1>
+        <p class="page-subtitle">
+            Manage rooms, equipment, and shared resources
+        </p>
+    </div>
 
 <div class="toolbar">
 
@@ -60,17 +74,13 @@ else
                 {
                     <tr>
                         <td>
-                            <a href="@($"/bookings/{b.Id}")">
-                                @b.ResourceName
-                            </a>
+                            <a href="@($"/bookings/{b.Id}")">@b.ResourceName</a>
                         </td>
-
                         <td>@b.BookedBy</td>
                         <td>@b.StartTime.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>@b.EndTime.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>@b.Purpose</td>
 
-                        <!--------------------------- ACTIONS ------------------------------->
                         <td>
                             <button class="btn small" @onclick="() => EditBooking(b.Id)">
                                 Edit
@@ -88,47 +98,6 @@ else
                 }
             </tbody>
         </table>
-
-
-        @if (showMoveModal)
-        {
-            <div class="modal-overlay">
-                <div class="modal-box">
-
-                    <div class="modal-header">
-                        <h3>Move Booking</h3>
-
-                        <button class="close-btn" @onclick="CloseMoveModal">
-                            ✕
-                        </button>
-                    </div>
-
-                    <p>Select a new resource for this booking.</p>
-
-                    <select @bind="selectedResourceId" class="input modal-select">
-                        <option value="0">Select Resource</option>
-
-                        @foreach (var r in resources)
-                        {
-                            <option value="@r.Id">
-                                @r.Name
-                            </option>
-                        }
-                    </select>
-
-                    <div class="modal-actions">
-                        <button class="btn secondary" @onclick="CloseMoveModal">
-                            Cancel
-                        </button>
-
-                        <button class="btn" @onclick="ConfirmMove">
-                            Confirm Move
-                        </button>
-                    </div>
-                </div>
-            </div>
-        }
-
     </div>
 
     <div class="pagination">
@@ -144,6 +113,41 @@ else
     </div>
 }
 
+@if (showMoveModal)
+{
+    
+    <div class="modal-overlay">
+        <div class="modal-box">
+
+            <div class="modal-header">
+                <h3>Move Booking</h3>
+                <button class="close-btn" @onclick="CloseMoveModal">✕</button>
+            </div>
+
+            <p>Select a new resource for this booking.</p>
+
+            <select @bind="selectedResourceId" class="input modal-select">
+                <option value="0">Select Resource</option>
+                @foreach (var r in resources)
+                {
+                    <option value="@r.Id">@r.Name</option>
+                }
+            </select>
+
+            <div class="modal-actions">
+                <button class="btn secondary" @onclick="CloseMoveModal">
+                    Cancel
+                </button>
+
+                <button class="btn" @onclick="ConfirmMove">
+                    Confirm Move
+                </button>
+            </div>
+
+        </div>
+    </div>
+}
+
 @code
 {
     private List<BookingDto>? bookings;
@@ -151,13 +155,13 @@ else
 
     private BookingQueryParams query = new();
 
-    // UI date inputs (separate from query)
     private DateTime? startDate;
     private DateTime? endDate;
 
     private bool showMoveModal;
     private int selectedBookingId;
     private int selectedResourceId;
+
     private List<ResourceDto> resources = new();
 
     protected override async Task OnInitializedAsync()
@@ -196,19 +200,7 @@ else
     }
 
     private void EditBooking(int id)
-    {
-        Navigation.NavigateTo($"/bookings/edit/{id}");
-    }
-
-    private async Task DeleteBooking(int id)
-    {
-        var success = await BookingService.DeleteBookingAsync(id);
-
-        if (success)
-        {
-            await LoadBookings();
-        }
-    }
+        => Navigation.NavigateTo($"/bookings/edit/{id}");
 
     private async Task NextPage()
     {
@@ -231,11 +223,7 @@ else
     private async Task LoadResources()
     {
         var result = await ResourceService.GetResourcesAsync(
-            new ResourceQueryParams
-            {
-                PageNumber = 1,
-                PageSize = 100
-            });
+            new ResourceQueryParams { PageSize = 100 });
 
         resources = result?.Data.ToList() ?? new();
     }
@@ -254,8 +242,7 @@ else
 
     private async Task ConfirmMove()
     {
-        if (selectedResourceId == 0)
-            return;
+        if (selectedResourceId == 0) return;
 
         var success = await BookingService.MoveBookingAsync(
             selectedBookingId,
@@ -264,7 +251,6 @@ else
         if (success)
         {
             showMoveModal = false;
-
             await LoadBookings();
         }
     }

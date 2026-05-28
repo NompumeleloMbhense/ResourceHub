@@ -1,221 +1,270 @@
+/* =========================
+   PAGE HEADER
+========================= */
+
 .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  gap: 16px;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .page-title {
-  font-size: 30px;
-  font-weight: 700;
-  color: #111827;
-  margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0;
 }
 
 .subtitle {
-  margin-top: 4px;
-  font-size: 14px;
-  color: #6b7280;
+    margin-top: 0.4rem;
+    color: #64748B;
+    font-size: 0.95rem;
 }
 
-/* Top Add Button */
+/* =========================
+   ADD BUTTON (MATCH RESOURCES)
+========================= */
+
 .create-btn {
-  background: #2563eb;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #059669;
+    color: white;
+
+    padding: 0.9rem 1.3rem;
+
+    border-radius: 14px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
+
+    white-space: nowrap;
 }
 
 .create-btn:hover {
-  background: #1d4ed8;
+    background: #047857;
 }
 
-/* Filter Card */
+/* =========================
+   TOOLBAR (MATCH RESOURCES)
+========================= */
+
 .toolbar {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  align-items: end;
+    margin-bottom: 2rem;
+
+    padding: 1.4rem;
+
+    background: white;
+
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
 }
 
-/* Inputs */
+/* =========================
+   INPUTS (MATCH RESOURCES)
+========================= */
+
 .input {
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  outline: none;
-  min-width: 200px;
-  background: white;
-  color: #111827;
-  transition: 0.2s ease;
+    padding: 0.9rem 1rem;
+
+    border: 1px solid #CBD5E1;
+    border-radius: 14px;
+
+    outline: none;
+
+    min-width: 190px;
+
+    background: white;
+    color: #0F172A;
+
+    transition: 0.2s ease;
 }
 
 .input.small {
-  min-width: 160px;
+    min-width: 140px;
 }
 
 .input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    border-color: #059669;
+    box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
 }
 
-/* Buttons */
-.btn {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s ease;
-}
+/* =========================
+   BUTTONS (MATCH RESOURCES)
+========================= */
 
-/* Primary */
 .btn {
-  background: #2563eb;
-  color: white;
+    border: none;
+    padding: 0.9rem 1.2rem;
+    border-radius: 14px;
+
+    background: #059669;
+    color: white;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
 }
 
 .btn:hover {
-  background: #1d4ed8;
+    background: #047857;
 }
 
-/* Secondary */
 .btn.secondary {
-  background: #f3f4f6;
-  color: #111827;
+    background: #F1F5F9;
+    color: #334155;
 }
 
 .btn.secondary:hover {
-  background: #e5e7eb;
+    background: #E2E8F0;
 }
 
-/* Small Buttons */
 .btn.small {
-  padding: 8px 12px;
-  font-size: 13px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.8rem;
 }
 
-/* Danger */
 .btn.danger {
-  background: #ef4444;
+    background: #DC2626;
 }
 
 .btn.danger:hover {
-  background: #dc2626;
+    background: #B91C1C;
 }
 
-/* Table Container */
+.btn.warning {
+    background: #F59E0B;
+}
+
+/* =========================
+   TABLE (MATCH RESOURCES EXACTLY)
+========================= */
+
 .table-wrapper {
-  background: white;
-  border-radius: 16px;
-  overflow-x: auto;
-  border: 1px solid #e5e7eb;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 22px;
+    overflow-x: auto;
+
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
 
-/* Table */
 .table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .table th {
-  background: #f9fafb;
-  padding: 14px;
-  text-align: left;
-  font-size: 14px;
-  color: #6b7280;
-  border-bottom: 1px solid #e5e7eb;
+    background: #F8FAFC;
+    color: #64748B;
+    text-align: left;
+    padding: 1rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-bottom: 1px solid #E2E8F0;
 }
 
 .table td {
-  padding: 16px 14px;
-  border-bottom: 1px solid #f3f4f6;
-  color: #111827;
+    padding: 1rem;
+    border-bottom: 1px solid #F1F5F9;
+    color: #0F172A;
 }
 
-.table tr:hover {
-  background: #f9fafb;
+.table tbody tr:hover {
+    background: #FAFAFA;
 }
 
-/* Links */
 .table a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 600;
+    color: #059669;
+    font-weight: 600;
+    text-decoration: none;
 }
 
 .table a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
-/* Pagination */
+/* =========================
+   PAGINATION (MATCH RESOURCES)
+========================= */
+
 .pagination {
-  margin-top: 24px;
+    margin-top: 1.8rem;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  background: white;
-  border: 1px solid #e5e7eb;
-  padding: 16px 20px;
-  border-radius: 14px;
+    background: white;
+
+    border: 1px solid #E2E8F0;
+    border-radius: 18px;
+
+    padding: 1rem 1.25rem;
 }
+
+/* =========================
+   MODAL (KEEP CLEAN OLD STYLE)
+========================= */
 
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  z-index: 1000;
+    z-index: 1000;
 }
 
 .modal-box {
-  background: white;
-  width: 100%;
-  max-width: 420px;
+    background: white;
+    width: 100%;
+    max-width: 420px;
 
-  border-radius: 16px;
-  padding: 24px;
+    border-radius: 16px;
+    padding: 24px;
 
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-
-  animation: fadeIn 0.2s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+     animation: fadeIn 0.2s ease;
 }
 
 .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
 .close-btn {
-  border: none;
-  background: transparent;
-  font-size: 18px;
-  cursor: pointer;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
 }
 
 .modal-select {
-  width: 100%;
-  margin-top: 12px;
+    width: 100%;
+    margin-top: 12px;
 }
+
 
 .modal-actions {
   margin-top: 20px;
