@@ -5,47 +5,62 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 
-
 <div class="app-container">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
+
         <div class="logo">
             ResourceHub
         </div>
 
-        <nav class="nav">
-            <NavLink href="/" class="nav-item" Match="NavLinkMatch.All">
+        <nav class="sidebar-nav">
+
+            <NavLink class="sidebar-link" href="/" Match="NavLinkMatch.All">
                 Dashboard
             </NavLink>
-            <NavLink href="/resources" class="nav-item">
+
+            <NavLink class="sidebar-link" href="/resources">
                 Resources
             </NavLink>
-            <NavLink href="/bookings" class="nav-item">
+
+            <NavLink class="sidebar-link" href="/bookings">
                 Bookings
             </NavLink>
+
         </nav>
+
     </aside>
 
-    <!-- MAIN AREA -->
+    <!-- MAIN -->
     <div class="main">
 
-        <!-- TOP NAVBAR -->
+        <!-- TOP BAR -->
         <header class="navbar">
-            <div class="page-title">Dashboard</div>
+
+            <div class="page-title">
+                ResourceHub
+            </div>
 
             <div class="user-section">
                 <span class="user">@username</span>
-                <button class="logout-btn" @onclick="Logout">Logout</button>
+
+                <button class="logout-btn" @onclick="Logout">
+                    Logout
+                </button>
             </div>
+
         </header>
 
         <!-- PAGE CONTENT -->
         <section class="content">
             @Body
         </section>
+
     </div>
+
 </div>
+
 @code
 {
 
@@ -54,6 +69,7 @@
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
         var user = authState.User;
 
         username = user.Identity?.IsAuthenticated == true
@@ -65,8 +81,6 @@
     {
         await AuthService.LogoutAsync();
 
-        // Redirect to login page
         Navigation.NavigateTo("/login", forceLoad: true);
     }
-    
 }

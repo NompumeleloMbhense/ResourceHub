@@ -5,16 +5,14 @@
 @using ResourceHub.Client.Services
 @using ResourceHub.Shared.DTOs
 @using ResourceHub.Shared.Forms
+
 @inject IResourceService ResourceService
 @inject NavigationManager Navigation
-
-
 
 <div class="page-header">
 
     <div>
         <h1 class="page-title">Create Resource</h1>
-
         <p class="page-subtitle">
             Add a new room, workspace or shared resource
         </p>
@@ -24,7 +22,11 @@
 
 <div class="form-container">
 
-    <ResourceForm Model="model" SubmitText="Create Resource" OnSubmit="HandleCreate" OnCancel="Cancel" />
+    <ResourceForm Model="model"
+                  SubmitText="Create Resource"
+                  ShowAvailability="false"
+                  OnSubmit="HandleCreate"
+                  OnCancel="Cancel" />
 
     @if (!string.IsNullOrEmpty(error))
     {
@@ -33,21 +35,29 @@
 
 </div>
 
-
-@code
-{
+@code {
     private ResourceFormModel model = new();
     private string? error;
 
+    protected override void OnInitialized()
+    {
+        // optional: ensures clean default state
+        model = new ResourceFormModel
+        {
+            IsAvailable = true
+        };
+    }
+
     private async Task HandleCreate(ResourceFormModel model)
     {
+        error = null;
+
         var dto = new CreateResourceDto
         {
             Name = model.Name,
             Description = model.Description,
             Location = model.Location,
             Capacity = model.Capacity
-            
         };
 
         var success = await ResourceService.CreateResourceAsync(dto);
@@ -58,7 +68,7 @@
             return;
         }
 
-        Navigation.NavigateTo("/resources", true);
+        Navigation.NavigateTo("/resources", forceLoad: true);
     }
 
     private void Cancel()

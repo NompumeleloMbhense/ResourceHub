@@ -1,52 +1,113 @@
+/* FORM GROUP */
+
 .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
+
+    margin-bottom: 1.2rem;
 }
 
+/* LABEL */
+
 .form-group label {
-    margin-bottom: 6px;
+    margin-bottom: 0.4rem;
+
     font-weight: 600;
-    font-size: 14px;
-    color: #1f2937;
+    font-size: 0.9rem;
+
+    color: #0F172A;
 }
+
+/* INPUTS (IMPORTANT: ::deep FIX) */
+
+::deep .input {
+    width: 100%;
+
+    padding: 0.85rem 1rem;
+
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+
+    font-size: 0.95rem;
+
+    color: #0F172A;
+
+    outline: none;
+
+    transition: all 0.2s ease;
+}
+
+::deep .input:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* CHECKBOX */
 
 .checkbox {
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 0.6rem;
 }
 
-.input {
-    padding: 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    color: #111827;
+::deep input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563EB;
 }
 
-.input:focus {
-    border-color: #7c3aed;
-}
+/* BUTTONS */
 
 .btn {
-    padding: 10px 16px;
-    background-color: #7c3aed;
+    padding: 0.85rem 1.2rem;
+
+    background-color: #2563EB;
     color: white;
+
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
+
     cursor: pointer;
-    margin-right: 10px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+
+    margin-right: 0.75rem;
+}
+
+.btn:hover {
+    background-color: #1D4ED8;
 }
 
 .btn.secondary {
-    background-color: #e5e7eb;
-    color: #111827;
+    background-color: #E2E8F0;
+    color: #334155;
 }
+
+.btn.secondary:hover {
+    background-color: #CBD5E1;
+}
+
+/* VALIDATION */
 
 .validation-message {
     color: #DC2626;
+
     font-size: 0.85rem;
+
     margin-top: 0.35rem;
-    display: block;
+
     font-weight: 500;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .btn {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
 }

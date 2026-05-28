@@ -5,36 +5,56 @@
 }
 
 .form-group label {
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #374151;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1f2937;
 }
 
-.input {
+/* IMPORTANT: Blazor component styling fix */
+::deep .input {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #d1d5db;
     border-radius: 8px;
+    color: #111827;
+    width: 100%;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.input:focus {
+::deep .input:focus {
     border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    outline: none;
 }
 
-.btn {
+/* BUTTONS */
+::deep .btn {
     padding: 10px 16px;
     background-color: #7c3aed;
     color: white;
     border: none;
     border-radius: 8px;
+    cursor: pointer;
     margin-right: 10px;
+    transition: 0.2s ease;
 }
 
-.btn.secondary {
+::deep .btn:hover {
+    background-color: #6d28d9;
+}
+
+::deep .btn.secondary {
     background-color: #e5e7eb;
     color: #111827;
 }
 
+::deep .btn.secondary:hover {
+    background-color: #d1d5db;
+}
+
+/* ERROR */
 .error {
-    color: red;
+    color: #DC2626;
     margin-top: 10px;
+    font-weight: 500;
 }

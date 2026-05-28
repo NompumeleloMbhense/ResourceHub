@@ -1,49 +1,49 @@
-/* PAGE HEADER */
 .page-header {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 }
 
 .page-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0;
 }
 
 .page-subtitle {
-  margin-top: 0.35rem;
-  color: #64748b;
-  font-size: 0.95rem;
+    margin-top: 0.35rem;
+    color: #64748B;
+    font-size: 0.95rem;
 }
 
 /* FORM CARD */
 .form-container {
-  max-width: 720px;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    max-width: 720px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
 /* ERROR */
 .error {
-  margin-top: 1rem;
-  padding: 1rem;
-  border-radius: 12px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #b91c1c;
-  font-weight: 500;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #B91C1C;
+    font-weight: 500;
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .form-container {
-    padding: 1.5rem;
-  }
 
-  .page-title {
-    font-size: 1.7rem;
-  }
+    .form-container {
+        padding: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 1.7rem;
+    }
 }

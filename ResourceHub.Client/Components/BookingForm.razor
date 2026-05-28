@@ -34,20 +34,18 @@
     <!-- Start -->
     <div class="form-group">
         <label>Start Time</label>
-        <input type="datetime-local"
-                value="@StartTimeString"
-                @onchange="OnStartChanged"
-                class="input" />
+
+        <input type="datetime-local" class="input" value="@StartTimeString" @onchange="OnStartChanged" />
+
         <ValidationMessage For="@(() => Model.StartTime)" />
     </div>
 
     <!-- End -->
     <div class="form-group">
         <label>End Time</label>
-        <input type="datetime-local"
-                value="@EndTimeString"
-                @onchange="OnEndChanged"
-                class="input" />
+
+        <input type="datetime-local" class="input" value="@EndTimeString" @onchange="OnEndChanged" />
+
         <ValidationMessage For="@(() => Model.EndTime)" />
     </div>
 
@@ -65,20 +63,17 @@
     <p class="error">@error</p>
 }
 
-
 @code
 {
-    [Parameter] public BookingFormModel Model { get; set; } = default!;
-
+    [Parameter] public BookingFormModel Model { get; set; } = new();
     [Parameter] public List<ResourceDto> Resources { get; set; } = new();
 
     [Parameter] public EventCallback<BookingFormModel> OnSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
 
     [Parameter] public string SubmitText { get; set; } = "Save";
-    
-    private bool isSubmitting = false;
 
+    private bool isSubmitting;
     private string? error;
 
     private string StartTimeString =>
@@ -87,10 +82,9 @@
         : Model.StartTime.ToString("yyyy-MM-ddTHH:mm");
 
     private string EndTimeString =>
-    Model.EndTime == default
-        ? ""
-        : Model.EndTime.ToString("yyyy-MM-ddTHH:mm");
-
+        Model.EndTime == default
+            ? ""
+            : Model.EndTime.ToString("yyyy-MM-ddTHH:mm");
 
     private async Task HandleSubmit()
     {

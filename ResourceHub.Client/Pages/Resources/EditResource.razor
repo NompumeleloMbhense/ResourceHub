@@ -15,34 +15,30 @@
 else
 {
     <div class="page-header">
-
         <div>
             <h1 class="page-title">Edit Resource</h1>
-
             <p class="page-subtitle">
                 Update resource information and availability
             </p>
         </div>
-
     </div>
 
     <div class="form-container">
-
         <ResourceForm Model="model"
-                      SubmitText="Update Resource"
-                      ShowAvailability="true"
-                      OnSubmit="HandleUpdate"
-                      OnCancel="Cancel" />
+        SubmitText="Update Resource" 
+        ShowAvailability="true" 
+        OnSubmit="HandleUpdate"
+        OnCancel="Cancel" />
 
         @if (!string.IsNullOrEmpty(error))
         {
             <p class="error">@error</p>
         }
-
     </div>
 }
 
-@code {
+@code
+{
     [Parameter] public int Id { get; set; }
 
     private ResourceFormModel? model;
