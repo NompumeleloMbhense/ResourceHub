@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using ResourceHub.Client.Services
 @using ResourceHub.Shared.QueryParams
+@using ResourceHub.Shared.DTOs
 @inject IResourceService ResourceService
 @inject IBookingService BookingService
 
@@ -65,6 +66,44 @@ else
         </NavLink>
 
     </div>
+
+    @if (upcomingBookingsList.Any())
+    {
+        <div class="upcoming-section">
+            <div class="section-header">
+                <h2>Upcoming Bookings</h2>
+
+                <NavLink href="/bookings" class="view-all-link">
+                    View All
+                </NavLink>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Resource</th>
+                            <th>Booked By</th>
+                            <th>Start</th>
+                            <th>End</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var booking in upcomingBookingsList)
+                        {
+                            <tr>
+                                <td>@booking.ResourceName</td>
+                                <td>@booking.BookedBy</td>
+                                <td>@booking.StartTime.ToString("dd MMM yyyy HH:mm")</td>
+                                <td>@booking.EndTime.ToString("dd MMM yyyy HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 }
 
 
@@ -78,6 +117,9 @@ else
     private int totalBookings;
     private int upcomingBookings;
 
+    private List<BookingDto> upcomingBookingsList = new();
+
+
     protected override async Task OnInitializedAsync()
     {
         // Load resources
@@ -86,7 +128,7 @@ else
             PageSize = 1000
         });
 
-        if(resourcesResult != null)
+        if (resourcesResult != null)
         {
             totalResources = resourcesResult.Data.Count();
 
@@ -99,11 +141,17 @@ else
             PageSize = 1000
         });
 
-        if(bookingResult != null)
+        if (bookingResult != null)
         {
             totalBookings = bookingResult.Data.Count();
 
-            upcomingBookings = bookingResult.Data.Count(b => b.StartTime > DateTime.Now);
+            upcomingBookingsList = bookingResult.Data
+                .Where(b => b.StartTime > DateTime.Now)
+                .OrderBy(b => b.StartTime)
+                .Take(5)
+                .ToList();
+
+            upcomingBookings = upcomingBookingsList.Count;
         }
 
         isLoading = false;

@@ -106,6 +106,67 @@
     box-shadow: 0 10px 24px rgba(5, 150, 105, 0.08);
 }
 
+
+/* UPCOMING BOOKINGS */
+
+.upcoming-section {
+    margin-top: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 1rem;
+}
+
+.section-header h2 {
+    margin: 0;
+
+    font-size: 1.25rem;
+    font-weight: 700;
+
+    color: #0F172A;
+}
+
+.view-all-link {
+    color: #059669;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+/* Reuse same table style as Resources */
+
+.table-wrapper {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 22px;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    background: #F8FAFC;
+    color: #64748B;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid #F1F5F9;
+}
+
 /* MOBILE */
 
 @media (max-width: 768px) {
