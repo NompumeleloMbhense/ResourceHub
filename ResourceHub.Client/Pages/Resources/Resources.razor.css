@@ -5,7 +5,6 @@
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-
     margin-bottom: 2rem;
 }
 
@@ -28,31 +27,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
     background: #059669;
     color: white;
-
     text-decoration: none;
-
     padding: 0.9rem 1.3rem;
-
     border-radius: 14px;
-
     font-weight: 600;
-
     transition:
         background 0.2s ease,
         transform 0.2s ease,
         box-shadow 0.2s ease;
-
     white-space: nowrap;
 }
 
 ::deep .add-btn:hover {
     background: #047857;
-
     transform: translateY(-2px);
-
     box-shadow: 0 12px 24px rgba(5, 150, 105, 0.15);
 }
 
@@ -62,16 +52,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-
     margin-bottom: 2rem;
-
     padding: 1.4rem;
-
     background: white;
-
     border: 1px solid #E2E8F0;
     border-radius: 20px;
-
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
 }
 
@@ -79,17 +64,12 @@
 
 .input {
     padding: 0.9rem 1rem;
-
     border: 1px solid #CBD5E1;
     border-radius: 14px;
-
     outline: none;
-
     min-width: 190px;
-
     background: white;
     color: #0F172A;
-
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease,
@@ -102,9 +82,7 @@
 
 .input:focus {
     border-color: #059669;
-
     box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
-
     transform: translateY(-1px);
 }
 
@@ -112,18 +90,12 @@
 
 .btn {
     border: none;
-
     padding: 0.9rem 1.2rem;
-
     border-radius: 14px;
-
     background: #059669;
     color: white;
-
     font-weight: 600;
-
     cursor: pointer;
-
     transition:
         background 0.2s ease,
         transform 0.2s ease,
@@ -132,9 +104,7 @@
 
 .btn:hover {
     background: #047857;
-
     transform: translateY(-1px);
-
     box-shadow: 0 10px 22px rgba(5, 150, 105, 0.12);
 }
 
@@ -154,12 +124,9 @@
 
 .table-wrapper {
     background: white;
-
     border: 1px solid #E2E8F0;
     border-radius: 22px;
-
     overflow-x: auto;
-
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
 
@@ -178,16 +145,11 @@
 
 .table th {
     background: #F8FAFC;
-
     color: #64748B;
-
     text-align: left;
-
     padding: 1rem;
-
     font-size: 0.88rem;
     font-weight: 600;
-
     border-bottom: 1px solid #E2E8F0;
 }
 
@@ -195,9 +157,7 @@
 
 .table td {
     padding: 1rem;
-
     border-bottom: 1px solid #F1F5F9;
-
     color: #0F172A;
 }
 
@@ -213,16 +173,14 @@
 
 /* RESOURCE LINKS */
 
-::deep .table a {
-    color: #059669;
-
-    text-decoration: none;
-
-    font-weight: 600;
+.table a {
+  color: #059669;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-::deep .table a:hover {
-    text-decoration: underline;
+.table a:hover {
+  text-decoration: underline;
 }
 
 /* STATUS */
@@ -230,11 +188,8 @@
 .status {
     display: inline-flex;
     align-items: center;
-
     padding: 0.45rem 0.8rem;
-
     border-radius: 999px;
-
     font-size: 0.78rem;
     font-weight: 600;
 }
@@ -264,7 +219,6 @@
 
 .btn.danger:hover {
     background: #B91C1C;
-
     box-shadow: 0 10px 20px rgba(220, 38, 38, 0.15);
 }
 
@@ -272,18 +226,13 @@
 
 .pagination {
     margin-top: 1.8rem;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 1rem;
-
     background: white;
-
     border: 1px solid #E2E8F0;
     border-radius: 18px;
-
     padding: 1rem 1.25rem;
 }
 

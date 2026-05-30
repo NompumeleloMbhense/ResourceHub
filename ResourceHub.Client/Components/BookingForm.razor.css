@@ -11,46 +11,49 @@
     color: #1f2937;
 }
 
-/* IMPORTANT: Blazor component styling fix */
+/* INPUTS */
 ::deep .input {
-    padding: 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    color: #111827;
-    width: 100%;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 80%;
+    padding: 0.85rem 1rem;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #0F172A;
+    outline: none;
+    transition: all 0.2s ease;
 }
 
 ::deep .input:focus {
-    border-color: #7c3aed;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
-    outline: none;
+    border-color: #2563EB;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
 /* BUTTONS */
-::deep .btn {
-    padding: 10px 16px;
-    background-color: #7c3aed;
+.btn {
+    padding: 0.85rem 1.2rem;
+    background-color: #2563EB;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    margin-right: 10px;
+    font-weight: 600;
     transition: 0.2s ease;
+    margin-right: 0.75rem;
 }
 
-::deep .btn:hover {
-    background-color: #6d28d9;
+.btn:hover {
+    background-color: #1D4ED8;
 }
 
-::deep .btn.secondary {
-    background-color: #e5e7eb;
-    color: #111827;
+.btn.secondary {
+    background-color: #E2E8F0;
+    color: #334155;
 }
 
-::deep .btn.secondary:hover {
-    background-color: #d1d5db;
+.btn.secondary:hover {
+    background-color: #CBD5E1;
 }
+
 
 /* ERROR */
 .error {

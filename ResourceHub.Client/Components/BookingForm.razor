@@ -49,13 +49,9 @@
         <ValidationMessage For="@(() => Model.EndTime)" />
     </div>
 
-    <button type="submit" class="btn" disabled="@isSubmitting">
-        @SubmitText
-    </button>
-
-    <button type="button" class="btn secondary" @onclick="OnCancel">
-        Cancel
-    </button>
+    <button type="submit" class="btn" disabled="@isSubmitting">@SubmitText</button>
+    <button type="button" class="btn secondary" @onclick="OnCancel">Cancel</button>
+    
 </EditForm>
 
 @if (!string.IsNullOrEmpty(error))

@@ -1,39 +1,27 @@
 /* FORM GROUP */
-
 .form-group {
     display: flex;
     flex-direction: column;
-
     margin-bottom: 1.2rem;
 }
 
 /* LABEL */
-
 .form-group label {
     margin-bottom: 0.4rem;
-
     font-weight: 600;
     font-size: 0.9rem;
-
     color: #0F172A;
 }
 
-/* INPUTS (IMPORTANT: ::deep FIX) */
-
+/* INPUTS */
 ::deep .input {
-    width: 100%;
-
+    width: 80%;
     padding: 0.85rem 1rem;
-
     border: 1px solid #CBD5E1;
     border-radius: 10px;
-
     font-size: 0.95rem;
-
     color: #0F172A;
-
     outline: none;
-
     transition: all 0.2s ease;
 }
 
@@ -43,7 +31,6 @@
 }
 
 /* CHECKBOX */
-
 .checkbox {
     flex-direction: row;
     align-items: center;
@@ -55,6 +42,7 @@
     height: 18px;
     accent-color: #2563EB;
 }
+
 
 /* BUTTONS */
 
@@ -90,19 +78,14 @@
 }
 
 /* VALIDATION */
-
 .validation-message {
     color: #DC2626;
-
     font-size: 0.85rem;
-
     margin-top: 0.35rem;
-
     font-weight: 500;
 }
 
 /* RESPONSIVE */
-
 @media (max-width: 768px) {
 
     .btn {
