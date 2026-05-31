@@ -1,55 +1,101 @@
 # ResourceHub API
 
-A modern resource booking and management system built with **ASP.NET Core, Blazor WebAssembly and Entity Framework Core**.
+ResourceHub is a full-stack resource booking and management system built with **Blazor WebAssembly, 
+ASP.NET Core 10 Web API and Entity Framework Core**.
 
-ResourceHub helps organizations manage shared resources such as meeting rooms, equipment, workspaces and other bookable assets through a clean web interface.
+The application enables organizations to manage shared resources such as meeting rooms, equipment and workspaces
+while providing a streamlined booking experience with authentication, filtering, dashboards and booking management capabilities.
 
 ---
 
-## Features
-
-**Dashboard**
-- View total resources
-- View available resources
-- View total bookings
-- View upcoming bookings
-- Quick access to common actions
-- Upcoming bookings overview
+## Key Features
 
 **Resource Management**
-- Create resources
-- Edit resources
-- Delete resources
-- View resource details
-- Track availability status
+- Create, edit, view, and delete resources
+- Track resource availability
 - Capacity management
-- Search and filter resources
+- Search resources by name and location
+- Filter resources by availability and capacity range
+- Paginated resource listings
 
 **Booking Management**
-- Create bookings
-- Edit bookings
-- Delete bookings
+- Create, edit, view, and delete bookings
 - Move bookings between resources
-- View booking details
-- Search and filter bookings
-- Date range filtering
-- Pagination support
+- View booking history for individual resources
+- Search bookings by keyword or user
+- Filter bookings by date range
+- Paginated booking listings
 
-**Authentication & Authorization**
-- Secure login system
-- Protected pages using authorization
-- JWT authentication
+**Dashboard**
+- Total resources overview
+- Available resources overview
+- Total bookings overview
+- Upcoming bookings overview
+- Upcoming bookings table for quick visibility into scheduled reservations
+
+**Authentication & Security**
+- JWT-based authentication
+- Protected routes using authorization
+- Secure API communication between client and server
 
 ---
 
 ## Tech Stack
 
-- **.NET 10 / ASP.NET Core Web API**
+- **C#**
+- **.NET 10**
 - **Entity Framework Core**
+- **Blazor WebAssembly**
 - **SQL Server**
 - **AutoMapper**
-- **FluentValidation**
-- **Swagger (Swashbuckle)**
+- **HTML & CSS**
+- **JWT Authentication**
+
+---
+
+## System Architecture
+
+The application follows a layered architecture across multiple projects:
+
+**ResourceHub.Api (Backend)**
+ASP.NET Core Web API responsible for:
+
+- Business logic
+- Validation
+- Repository implementations
+- Entity Framework Core database access
+- Authentication and authorization
+
+**ResourceHub.Client (Frontend)**
+Blazor WebAssembly application responsible for:
+
+- User interface
+- API communication
+- State management
+- Resource and booking management workflows
+
+**ResourceHub.Core**
+Contains:
+
+- Domain entities
+- Repository interfaces
+- Query parameter models
+- Shared business contracts
+
+**ResourceHub.Shared**
+Contains:
+
+- DTOs (Data Transfer Objects)
+- Form models
+- Shared validation models
+
+**ResourceHub.Infrastructure**
+Responsible for:
+
+- Data persistence
+- Repository implementations
+- Database configuration
+- Entity Framework Core integration
 
 ---
 
@@ -77,7 +123,7 @@ Update the connection string in:
 example:
 
     "ConnectionStrings": {
-    "DefaultConnection": "Server=.;Database=ResourceHubDb;Trusted_Connection=True;"
+          "DefaultConnection": "YOUR_CONNECTION_STRING_HERE"
     }
 
 **Apply Migrations**
