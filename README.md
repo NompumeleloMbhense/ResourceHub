@@ -1,20 +1,44 @@
 # ResourceHub API
 
-ResourceHub is a RESTful API built with **ASP.NET Core** for managing resources and bookings.  
-It allows users to create, update, and manage resources (e.g. rooms, equipment) and schedule bookings while preventing conflicts.
+A modern resource booking and management system built with **ASP.NET Core, Blazor WebAssembly and Entity Framework Core**.
+
+ResourceHub helps organizations manage shared resources such as meeting rooms, equipment, workspaces and other bookable assets through a clean web interface.
 
 ---
 
 ## Features
 
-- Create, update, and delete resources  
-- Book resources for specific time slots  
-- Prevent booking conflicts (no overlapping bookings)  
-- Input validation using **FluentValidation**  
-- Object mapping using **AutoMapper**  
-- Global error handling middleware  
-- Swagger UI for API testing  
-- Clean architecture (Controllers → Services → Domain)
+**Dashboard**
+- View total resources
+- View available resources
+- View total bookings
+- View upcoming bookings
+- Quick access to common actions
+- Upcoming bookings overview
+
+**Resource Management**
+- Create resources
+- Edit resources
+- Delete resources
+- View resource details
+- Track availability status
+- Capacity management
+- Search and filter resources
+
+**Booking Management**
+- Create bookings
+- Edit bookings
+- Delete bookings
+- Move bookings between resources
+- View booking details
+- Search and filter bookings
+- Date range filtering
+- Pagination support
+
+**Authentication & Authorization**
+- Secure login system
+- Protected pages using authorization
+- JWT authentication
 
 ---
 
@@ -29,162 +53,103 @@ It allows users to create, update, and manage resources (e.g. rooms, equipment) 
 
 ---
 
-## Project Structure
-
-ResourceHub/
-│
-├── ResourceHub.Api
-│ ├── Controllers
-│ ├── DTOs
-│ ├── Mappings
-│ ├── Middleware
-│ ├── Validation
-│
-├── ResourceHub.Core
-│ ├── Entities
-│ ├── Interfaces
-│ ├── Exceptions
-│
-├── ResourceHub.Infrastructure
-│ ├── Persistence
-│ ├── Services
-
----
-
 ## Getting Started
 
-### 1. Clone the repository
-git clone https://github.com/your-username/resourcehub.git
-cd resourcehub
+**Prerequisites**
+- .NET 8 SDK
+- SQL Server
+- Visual Studio 2022 or VS Code
 
-### 2. Configure Database
-Update your appsettings.json:
-"ConnectionStrings": {
-  "ResourceHubConnection": "Server=YOUR_SERVER;Database=ResourceHubDb;Trusted_Connection=True;TrustServerCertificate=True;"
-}
+**Clone Repository**
 
-### 3. Run Migrations
-dotnet ef database update
+    git clone https://github.com/NompumeleloMbhense/ResourceHub.git
 
-### 4. Run the API
-dotnet run
+**Navigate To Project**
 
-### 5. Open Swagger
-https://localhost:{port}/swagger
+    cd ResourceHub
 
----
+**Update Database Connection**
 
-## API Endpoints
+Update the connection string in:
 
-**Resources**
+    appsettings.json
 
-| Method | Endpoint           | Description        |
-| ------ | ------------------ | ------------------ |
-| GET    | /api/resource      | Get all resources  |
-| GET    | /api/resource/{id} | Get resource by ID |
-| POST   | /api/resource      | Create resource    |
-| PUT    | /api/resource/{id} | Update resource    |
-| DELETE | /api/resource/{id} | Delete resource    |
+example:
 
-**Bookings**
+    "ConnectionStrings": {
+    "DefaultConnection": "Server=.;Database=ResourceHubDb;Trusted_Connection=True;"
+    }
 
-| Method | Endpoint                           | Description                 |
-| ------ | ---------------------------------- | --------------------------- |
-| GET    | /api/booking                       | Get all bookings            |
-| GET    | /api/booking/{id}                  | Get booking by ID           |
-| GET    | /api/booking/resource/{resourceId} | Get bookings for a resource |
-| POST   | /api/booking                       | Create booking              |
-| PUT    | /api/booking/{id}                  | Update booking              |
-| DELETE | /api/booking/{id}                  | Delete booking              |
+**Apply Migrations**
 
+    dotnet ef database update
+    
+**Run API**
+
+    dotnet run --project ResourceHub.Api
+
+**Run Client**
+
+    dotnet run --project ResourceHub.Client
 
 ---
 
-## Business Rules
+## Challenges and Solutions
 
-- A resource cannot be double-booked for overlapping time periods
-- A resource cannot be deleted if it has existing bookings
-- Start time must be before end time
-- Required fields are validated using FluentValidation
+**1. Booking Validation**
+Challenge
+Users could create bookings where the end time occurred before the start time, resulting in invalid reservations.
 
----
+Solution
+Implemented both client-side and server-side validation to ensure:
+- End time must be later than start time
+- Invalid bookings are rejected before being saved
+- Clear validation messages are displayed to users
 
-## Example Request
+**2. Resource Availability Filtering**
+Challenge
+As the number of resources increased, finding available resources became difficult.
 
-**Create Resource**
+Solution
+Added filtering and search functionality that allows users to:
+- Search by resource name
+- Filter by location
+- Filter by availability
+- Filter by capacity range
 
-{
-  "name": "Conference Room A",
-  "description": "Main meeting room",
-  "location": "First Floor",
-  "capacity": 10
-}
 
-**Create Booking**
-{
-  "resourceId": 1,
-  "startTime": "2026-04-10T09:00:00",
-  "endTime": "2026-04-10T10:00:00",
-  "bookedBy": "Nompumelelo",
-  "purpose": "Team Meeting"
-}
+**3. Booking Relocation Feature**
+Challenge
+Users needed a way to move existing bookings to a different resource without deleting and recreating them.
 
----
-
-## Error Handling
-
-**The API uses global exception handling middleware.**
-
-Example Error Response:
-{
-  "message": "This resource is already booked for the selected time."
-}
-
-Common Status Codes:
-
-| Code | Meaning                                        |
-| ---- | ---------------------------------------------- |
-| 400  | Bad Request (validation/business rule failure) |
-| 404  | Resource not found                             |
-| 409  | Conflict (e.g. booking overlap)                |
-| 500  | Internal server error                          |
-
----
-
-## Validation
-Validation is handled using FluentValidation:
-
-- Required fields enforced
-- Date comparisons (StartTime < EndTime)
-- String length limits
-
----
-
-## Architecture Highlights
-
-- DTOs separate API from domain models
-- AutoMapper reduces manual mapping
-- Services layer handles business logic
-- Entities enforce domain rules
-- Middleware handles errors globally
+Solution
+Implemented a booking relocation workflow:
+- Users can select an existing booking
+- Choose a new resource
+- Update the booking while preserving booking details
 
 ---
 
 ## Future Improvements
 
-- Soft delete for resources
-- Authentication & authorization
-- Pagination & filtering
-- Logging (Serilog)
-- Unit & integration tests
+- Future Improvements
+- Role-based authorization
+- Booking conflict calendar view
+- Email notifications
+- Resource images
+- Analytics dashboard
+- Dark mode
+- Database auditing
+- Real-time booking updates with SignalR
 
 ---
 
 ## Author
-Nompumelelo
-Software Developer focused on .NET and backend systems
+
+**Nompumelelo Mbhense**
+Software Developer focused on the Microsoft ecosystem, building projects with C#, .NET, ASP.NET Core, Blazor and SQL Server.
 
 ---
 
 ## License
-This project is for learning and portfolio purposes.
+This project is licensed under the MIT License.
