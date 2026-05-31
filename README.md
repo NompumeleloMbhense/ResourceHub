@@ -143,6 +143,7 @@ example:
 ## Challenges and Solutions
 
 **1. Booking Validation**
+
 Challenge
 Users could create bookings where the end time occurred before the start time, resulting in invalid reservations.
 
@@ -153,6 +154,7 @@ Implemented both client-side and server-side validation to ensure:
 - Clear validation messages are displayed to users
 
 **2. Resource Availability Filtering**
+
 Challenge
 As the number of resources increased, finding available resources became difficult.
 
@@ -165,6 +167,7 @@ Added filtering and search functionality that allows users to:
 
 
 **3. Booking Relocation Feature**
+
 Challenge
 Users needed a way to move existing bookings to a different resource without deleting and recreating them.
 
