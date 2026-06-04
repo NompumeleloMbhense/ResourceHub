@@ -1,0 +1,115 @@
+@page "/bookings/calendar"
+@attribute [Authorize]
+
+@using Microsoft.AspNetCore.Authorization
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.QueryParams
+
+@inject IBookingService BookingService
+
+<h1>Booking Calendar</h1>
+
+<div class="calendar-header">
+
+    @foreach (var day in WeekDays)
+    {
+        <div class="day-header">
+
+            @day.ToString("ddd")
+
+            <br />
+
+            @day.ToString("dd MMM")
+
+        </div>
+    }
+
+</div>
+
+<div class="calendar-grid">
+
+    @foreach (var day in WeekDays)
+    {
+        <div class="day-column">
+
+            @foreach (var booking in bookings
+                        .Where(b => b.StartTime.Date == day.Date)
+                        .OrderBy(b => b.StartTime))
+            {
+                <div class="booking-card">
+
+                    <strong>
+                        @booking.ResourceName
+                    </strong>
+
+                    <div>
+                        @booking.StartTime.ToString("HH:mm")
+                        -
+                        @booking.EndTime.ToString("HH:mm")
+                    </div>
+
+                    <div>
+                        @booking.BookedBy
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
+
+<div class="calendar-nav">
+
+    <button class="calendar-btn" @onclick="PreviousWeek">
+        ← Previous Week
+    </button>
+
+    <div class="week-label">
+        Week of @weekStart.ToString("dd MMM yyyy")
+    </div>
+
+    <button class="calendar-btn" @onclick="NextWeek">
+        Next Week →
+    </button>
+
+</div>
+
+
+
+@code
+{
+    private List<BookingDto> bookings = new();
+
+    private DateTime weekStart = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+    private List<DateTime> WeekDays => Enumerable.Range(0, 7)
+        .Select(i => weekStart.AddDays(i))
+        .ToList();
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await BookingService.GetBookingsAsync
+        (
+            new BookingQueryParams
+            {
+                PageSize = 1000
+            });
+
+        bookings = result?.Data
+            .OrderBy(b => b.StartTime)
+            .ToList() ?? new();
+    }
+
+    private void PreviousWeek()
+    {
+        weekStart = weekStart.AddDays(-7);
+    }
+
+    private void NextWeek()
+    {
+        weekStart = weekStart.AddDays(7);
+    }
+}
