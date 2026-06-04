@@ -12,16 +12,15 @@
 
 <div class="calendar-header">
 
+    
+    <div class="time-header"></div>
+
     @foreach (var day in WeekDays)
     {
         <div class="day-header">
-
             @day.ToString("ddd")
-
             <br />
-
             @day.ToString("dd MMM")
-
         </div>
     }
 
@@ -29,36 +28,40 @@
 
 <div class="calendar-grid">
 
-    @foreach (var day in WeekDays)
+    @foreach (var hour in Hours)
     {
-        <div class="day-column">
+        <div class="time-row">
 
-            @foreach (var booking in bookings
-                        .Where(b => b.StartTime.Date == day.Date)
-                        .OrderBy(b => b.StartTime))
+            <!-- Time label -->
+            <div class="time-cell">
+                @($"{hour}:00")
+            </div>
+
+            @foreach (var day in WeekDays)
             {
-                <div class="booking-card">
+                <div class="day-cell">
 
-                    <strong>
-                        @booking.ResourceName
-                    </strong>
+                    @foreach (var booking in bookings.Where(b =>
+                        b.StartTime.Date == day.Date &&
+                        b.StartTime.Hour == hour)
+                        .OrderBy(b => b.StartTime))
+                    {
+                        <div class="booking-card">
+                            <strong>@booking.ResourceName</strong>
 
-                    <div>
-                        @booking.StartTime.ToString("HH:mm")
-                        -
-                        @booking.EndTime.ToString("HH:mm")
-                    </div>
+                            <div>
+                                @booking.StartTime.ToString("HH:mm")
+                                -
+                                @booking.EndTime.ToString("HH:mm")
+                            </div>
 
-                    <div>
-                        @booking.BookedBy
-                    </div>
-
+                            <div>@booking.BookedBy</div>
+                        </div>
+                    }
                 </div>
             }
-
         </div>
     }
-
 </div>
 
 <div class="calendar-nav">
@@ -87,6 +90,10 @@
     private List<DateTime> WeekDays => Enumerable.Range(0, 7)
         .Select(i => weekStart.AddDays(i))
         .ToList();
+
+    private List<int> Hours = Enumerable.Range(8, 12).ToList();
+
+
 
     
     protected override async Task OnInitializedAsync()
