@@ -11,14 +11,20 @@
 
 <div class="page-header">
 
-    <div>
+    <div class="header-left">
         <h1 class="page-title">Bookings</h1>
         <p class="page-subtitle">Manage and track all resource bookings</p>
     </div>
 
-    <a href="/bookings/create" class="add-btn">
-        Add Booking
-    </a>
+    <div class="header-actions">
+        <a href="/bookings/calendar" class="calendar-btn">
+            Calendar View
+        </a>
+
+        <a href="/bookings/create" class="add-btn">
+            Add Booking
+        </a>
+    </div>
 
 </div>
 
@@ -106,7 +112,7 @@ else
 
 @if (showMoveModal)
 {
-    
+
     <div class="modal-overlay">
         <div class="modal-box">
 
