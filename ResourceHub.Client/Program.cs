@@ -6,6 +6,7 @@ using ResourceHub.Client;
 using ResourceHub.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Blazored.Toast;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddHttpClient("ApiClient", client =>
     client.BaseAddress = new Uri("http://localhost:5089");
 })
 .AddHttpMessageHandler<AuthHeaderHandler>();
+
+builder.Services.AddBlazoredToast();
 
 
 await builder.Build().RunAsync();
