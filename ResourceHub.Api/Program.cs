@@ -20,6 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IResourceRepository, ResourceRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Dependency Injection for services
 builder.Services.AddScoped<IBookingService, BookingService>();
