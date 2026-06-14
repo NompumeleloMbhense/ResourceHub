@@ -22,6 +22,9 @@ namespace ResourceHub.Tests.Services
                 _resourceRepositoryMock.Object);
         }
 
+
+        // Test that creating a resource calls the repository's AddAsync and SaveChangesAsync 
+        // methods
         [Fact]
         public async Task CreateResourceAsync_ShouldSaveResource()
         {
@@ -45,6 +48,9 @@ namespace ResourceHub.Tests.Services
                 Times.Once);
         }
 
+
+        // Test that updating a resource with valid data updates the resource's 
+        // details and saves changes
         [Fact]
         public async Task UpdateResourceAsync_ShouldUpdateResource_WhenFound()
         {
@@ -83,6 +89,8 @@ namespace ResourceHub.Tests.Services
                 Times.Once);
         }
 
+
+        // Test that updating a resource that doesn't exist throws a ResourceNotFoundException
         [Fact]
         public async Task UpdateResourceAsync_ShouldThrow_WhenResourceNotFound()
         {
@@ -105,6 +113,9 @@ namespace ResourceHub.Tests.Services
                     updatedResource));
         }
 
+
+        // Test that deleting a resource that exists calls the the repository's Delete
+        // and SaveChangesAsync methods
         [Fact]
         public async Task DeleteResourceAsync_ShouldDeleteResource_WhenFound()
         {
@@ -135,6 +146,8 @@ namespace ResourceHub.Tests.Services
                 Times.Once);
         }
 
+
+        // Test that deleting a reource that doesn't exist throws a ResourceNotFoundException
         [Fact]
         public async Task DeleteResourceAsync_ShouldThrow_WhenResourceNotFound()
         {
