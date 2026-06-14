@@ -6,6 +6,7 @@
 @using ResourceHub.Shared.QueryParams
 @inject IResourceService ResourceService
 @inject NavigationManager Navigation
+@inject AlertService Alert
 
 <div class="page-header">
 
@@ -121,6 +122,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         await LoadResources();
+
+        if (Navigation.ToAbsoluteUri(Navigation.Uri).Query.Contains("created=true"))
+        {
+            await Alert.ToastSuccess("Resource created successfully");
+        }
     }
 
     private async Task LoadResources()

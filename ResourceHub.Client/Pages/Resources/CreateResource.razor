@@ -5,7 +5,7 @@
 @using ResourceHub.Client.Services
 @using ResourceHub.Shared.DTOs
 @using ResourceHub.Shared.Forms
-
+@inject AlertService Alert
 @inject IResourceService ResourceService
 @inject NavigationManager Navigation
 
@@ -22,10 +22,7 @@
 
 <div class="form-container">
 
-    <ResourceForm Model="model"
-                  SubmitText="Create Resource"
-                  ShowAvailability="false"
-                  OnSubmit="HandleCreate"
+    <ResourceForm Model="model" SubmitText="Create Resource" ShowAvailability="false" OnSubmit="HandleCreate"
                   OnCancel="Cancel" />
 
     @if (!string.IsNullOrEmpty(error))
@@ -35,7 +32,8 @@
 
 </div>
 
-@code {
+@code
+{
     private ResourceFormModel model = new();
     private string? error;
 
@@ -68,7 +66,11 @@
             return;
         }
 
-        Navigation.NavigateTo("/resources", forceLoad: true);
+        await Alert.ToastSuccess("Resource created successfully");
+
+        //await Task.Delay(600);
+
+        Navigation.NavigateTo("/resources?created=true");
     }
 
     private void Cancel()
