@@ -145,33 +145,40 @@ example:
 **1. Booking Validation**
 
 Challenge
+
 Users could create bookings where the end time occurred before the start time, resulting in invalid reservations.
 
 Solution
+
 Implemented both client-side and server-side validation to ensure:
 - End time must be later than start time
 - Invalid bookings are rejected before being saved
 - Clear validation messages are displayed to users
 
-**2. Resource Availability Filtering**
+**2. Error Handling & Standardised Exception Design**
 
 Challenge
-As the number of resources increased, finding available resources became difficult.
+
+The API initially handled exceptions using a large switch statement in middleware to map different exception types to HTTP status codes. As the number of domain exceptions grew, this approach became harder to maintain and violated the Open/Closed Principle.
 
 Solution
-Added filtering and search functionality that allows users to:
-- Search by resource name
-- Filter by location
-- Filter by availability
-- Filter by capacity range
+
+Refactored the error-handling system to use a standardised base exception pattern, removing the need for switch-based mapping:
+- Introduced a base exception class (e.g. AppException) containing a reusable HTTP status code property
+- All domain-specific exceptions (e.g. BookingConflictException, ResourceNotFoundException) inherit from this base class
+- Updated global exception middleware to handle all custom exceptions in a single unified block
+- Eliminated large switch statements for cleaner and more maintainable mapping
+- Ensured each exception is self-describing and carries its own HTTP status responsibility
 
 
 **3. Booking Relocation Feature**
 
 Challenge
+
 Users needed a way to move existing bookings to a different resource without deleting and recreating them.
 
 Solution
+
 Implemented a booking relocation workflow:
 - Users can select an existing booking
 - Choose a new resource
