@@ -52,7 +52,7 @@ namespace ResourceHub.Infrastructure.Services
                 updated.IsAvailable
             );
 
-            
+
             await _resourceRepository.SaveChangesAsync();
         }
 
@@ -62,6 +62,10 @@ namespace ResourceHub.Infrastructure.Services
 
             if (resource == null)
                 throw new ResourceNotFoundException("Resource not found");
+
+            if (resource.Bookings.Any())
+                throw new ResourceHasBookingsException("Cannot delete resource with existing bookings");
+
 
             _resourceRepository.Delete(resource);
             await _resourceRepository.SaveChangesAsync();

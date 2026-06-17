@@ -22,7 +22,7 @@ namespace ResourceHub.Infrastructure.Persistence
                 .HasMany(r => r.Bookings)
                 .WithOne(b => b.Resource)
                 .HasForeignKey(b => b.ResourceId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Resource>()
                 .Property(r => r.Name)
