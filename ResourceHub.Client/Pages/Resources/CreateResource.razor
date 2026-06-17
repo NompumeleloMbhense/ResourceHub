@@ -62,15 +62,13 @@
 
         if (!success)
         {
-            error = "Failed to create resource";
+            await Alert.ToastError("Failed to create resource");
             return;
         }
 
         await Alert.ToastSuccess("Resource created successfully");
+        Navigation.NavigateTo("/resources");
 
-        //await Task.Delay(600);
-
-        Navigation.NavigateTo("/resources?created=true");
     }
 
     private void Cancel()

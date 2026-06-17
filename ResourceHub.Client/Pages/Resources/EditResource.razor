@@ -7,6 +7,7 @@
 @using ResourceHub.Client.Services
 @inject IResourceService ResourceService
 @inject NavigationManager Navigation
+@inject AlertService Alert
 
 @if (model == null)
 {
@@ -78,11 +79,12 @@ else
 
         if (!success)
         {
-            error = "Failed to update resource";
+            await Alert.ToastError("Failed to update resource");
             return;
         }
 
-        Navigation.NavigateTo("/resources", forceLoad: true);
+        await Alert.ToastSuccess("Resource updated successfully");
+        Navigation.NavigateTo("/resources");
     }
 
     private void Cancel()
