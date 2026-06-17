@@ -5,6 +5,7 @@
 @using ResourceHub.Shared.DTOs
 @inject NavigationManager Navigation
 @inject IBookingService BookingService
+@inject AlertService Alert
 
 @if (booking == null)
 {
@@ -84,11 +85,12 @@ else
 
         if (success)
         {
+            await Alert.ToastSuccess("Booking deleted successfully");
             Navigation.NavigateTo("/bookings", forceLoad: true);
         }
         else
         {
-            error = "Failed to delete booking";
+            await Alert.ToastError("Failed to delete booking");
         }
     }
 

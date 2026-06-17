@@ -9,6 +9,7 @@
 @inject IBookingService BookingService
 @inject IResourceService ResourceService
 @inject NavigationManager Navigation
+@inject AlertService Alert
 
 
 
@@ -32,10 +33,7 @@
     }
     else
     {
-        <BookingForm Model="model"
-                     Resources="resources"
-                     SubmitText="Create Booking"
-                     OnSubmit="HandleCreate"
+        <BookingForm Model="model" Resources="resources" SubmitText="Create Booking" OnSubmit="HandleCreate"
                      OnCancel="Cancel" />
 
         @if (!string.IsNullOrEmpty(error))
@@ -76,21 +74,16 @@
             Purpose = model.Purpose
         };
 
-        var response = await BookingService.CreateBookingAsync(dto);
+        var success = await BookingService.CreateBookingAsync(dto);
 
-        if (response.IsSuccessStatusCode)
+        if (!success)
         {
-            Navigation.NavigateTo("/bookings", true);
+            await Alert.ToastError("Failed to create booking");
             return;
         }
 
-        if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
-        {
-            error = "This resource is already booked for the selected time.";
-            return;
-        }
-
-        error = "Something went wrong while creating the booking.";
+        await Alert.ToastSuccess("Booking created successfully");
+        Navigation.NavigateTo("/bookings");
     }
 
     private void Cancel()

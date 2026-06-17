@@ -41,10 +41,11 @@ namespace ResourceHub.Client.Services
             return await _http.GetFromJsonAsync<BookingDto>($"api/bookings/{id}");
         }
 
-        public async Task<HttpResponseMessage> CreateBookingAsync(CreateBookingDto dto)
+        public async Task<bool> CreateBookingAsync(CreateBookingDto dto)
         {
-            return await _http.PostAsJsonAsync("api/bookings", dto);
+            var response = await _http.PostAsJsonAsync("api/bookings", dto);
 
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> UpdateBookingAsync(int id, UpdateBookingDto dto)

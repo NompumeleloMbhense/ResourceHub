@@ -9,6 +9,7 @@
 @inject IBookingService BookingService
 @inject IResourceService ResourceService
 @inject NavigationManager Navigation
+@inject AlertService Alert
 
 
 @if (model == null || resources == null)
@@ -92,10 +93,11 @@ else
 
         if (!success)
         {
-            error = "Failed to update booking";
+            await Alert.ToastError("Failed to update booking");
             return;
         }
 
+        await Alert.ToastSuccess("Booking updated successfully");
         Navigation.NavigateTo("/bookings", forceLoad: true);
     }
 
