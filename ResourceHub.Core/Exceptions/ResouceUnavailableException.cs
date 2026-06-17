@@ -1,7 +1,7 @@
 namespace ResourceHub.Core.Exceptions
 {
-    public class ResourceUnavailableException : Exception
+    public class ResourceUnavailableException : AppException
     {
-        public ResourceUnavailableException(string message) : base(message) { }
+        public ResourceUnavailableException(string message) : base(message, 400) { }
     }
 }

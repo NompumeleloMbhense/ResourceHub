@@ -1,10 +1,10 @@
 namespace ResourceHub.Core.Exceptions
 {
-    public class ResourceHasBookingsException : Exception
+    public class ResourceHasBookingsException : AppException
     {
         
         public ResourceHasBookingsException(string message)
-            : base(message)
+            : base(message, 400)
         {
         }
     }

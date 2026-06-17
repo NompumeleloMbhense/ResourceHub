@@ -30,56 +30,29 @@ namespace ResourceHub.Api.Middleware
             }
         }
 
+
+        // Handles exceptions and generates appropriate HTTP responses based on the type of exception
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
 
-            var response = context.Response;
-
-            object result;
-
-            switch (exception)
+            if (exception is AppException appEx)
             {
-                case ArgumentException ex:
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    result = new { message = ex.Message };
-                    break;
-                case KeyNotFoundException:
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
-                    result = new { message = "Resource not found" };
-                    break;
-                case BookingNotFoundException ex:
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
-                    result = new { message = ex.Message };
-                    break;
-                case BookingConflictException ex:
-                    response.StatusCode = (int)HttpStatusCode.Conflict;
-                    result = new { message = ex.Message };
-                    break;
-                case ResourceNotFoundException ex:
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
-                    result = new { message = ex.Message };
-                    break;
-                case ResourceUnavailableException ex:
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    result = new { message = ex.Message };
-                    break;
-                case ResourceHasBookingsException ex:
-                    response.StatusCode = (int)HttpStatusCode.BadRequest; 
-                    result = new { message = ex.Message };
-                    break;
-                case UnauthorizedAccessException ex:
-                    response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    result = new { message = ex.Message };
-                    break;
-                default:
-                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    result = new { message = "An unexpected error occurred" };
-                    break;
+                context.Response.StatusCode = appEx.StatusCode;
+
+                return context.Response.WriteAsync(JsonSerializer.Serialize(new
+                {
+                    message = appEx.Message
+                }));
             }
 
-            var json = JsonSerializer.Serialize(result);
-            return context.Response.WriteAsync(json);
+            // For unhandled exceptions, return a generic 500 Internal Server Error response
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+            return context.Response.WriteAsync(JsonSerializer.Serialize(new
+            {
+                message = "An unexpected error occurred"
+            }));
         }
     }
 }

@@ -1,7 +1,7 @@
 namespace ResourceHub.Core.Exceptions
 {
-    public class BookingNotFoundException : Exception
+    public class BookingNotFoundException : AppException
     {
-        public BookingNotFoundException(string message) : base(message) { }
+        public BookingNotFoundException(string message) : base(message, 404) { }
     }
 }
