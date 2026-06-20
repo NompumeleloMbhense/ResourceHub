@@ -7,7 +7,7 @@
     <!-- Resource -->
     <div class="form-group">
         <label>Resource</label>
-        <InputSelect @bind-Value="Model.ResourceId" class="input">
+        <InputSelect @bind-Value="Model.ResourceId" @bind-Value:after="OnResourceChangedHandler" class="input">
             <option value="0">-- Select Resource --</option>
             @foreach (var r in Resources)
             {
@@ -51,7 +51,7 @@
 
     <button type="submit" class="btn" disabled="@isSubmitting">@SubmitText</button>
     <button type="button" class="btn secondary" @onclick="OnCancel">Cancel</button>
-    
+
 </EditForm>
 
 @if (!string.IsNullOrEmpty(error))
@@ -68,6 +68,7 @@
     [Parameter] public EventCallback OnCancel { get; set; }
 
     [Parameter] public string SubmitText { get; set; } = "Save";
+    [Parameter] public EventCallback<int> OnResourceChanged { get; set; }
 
     private bool isSubmitting;
     private string? error;
@@ -111,5 +112,10 @@
         {
             Model.EndTime = date;
         }
+    }
+
+    private async Task OnResourceChangedHandler()
+    {
+        await OnResourceChanged.InvokeAsync(Model.ResourceId);
     }
 }

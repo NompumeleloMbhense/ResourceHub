@@ -33,8 +33,35 @@
     }
     else
     {
-        <BookingForm Model="model" Resources="resources" SubmitText="Create Booking" OnSubmit="HandleCreate"
-                     OnCancel="Cancel" />
+        <BookingForm Model="model" 
+                     Resources="resources" 
+                     SubmitText="Create Booking"
+                     OnSubmit="HandleCreate"
+                     OnCancel="Cancel" 
+                     OnResourceChanged="LoadBookingsForResource" />
+        
+        @if (selectedResourceBookings.Any())
+        {
+            <div class="existing-bookings">
+
+            <h3>Existing Bookings</h3>
+
+            @foreach (var booking in selectedResourceBookings)
+            {
+                <div class="booking-preview">
+                    <strong>@booking.BookedBy</strong>
+
+                    <div>
+                        @booking.StartTime.ToString("dd MMM HH:mm")
+                        -
+                        @booking.EndTime.ToString("HH:mm")
+                    </div>
+
+                    <div>@booking.Purpose</div>
+                </div>
+            }
+            </div>
+        }
 
         @if (!string.IsNullOrEmpty(error))
         {
@@ -48,7 +75,10 @@
 {
     private BookingFormModel model = new();
     private List<ResourceDto>? resources;
+    private List<BookingDto> selectedResourceBookings = new();
     private string? error;
+
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -89,5 +119,19 @@
     private void Cancel()
     {
         Navigation.NavigateTo("/bookings");
+    }
+
+    private async Task LoadBookingsForResource(int resourceId)
+    {
+        var result = await BookingService.GetBookingsAsync(
+            new BookingQueryParams
+            {
+                ResourceId = resourceId,
+                PageSize = 100
+            });
+
+        selectedResourceBookings = result?.Data
+            .OrderBy(b => b.StartTime)
+            .ToList() ?? new();
     }
 }
