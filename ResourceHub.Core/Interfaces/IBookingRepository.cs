@@ -1,5 +1,5 @@
-using ResourceHub.Core.Pagination;
-using ResourceHub.Core.QueryParams;
+using ResourceHub.Shared.Pagination;
+using ResourceHub.Shared.QueryParams;
 using ResourceHub.Core.Entities;
 
 namespace ResourceHub.Core.Interfaces

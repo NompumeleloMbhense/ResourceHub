@@ -2,9 +2,9 @@ using Moq;
 using Xunit;
 using ResourceHub.Core.Entities;
 using ResourceHub.Core.Interfaces;
-using ResourceHub.Core.Pagination;
+using ResourceHub.Shared.Pagination;
 using ResourceHub.Infrastructure.Services;
-using ResourceHub.Core.QueryParams;
+using ResourceHub.Shared.QueryParams;
 using ResourceHub.Core.Exceptions;
 
 namespace ResourceHub.Tests.Services

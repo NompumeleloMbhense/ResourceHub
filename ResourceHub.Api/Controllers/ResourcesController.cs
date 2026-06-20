@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ResourceHub.Core.Interfaces;
-using ResourceHub.Core.QueryParams;
+using ResourceHub.Shared.QueryParams;
 using ResourceHub.Shared.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;

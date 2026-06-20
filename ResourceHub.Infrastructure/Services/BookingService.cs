@@ -1,8 +1,8 @@
 ﻿using ResourceHub.Core.Entities;
 using ResourceHub.Core.Exceptions;
 using ResourceHub.Core.Interfaces;
-using ResourceHub.Core.Pagination;
-using ResourceHub.Core.QueryParams;
+using ResourceHub.Shared.Pagination;
+using ResourceHub.Shared.QueryParams;
 
 /// <summary>
 /// Service layer for managing bookings. Handles business logic and validation 

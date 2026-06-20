@@ -2,6 +2,12 @@ using AutoMapper;
 using ResourceHub.Core.Entities;
 using ResourceHub.Shared.DTOs;
 
+/// <summary
+/// Mapping profile for AutoMapper to map between entities and DTOs.
+/// Used to configure the mappings for Booking and Resource entities 
+/// to their respective DTOs and vice versa.
+/// </summary>
+
 namespace ResourceHub.Api.Mappings
 {
     public class MappingProfile : Profile
