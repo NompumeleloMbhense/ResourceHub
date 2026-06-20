@@ -14,7 +14,7 @@ namespace ResourceHub.Api.Controllers
     {
         private readonly IBookingService _bookingService;
         private readonly IMapper _mapper;
-
+        
         public BookingsController(IBookingService bookingService, IMapper mapper)
         {
             _bookingService = bookingService;
@@ -97,7 +97,7 @@ namespace ResourceHub.Api.Controllers
             return NoContent();
         }
 
-        
+
         // DELETE: api/bookings/{id}
         [Authorize]
         [HttpDelete("{id}")]
@@ -115,6 +115,26 @@ namespace ResourceHub.Api.Controllers
             await _bookingService.MoveBookingAsync(id, dto.NewResourceId);
 
             return NoContent();
+        }
+
+        [HttpGet("resource/{resourceId}/upcoming")]
+        public async Task<IActionResult> GetUpcomingBookingByResource(int resourceId)
+        {
+            var query = new BookingQueryParams
+            {
+                UpcomingOnly = true
+            };
+
+            var result = await _bookingService.GetBookingByResourceAsync(resourceId, query);
+
+            return Ok(new
+            {
+                result.PageNumber,
+                result.PageSize,
+                result.TotalCount,
+                result.TotalPages,
+                Data = _mapper.Map<IEnumerable<BookingDto>>(result.Data)
+            });
         }
     }
 }

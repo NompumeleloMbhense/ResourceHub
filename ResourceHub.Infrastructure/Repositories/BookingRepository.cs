@@ -4,20 +4,25 @@ using ResourceHub.Core.Interfaces;
 using ResourceHub.Shared.Pagination;
 using ResourceHub.Shared.QueryParams;
 using ResourceHub.Infrastructure.Persistence;
+using Microsoft.Extensions.Logging;
 
 namespace ResourceHub.Infrastructure.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<BookingRepository> _logger;
 
-        public BookingRepository(ApplicationDbContext context)
+        public BookingRepository(ApplicationDbContext context, ILogger<BookingRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<PagedResult<Booking>> GetAllAsync(BookingQueryParams query)
         {
+            _logger.LogInformation("GET ALL BOOKINGS TRIGGERED");
+
             var bookingsQuery = _context.Bookings
                 .AsNoTracking()
                 .Include(b => b.Resource)
@@ -67,6 +72,8 @@ namespace ResourceHub.Infrastructure.Repositories
                 .Skip((query.PageNumber - 1) * query.PageSize)
                 .Take(query.PageSize)
                 .ToListAsync();
+
+
 
             return new PagedResult<Booking>
             {
@@ -126,6 +133,14 @@ namespace ResourceHub.Infrastructure.Repositories
                     .Where(b => b.EndTime <= query.EndDate.Value);
             }
 
+            if (query.UpcomingOnly)
+            {
+                var now = DateTime.UtcNow;
+
+                bookingsQuery = bookingsQuery
+                    .Where(b => b.StartTime >= now);
+            }
+
             var totalCount = await bookingsQuery.CountAsync();
 
             var bookings = await bookingsQuery
@@ -133,6 +148,7 @@ namespace ResourceHub.Infrastructure.Repositories
                 .Skip((query.PageNumber - 1) * query.PageSize)
                 .Take(query.PageSize)
                 .ToListAsync();
+
 
             return new PagedResult<Booking>
             {

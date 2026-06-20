@@ -26,6 +26,7 @@ namespace ResourceHub.Shared.QueryParams
         public string? BookedBy { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public bool UpcomingOnly { get; set; } = false;
 
         
     }
