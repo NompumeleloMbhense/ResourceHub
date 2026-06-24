@@ -7,7 +7,9 @@
     <!-- Resource -->
     <div class="form-group">
         <label>Resource</label>
-        <InputSelect @bind-Value="Model.ResourceId" @bind-Value:after="OnResourceChangedHandler" class="input">
+        <InputSelect @bind-Value="Model.ResourceId" 
+                     @bind-Value:after="OnResourceChangedHandler" 
+                     class="input">
             <option value="0">-- Select Resource --</option>
             @foreach (var r in Resources)
             {
@@ -35,7 +37,10 @@
     <div class="form-group">
         <label>Start Time</label>
 
-        <input type="datetime-local" class="input" value="@StartTimeString" @onchange="OnStartChanged" />
+        <input type="datetime-local" 
+               class="input" 
+               value="@StartTimeString" 
+               @onchange="OnStartChanged" />
 
         <ValidationMessage For="@(() => Model.StartTime)" />
     </div>
@@ -44,7 +49,10 @@
     <div class="form-group">
         <label>End Time</label>
 
-        <input type="datetime-local" class="input" value="@EndTimeString" @onchange="OnEndChanged" />
+        <input type="datetime-local" 
+               class="input" 
+               value="@EndTimeString"
+               @onchange="OnEndChanged" />
 
         <ValidationMessage For="@(() => Model.EndTime)" />
     </div>
@@ -67,8 +75,10 @@
     [Parameter] public EventCallback<BookingFormModel> OnSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
 
-    [Parameter] public string SubmitText { get; set; } = "Save";
     [Parameter] public EventCallback<int> OnResourceChanged { get; set; }
+    [Parameter] public EventCallback OnChanged { get; set; }
+
+    [Parameter] public string SubmitText { get; set; } = "Save";
 
     private bool isSubmitting;
     private string? error;
@@ -98,24 +108,27 @@
         isSubmitting = false;
     }
 
-    private void OnStartChanged(ChangeEventArgs e)
+    private async Task OnStartChanged(ChangeEventArgs e)
     {
         if (DateTime.TryParse(e.Value?.ToString(), out var date))
         {
             Model.StartTime = date;
+            await OnChanged.InvokeAsync();
         }
     }
 
-    private void OnEndChanged(ChangeEventArgs e)
+    private async Task OnEndChanged(ChangeEventArgs e)
     {
         if (DateTime.TryParse(e.Value?.ToString(), out var date))
         {
             Model.EndTime = date;
+            await OnChanged.InvokeAsync();
         }
     }
 
     private async Task OnResourceChangedHandler()
     {
         await OnResourceChanged.InvokeAsync(Model.ResourceId);
+        await OnChanged.InvokeAsync();
     }
 }

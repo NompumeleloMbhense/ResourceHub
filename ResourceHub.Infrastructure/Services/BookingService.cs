@@ -108,6 +108,21 @@ namespace ResourceHub.Infrastructure.Services
             await _bookingRepository.SaveChangesAsync();
         }
 
+        // Check if a resource is available for booking in a given time slot
+        public async Task<bool> IsResourceAvailableAsync(int resourceId, DateTime start, DateTime end)
+        {
+            var bookings = await _bookingRepository.GetByResourceAsync(resourceId,
+            new BookingQueryParams
+            {
+                PageSize = 1000
+            });
+
+            return !bookings.Data.Any(b =>
+                b.StartTime < end &&
+                b.EndTime > start
+                );
+        }
+
 
         // ------------------------ Private Helper Methods -----------------------------------------------//
 
@@ -164,5 +179,7 @@ namespace ResourceHub.Infrastructure.Services
                     "This resource is already booked for the selected time slot");
 
         }
+
+
     }
 }

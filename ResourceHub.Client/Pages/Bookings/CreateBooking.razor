@@ -33,39 +33,22 @@
     }
     else
     {
-        <BookingForm Model="model" 
-                     Resources="resources" 
-                     SubmitText="Create Booking"
-                     OnSubmit="HandleCreate"
-                     OnCancel="Cancel" 
-                     OnResourceChanged="LoadBookingsForResource" />
+          <BookingForm Model="model"
+                 Resources="resources"
+                 SubmitText="Create Booking"
+                 OnSubmit="HandleCreate"
+                 OnCancel="Cancel"
+                 OnResourceChanged="LoadBookingsForResource"
+                 OnChanged="OnInputChanged" />
+
         
-        @if (selectedResourceBookings.Any())
+        
+
+        @if (!string.IsNullOrEmpty(availabilityMessage))
         {
-            <div class="existing-bookings">
-
-            <h3>Existing Bookings</h3>
-
-            @foreach (var booking in selectedResourceBookings)
-            {
-                <div class="booking-preview">
-                    <strong>@booking.BookedBy</strong>
-
-                    <div>
-                        @booking.StartTime.ToString("dd MMM HH:mm")
-                        -
-                        @booking.EndTime.ToString("HH:mm")
-                    </div>
-
-                    <div>@booking.Purpose</div>
-                </div>
-            }
+            <div class="availability-box">
+                @availabilityMessage
             </div>
-        }
-
-        @if (!string.IsNullOrEmpty(error))
-        {
-            <p class="error">@error</p>
         }
     }
 
@@ -76,11 +59,14 @@
     private BookingFormModel model = new();
     private List<ResourceDto>? resources;
     private List<BookingDto> selectedResourceBookings = new();
-    private string? error;
 
-    
+    private bool? isAvailable;
+    private string? availabilityMessage = "";
+    private bool isChecking;
+   
 
-    protected override async Task OnInitializedAsync()
+
+     protected override async Task OnInitializedAsync()
     {
         var result = await ResourceService.GetResourcesAsync(new ResourceQueryParams
         {
@@ -93,7 +79,11 @@
 
     private async Task HandleCreate(BookingFormModel model)
     {
-        error = null;
+        if (isAvailable == false)
+        {
+            await Alert.ToastError("This time slot is not available");
+            return;
+        }
 
         var dto = new CreateBookingDto
         {
@@ -123,15 +113,45 @@
 
     private async Task LoadBookingsForResource(int resourceId)
     {
-        var result = await BookingService.GetBookingsAsync(
-            new BookingQueryParams
-            {
-                ResourceId = resourceId,
-                PageSize = 100
-            });
+        var result = await BookingService.GetBookingsAsync(new BookingQueryParams
+        {
+            ResourceId = resourceId,
+            PageSize = 100
+        });
 
-        selectedResourceBookings = result?.Data
-            .OrderBy(b => b.StartTime)
-            .ToList() ?? new();
+        selectedResourceBookings = result?.Data.ToList() ?? new();
+
+        await OnInputChanged();
+    }
+
+
+    private async Task OnInputChanged()
+    {
+        if (isChecking)
+            return;
+
+        if (model.ResourceId == 0 ||
+            model.StartTime == default ||
+            model.EndTime == default)
+        {
+            availabilityMessage = null;
+            isAvailable = null;
+            return;
+        }
+
+        isChecking = true;
+
+        isAvailable = await BookingService.CheckAvailabilityAsync(
+            model.ResourceId,
+            model.StartTime,
+            model.EndTime);
+
+        availabilityMessage = isAvailable == true
+            ? "Available"
+            : "Not Available";
+
+        isChecking = false;
+
+        StateHasChanged();
     }
 }

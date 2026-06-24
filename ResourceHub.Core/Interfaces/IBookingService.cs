@@ -14,5 +14,6 @@ namespace ResourceHub.Core.Interfaces
         Task UpdateBookingAsync(int bookingId, DateTime startTime, DateTime endTime, string bookedBy, string purpose);
         Task DeleteBookingAsync(int bookingId);
         Task MoveBookingAsync(int bookingId, int newResourceId);
+        Task<bool> IsResourceAvailableAsync(int resourceId, DateTime start, DateTime end);
     }
 }

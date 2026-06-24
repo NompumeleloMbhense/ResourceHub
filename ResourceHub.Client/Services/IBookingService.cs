@@ -17,6 +17,7 @@ namespace ResourceHub.Client.Services
         Task<bool> DeleteBookingAsync(int id);
 
         Task<bool> MoveBookingAsync(int bookingId, int newResourceId);
+        Task<bool> CheckAvailabilityAsync(int resourceId, DateTime start, DateTime end);
 
     }
 }

@@ -13,7 +13,7 @@
 
     public class CreateBookingDto
     {
-        
+
         public int ResourceId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
@@ -32,5 +32,10 @@
     public class MoveBookingDto
     {
         public int NewResourceId { get; set; }
+    }
+
+    public class AvailabilityResponse
+    {
+        public bool IsAvailable { get; set; }
     }
 }

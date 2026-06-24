@@ -67,5 +67,15 @@ namespace ResourceHub.Client.Services
 
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<bool> CheckAvailabilityAsync(int resourceId, DateTime start, DateTime end)
+        {
+            var url = $"api/bookings/resource/{resourceId}/availability" +
+                      $"?start={start:O}&end={end:O}";
+
+            var result = await _http.GetFromJsonAsync<AvailabilityResponse>(url);
+
+            return result?.IsAvailable ?? false;
+        }
     }
 }

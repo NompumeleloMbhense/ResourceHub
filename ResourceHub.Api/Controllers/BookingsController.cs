@@ -14,7 +14,7 @@ namespace ResourceHub.Api.Controllers
     {
         private readonly IBookingService _bookingService;
         private readonly IMapper _mapper;
-        
+
         public BookingsController(IBookingService bookingService, IMapper mapper)
         {
             _bookingService = bookingService;
@@ -135,6 +135,14 @@ namespace ResourceHub.Api.Controllers
                 result.TotalPages,
                 Data = _mapper.Map<IEnumerable<BookingDto>>(result.Data)
             });
+        }
+
+        [HttpGet("resource/{resourceId}/availability")]
+        public async Task<IActionResult> CheckAvailability(int resourceId, [FromQuery] DateTime start, [FromQuery] DateTime end)
+        {
+            var IsAvailable = await _bookingService.IsResourceAvailableAsync(resourceId, start, end);
+
+            return Ok(new { IsAvailable });
         }
     }
 }
