@@ -33,21 +33,26 @@
     }
     else
     {
-          <BookingForm Model="model"
-                 Resources="resources"
-                 SubmitText="Create Booking"
-                 OnSubmit="HandleCreate"
-                 OnCancel="Cancel"
-                 OnResourceChanged="LoadBookingsForResource"
-                 OnChanged="OnInputChanged" />
+        <BookingForm Model="model" 
+                     Resources="resources" 
+                     SubmitText="Create Booking" 
+                     OnSubmit="HandleCreate"
+                     OnCancel="Cancel" 
+                     OnResourceChanged="LoadBookingsForResource" 
+                     OnChanged="OnInputChanged" />
 
         
         
-
         @if (!string.IsNullOrEmpty(availabilityMessage))
         {
-            <div class="availability-box">
-                @availabilityMessage
+            <div class="availability-box @availabilityClass">
+                <span class="availability-icon">
+                    @(isAvailable == true ? "✔" : "✖")
+                </span>
+
+                <span class="availability-text">
+                    @availabilityMessage
+                </span>
             </div>
         }
     }
@@ -63,10 +68,13 @@
     private bool? isAvailable;
     private string? availabilityMessage = "";
     private bool isChecking;
-   
+    
 
+    private string availabilityClass =>
+     isAvailable == true ? "available" :
+     isAvailable == false ? "unavailable" : "";
 
-     protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         var result = await ResourceService.GetResourcesAsync(new ResourceQueryParams
         {
@@ -113,29 +121,24 @@
 
     private async Task LoadBookingsForResource(int resourceId)
     {
-        var result = await BookingService.GetBookingsAsync(new BookingQueryParams
-        {
-            ResourceId = resourceId,
-            PageSize = 100
-        });
-
-        selectedResourceBookings = result?.Data.ToList() ?? new();
-
         await OnInputChanged();
     }
 
 
-    private async Task OnInputChanged()
+    // Checks the availability of the selected resource for the specified time range.
+    // Updates the availability message and status accondingly
+    private async Task OnInputChanged() 
     {
         if (isChecking)
             return;
 
+        // If any of the required fields are not set, reset the availability status and message.
         if (model.ResourceId == 0 ||
             model.StartTime == default ||
             model.EndTime == default)
         {
             availabilityMessage = null;
-            isAvailable = null;
+            isAvailable = null;            
             return;
         }
 
@@ -147,8 +150,8 @@
             model.EndTime);
 
         availabilityMessage = isAvailable == true
-            ? "Available"
-            : "Not Available";
+            ? "Time slot is available"
+            : "Time slot conflicts with an existing booking";
 
         isChecking = false;
 

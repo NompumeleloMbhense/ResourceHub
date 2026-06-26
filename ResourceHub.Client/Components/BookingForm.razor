@@ -38,7 +38,7 @@
         <label>Start Time</label>
 
         <input type="datetime-local" 
-               class="input" 
+               class="input @(isStartTimeInvalid ? "input-error" : "")"
                value="@StartTimeString" 
                @onchange="OnStartChanged" />
 
@@ -50,9 +50,16 @@
         <label>End Time</label>
 
         <input type="datetime-local" 
-               class="input" 
+                class="input @(isEndTimeInvalid ? "input-error" : "")"
                value="@EndTimeString"
                @onchange="OnEndChanged" />
+
+                @if (isEndTimeInvalid)
+                {
+                    <small class="field-error">
+                        End time must be after start time
+                    </small>
+                }
 
         <ValidationMessage For="@(() => Model.EndTime)" />
     </div>
@@ -62,10 +69,7 @@
 
 </EditForm>
 
-@if (!string.IsNullOrEmpty(error))
-{
-    <p class="error">@error</p>
-}
+
 
 @code
 {
@@ -74,45 +78,55 @@
 
     [Parameter] public EventCallback<BookingFormModel> OnSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-
     [Parameter] public EventCallback<int> OnResourceChanged { get; set; }
     [Parameter] public EventCallback OnChanged { get; set; }
 
     [Parameter] public string SubmitText { get; set; } = "Save";
 
     private bool isSubmitting;
-    private string? error;
 
-    private string StartTimeString =>
-    Model.StartTime == default
-        ? ""
-        : Model.StartTime.ToString("yyyy-MM-ddTHH:mm");
+    private bool isEndTimeInvalid;
+    private bool isStartTimeInvalid;
 
-    private string EndTimeString =>
-        Model.EndTime == default
-            ? ""
-            : Model.EndTime.ToString("yyyy-MM-ddTHH:mm");
-
-    private async Task HandleSubmit()
+    // Validate that the end time is after the start time
+    private void ValidateTimes()
     {
-        error = null;
-
-        if (Model.EndTime <= Model.StartTime)
+        if (Model.StartTime == default || Model.EndTime == default)
         {
-            error = "End time must be after start time";
+            isEndTimeInvalid = false;
+            isStartTimeInvalid = false;
             return;
         }
 
-        isSubmitting = true;
-        await OnSubmit.InvokeAsync(Model);
-        isSubmitting = false;
+        if (Model.EndTime <= Model.StartTime)
+        {
+            isEndTimeInvalid = true;
+            isStartTimeInvalid = true;
+        }
+        else
+        {
+            isEndTimeInvalid = false;
+            isStartTimeInvalid = false;
+        }
     }
 
+
+    // Convert DateTime to string in the format required by the datetime-local input
+    private string StartTimeString =>
+        Model.StartTime == default ? "" : Model.StartTime.ToString("yyyy-MM-ddTHH:mm");
+
+    private string EndTimeString =>
+        Model.EndTime == default ? "" : Model.EndTime.ToString("yyyy-MM-ddTHH:mm");
+
+
+    // Handles changes to the start and end time inputs, updating the model and validating 
+    // the times.
     private async Task OnStartChanged(ChangeEventArgs e)
     {
         if (DateTime.TryParse(e.Value?.ToString(), out var date))
         {
             Model.StartTime = date;
+            ValidateTimes();
             await OnChanged.InvokeAsync();
         }
     }
@@ -122,13 +136,25 @@
         if (DateTime.TryParse(e.Value?.ToString(), out var date))
         {
             Model.EndTime = date;
+            ValidateTimes();
             await OnChanged.InvokeAsync();
         }
     }
 
+
+    private async Task HandleSubmit()
+    {
+        isSubmitting = true;
+        await OnSubmit.InvokeAsync(Model);
+        isSubmitting = false;
+    }
+
+    // Handles changes to the resource seclection for the booking form.
     private async Task OnResourceChangedHandler()
     {
         await OnResourceChanged.InvokeAsync(Model.ResourceId);
         await OnChanged.InvokeAsync();
     }
+
+    
 }
