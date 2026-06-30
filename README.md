@@ -199,6 +199,39 @@ Implemented a booking relocation workflow:
 - Real-time booking updates with SignalR
 
 ---
+## Images
+
+**Resources**
+
+**Dashboard**
+<img width="800" height="366" alt="Dashboard" src="https://github.com/user-attachments/assets/be5ab8d1-04f1-4e0c-9858-96bbaeb7c797" />
+
+
+**Resources List**
+<img width="800" height="363" alt="ResourcesList" src="https://github.com/user-attachments/assets/947bc223-4d83-4774-b669-b4db3d35122b" />
+
+
+**Resource Details**
+<img width="800" height="362" alt="ResourceDetails" src="https://github.com/user-attachments/assets/112c39e5-51ce-4ca3-85ef-0f640672b218" />
+
+
+**Resource Search**
+<img width="800" height="366" alt="ResourcesSearch" src="https://github.com/user-attachments/assets/14442cc0-c2a4-47d1-83f9-c7ea090ffe8f" />
+
+
+**Create Resource**
+<img width="800" height="364" alt="CreateResource" src="https://github.com/user-attachments/assets/716ca454-5e5c-4e76-9495-f7cdffe95594" />
+
+
+**Update Resource**
+<img width="800" height="365" alt="UpdateResource" src="https://github.com/user-attachments/assets/42f27765-d584-486d-8948-0ede7d2b9875" />
+
+
+**Delete Resource**
+<img width="800" height="365" alt="DeleteResource" src="https://github.com/user-attachments/assets/c97b7c1b-eb40-42fe-ba39-8e038e7e0d1e" />
+
+
+---
 
 ## Author
 
