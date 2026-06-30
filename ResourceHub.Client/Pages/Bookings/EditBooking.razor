@@ -93,7 +93,7 @@ else
 
         if (!success)
         {
-            await Alert.ToastError("Failed to update booking");
+            await Alert.ToastError("Unable to update the booking. The selected time may conflict with an existing booking.");
             return;
         }
 
