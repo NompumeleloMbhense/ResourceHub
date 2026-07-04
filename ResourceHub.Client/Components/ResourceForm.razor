@@ -6,25 +6,25 @@
     
     <div class="form-group">
         <label>Name</label>
-        <InputText @bind-Value="Model.Name" class="input" />
+        <InputText @bind-Value="Model.Name" class="input" placeholder="Enter resource name" />
         <ValidationMessage For="@(() => Model.Name)" />
     </div>
 
     <div class="form-group">
         <label>Description</label>
-        <InputText @bind-Value="Model.Description" class="input" />
+        <InputText @bind-Value="Model.Description" class="input" placeholder="Enter the description" />
         <ValidationMessage For="@(() => Model.Description)" />
     </div>
 
     <div class="form-group">
         <label>Location</label>
-        <InputText @bind-Value="Model.Location" class="input" />
+        <InputText @bind-Value="Model.Location" class="input" placeholder="Enter location" />
         <ValidationMessage For="@(() => Model.Location)" />
     </div>
 
     <div class="form-group">
         <label>Capacity</label>
-        <InputNumber @bind-Value="Model.Capacity" class="input" />
+        <InputNumber @bind-Value="Model.Capacity" class="input" placeholder="Enter capacity" />
         <ValidationMessage For="@(() => Model.Capacity)" />
     </div>
 

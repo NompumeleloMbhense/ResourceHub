@@ -22,14 +22,14 @@
     <!-- Booked By -->
     <div class="form-group">
         <label>Booked By</label>
-        <InputText @bind-Value="Model.BookedBy" class="input" />
+        <InputText @bind-Value="Model.BookedBy" class="input" placeholder="Enter booked by" />
         <ValidationMessage For="@(() => Model.BookedBy)" />
     </div>
 
     <!-- Purpose -->
     <div class="form-group">
         <label>Purpose</label>
-        <InputText @bind-Value="Model.Purpose" class="input" />
+        <InputText @bind-Value="Model.Purpose" class="input" placeholder="Enter purpose" />
         <ValidationMessage For="@(() => Model.Purpose)" />
     </div>
 

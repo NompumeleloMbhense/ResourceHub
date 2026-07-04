@@ -25,19 +25,19 @@
 
             <div class="form-group">
                 <label>Username</label>
-                <InputText @bind-Value="model.Username" class="input" />
+                <InputText @bind-Value="model.Username" class="input" placeholder="Enter your username" />
                 <ValidationMessage For="@(() => model.Username)" />
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <InputText @bind-Value="model.Email" class="input" />
+                <InputText @bind-Value="model.Email" class="input" placeholder="Enter your email" />
                 <ValidationMessage For="@(() => model.Email)" />
             </div>
 
             <div class="form-group">
                 <label>Password</label>
-                <InputText @bind-Value="model.Password" type="password" class="input" />
+                <InputText @bind-Value="model.Password" type="password" class="input" placeholder="Enter your password"  />
                 <ValidationMessage For="@(() => model.Password)" />
             </div>
 
