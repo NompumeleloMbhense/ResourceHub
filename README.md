@@ -230,6 +230,34 @@ Implemented a booking relocation workflow:
 **Delete Resource**
 <img width="800" height="365" alt="DeleteResource" src="https://github.com/user-attachments/assets/c97b7c1b-eb40-42fe-ba39-8e038e7e0d1e" />
 
+**Bookings**
+
+
+**Bookings List**
+<img width="800" height="364" alt="BookingsList" src="https://github.com/user-attachments/assets/6c713a3c-44d7-4f4a-ae26-31a3497f1da6" />
+
+
+**Bookings Details**
+<img width="800" height="365" alt="BookingDetails" src="https://github.com/user-attachments/assets/6cdbf67f-754a-4967-9f0f-0e75fa841be3" />
+
+
+**Create Booking**
+<img width="800" height="361" alt="CreateBooking" src="https://github.com/user-attachments/assets/54be2669-d6e8-44c2-90d8-638d3a562132" />
+
+
+**Booking Conflict**
+<img width="800" height="366" alt="BookingConflict" src="https://github.com/user-attachments/assets/ce524273-7893-48d2-b576-4f118cc3287b" />
+
+
+**End Time must be greater than start time**
+<img width="1897" height="868" alt="TimeConflict" src="https://github.com/user-attachments/assets/f7ec7934-8e31-4d0f-9062-727877bc52c8" />
+
+
+**Booking Calendar**
+<img width="1897" height="862" alt="BookingCalendar" src="https://github.com/user-attachments/assets/a919fecb-bb1c-4f25-ad5d-b8cbad4ebe80" />
+
+
+
 
 ---
 
