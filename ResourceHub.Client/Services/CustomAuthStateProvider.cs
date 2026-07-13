@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using Blazored.LocalStorage;
+using System.IdentityModel.Tokens.Jwt;
 
 /// <summary>
 /// Custom authentication state provider that reads the JWT token 
@@ -26,32 +27,25 @@ namespace ResourceHub.Client.Services
         {
             var token = await _localStorage.GetItemAsync<string>("authToken");
 
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrWhiteSpace(token))
             {
-                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+                var anonymous = new ClaimsPrincipal(new ClaimsIdentity());
+
+                return new AuthenticationState(anonymous);
             }
 
-            var identity = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, "User")
-            }, "jwt");
+            var claims = ParseClaimsFromJwt(token);
+
+            var identity = new ClaimsIdentity(claims, "jwt");
 
             var user = new ClaimsPrincipal(identity);
 
             return new AuthenticationState(user);
         }
 
-        public void NotifyUserLoggedIn(string username)
+        public void NotifyUserLoggedIn()
         {
-            var identity = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, username)
-            }, "jwt");
-
-            var user = new ClaimsPrincipal(identity);
-
-            NotifyAuthenticationStateChanged(
-                Task.FromResult(new AuthenticationState(user)));
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
         public void NotifyUserLoggedOut()
@@ -60,6 +54,15 @@ namespace ResourceHub.Client.Services
 
             NotifyAuthenticationStateChanged(
                 Task.FromResult(new AuthenticationState(anonymous)));
+        }
+
+        private static IEnumerable<Claim> ParseClaimsFromJwt(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            var jwt = handler.ReadJwtToken(token);
+
+            return jwt.Claims;
         }
     }
 }

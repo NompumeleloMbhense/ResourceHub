@@ -32,7 +32,7 @@ namespace ResourceHub.Client.Services
 
             if (_authProvider is CustomAuthStateProvider customProvider)
             {
-                customProvider.NotifyUserLoggedIn("User");
+                customProvider.NotifyUserLoggedIn();
             }
 
             return result?.Token;
@@ -53,7 +53,7 @@ namespace ResourceHub.Client.Services
 
             if (_authProvider is CustomAuthStateProvider customProvider)
             {
-                customProvider.NotifyUserLoggedIn("User");
+                customProvider.NotifyUserLoggedIn();
             }
 
             return result?.Token;
