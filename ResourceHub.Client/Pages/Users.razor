@@ -1,0 +1,53 @@
+@page "/users"
+@attribute [Authorize(Roles = "Admin")]
+@using ResourceHub.Client.Services
+@using Microsoft.AspNetCore.Authorization
+@using ResourceHub.Shared.DTOs
+@inject IUserService UserService
+
+<PageTitle>Users</PageTitle>
+
+<h3>Users</h3>
+
+@if (users == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.Username</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+            </tr>
+        }
+
+        </tbody>
+
+    </table>
+}
+
+@code {
+
+    private List<UserDto>? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await UserService.GetUsersAsync();
+    }
+
+}
