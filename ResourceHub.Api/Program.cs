@@ -11,6 +11,9 @@ using ResourceHub.Api.Middleware;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using ResourceHub.Core.Entities;
+using BCrypt.Net;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +106,25 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Seed admin user
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    if (!context.Users.Any(u => u.Role == "Admin"))
+    {
+        context.Users.Add(new User
+        {
+            Username = "admin",
+            Email = "admin@resourcehub.com",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
+            Role = "Admin"
+        });
+
+        context.SaveChanges();
+    }
+}
 
 app.Run();
 
