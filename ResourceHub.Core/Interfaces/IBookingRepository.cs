@@ -5,8 +5,8 @@ using ResourceHub.Core.Entities;
 namespace ResourceHub.Core.Interfaces
 {
     public interface IBookingRepository
-    {Task<PagedResult<Booking>> GetAllAsync(BookingQueryParams query);
-
+    {
+        Task<PagedResult<Booking>> GetAllAsync(BookingQueryParams query);
         Task<Booking?> GetByIdAsync(int id);
         Task<PagedResult<Booking>> GetByResourceAsync(int resourceId, BookingQueryParams query);
         Task AddAsync(Booking booking);

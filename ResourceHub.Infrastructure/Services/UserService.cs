@@ -1,5 +1,7 @@
 using ResourceHub.Core.Interfaces;
 using ResourceHub.Shared.DTOs;
+using ResourceHub.Shared.Pagination;
+using ResourceHub.Shared.QueryParams;
 
 namespace ResourceHub.Infrastructure.Services
 {
@@ -12,17 +14,25 @@ namespace ResourceHub.Infrastructure.Services
             _repository = repository;
         }
 
-        public async Task<List<UserDto>> GetUsersAsync()
+        public async Task<PagedResult<UserDto>> GetUsersAsync(UserQueryParams queryParams)
         {
-            var users = await _repository.GetAllAsync();
+            var pagedUsers = await _repository.GetUsersAsync(queryParams);
 
-            return users.Select(u => new UserDto
+            return new PagedResult<UserDto>
             {
-                Id = u.Id,
-                Username = u.Username,
-                Email = u.Email,
-                Role = u.Role
-            }).ToList();
+                Data = pagedUsers.Data.Select(u => new UserDto
+                {
+                    Id = u.Id,
+                    Username = u.Username,
+                    Email = u.Email,
+                    Role = u.Role
+                }),
+
+                PageNumber = pagedUsers.PageNumber,
+                PageSize = pagedUsers.PageSize,
+                TotalCount = pagedUsers.TotalCount,
+                TotalPages = pagedUsers.TotalPages
+            };
         }
     }
 }

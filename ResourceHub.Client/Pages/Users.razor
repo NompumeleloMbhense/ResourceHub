@@ -1,53 +1,171 @@
 @page "/users"
 @attribute [Authorize(Roles = "Admin")]
-@using ResourceHub.Client.Services
+
 @using Microsoft.AspNetCore.Authorization
+@using ResourceHub.Client.Services
 @using ResourceHub.Shared.DTOs
+@using ResourceHub.Shared.QueryParams
+
 @inject IUserService UserService
 
-<PageTitle>Users</PageTitle>
+<div class="page-header">
 
-<h3>Users</h3>
+    <div>
+        <h1 class="page-title">Users</h1>
+        <p class="page-subtitle">
+            View and manage registered users.
+        </p>
+    </div>
+
+</div>
+
+<div class="toolbar">
+
+    <input class="input" placeholder="Search username or email..." @bind="query.Search" />
+
+    <InputSelect TValue="string" @bind-Value="query.Role" class="input small">
+
+        <option value="">All Roles</option>
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+
+    </InputSelect>
+
+    <button class="btn" @onclick="Search">
+        Search
+    </button>
+
+    <button class="btn secondary" @onclick="ResetFilters">
+        Reset
+    </button>
+
+</div>
 
 @if (users == null)
 {
     <p>Loading...</p>
 }
+else if (!users.Any())
+{
+    <p>No users found.</p>
+}
 else
 {
-    <table class="table table-striped">
+    <div class="table-wrapper">
 
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Role</th>
-            </tr>
-        </thead>
+        <table class="table">
 
-        <tbody>
+            <thead>
 
-        @foreach (var user in users)
-        {
-            <tr>
-                <td>@user.Username</td>
-                <td>@user.Email</td>
-                <td>@user.Role</td>
-            </tr>
-        }
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
 
-        </tbody>
+            </thead>
 
-    </table>
+            <tbody>
+
+                @foreach (var user in users)
+                {
+                    <tr>
+
+                        <td>@user.Username</td>
+
+                        <td>@user.Email</td>
+
+                        <td>
+
+                            <span class="status @(user.Role == "Admin"
+                                      ? "role-admin"
+                                      : "role-user")">
+                                @user.Role
+                            </span>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="pagination">
+
+        <button class="btn" @onclick="PrevPage" disabled="@(query.PageNumber == 1)">
+
+            Prev
+
+        </button>
+
+        <span>
+            Page @query.PageNumber of @totalPages
+        </span>
+
+        <button class="btn" @onclick="NextPage" disabled="@(query.PageNumber >= totalPages)">
+
+            Next
+
+        </button>
+
+    </div>
 }
 
-@code {
-
+@code
+{
     private List<UserDto>? users;
+
+    private int totalPages;
+
+    private UserQueryParams query = new();
 
     protected override async Task OnInitializedAsync()
     {
-        users = await UserService.GetUsersAsync();
+        await LoadUsers();
     }
 
+    private async Task LoadUsers()
+    {
+        var result = await UserService.GetUsersAsync(query);
+
+        if (result != null)
+        {
+            users = result.Data.ToList();
+            totalPages = result.TotalPages;
+        }
+    }
+
+    private async Task Search()
+    {
+        query.PageNumber = 1;
+        await LoadUsers();
+    }
+
+    private async Task ResetFilters()
+    {
+        query = new UserQueryParams();
+        await LoadUsers();
+    }
+
+    private async Task NextPage()
+    {
+        if (query.PageNumber < totalPages)
+        {
+            query.PageNumber++;
+            await LoadUsers();
+        }
+    }
+
+    private async Task PrevPage()
+    {
+        if (query.PageNumber > 1)
+        {
+            query.PageNumber--;
+            await LoadUsers();
+        }
+    }
 }

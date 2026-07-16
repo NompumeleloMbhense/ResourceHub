@@ -41,6 +41,9 @@ namespace ResourceHub.Api.Mappings
                     dto.Location,
                     dto.Capacity
                 ));
+
+            // User -> UserDto
+            CreateMap<User, UserDto>();
         }
     }
 }
