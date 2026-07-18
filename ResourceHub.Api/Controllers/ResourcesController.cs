@@ -22,6 +22,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // GET: api/resources
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] ResourceQueryParams query)
         {
@@ -38,6 +39,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // GET: api/resources/1
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -50,7 +52,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // POST: api/resources
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateResourceDto dto)
         {
@@ -66,7 +68,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // PUT: api/resources/1
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateResourceDto dto)
         {
@@ -83,7 +85,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // DELETE: api/resources/1
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

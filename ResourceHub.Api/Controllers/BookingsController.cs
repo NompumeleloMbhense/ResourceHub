@@ -22,6 +22,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // GET: api/bookings
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] BookingQueryParams query)
         {
@@ -38,6 +39,7 @@ namespace ResourceHub.Api.Controllers
         }
 
         // GET: api/bookings/{id}
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -49,7 +51,9 @@ namespace ResourceHub.Api.Controllers
             return Ok(_mapper.Map<BookingDto>(booking));
         }
 
+        // Get bookings for a specific resource with pagination
         // GET: api/bookings/resource/{resourceId}
+        [Authorize]
         [HttpGet("resource/{resourceId}")]
         public async Task<IActionResult> GetByResource(int resourceId, [FromQuery] BookingQueryParams query)
         {
@@ -108,6 +112,8 @@ namespace ResourceHub.Api.Controllers
             return NoContent();
         }
 
+        
+        // Move a booking to a different resource
         [Authorize]
         [HttpPut("{id}/move")]
         public async Task<IActionResult> Move(int id, MoveBookingDto dto)
@@ -117,6 +123,7 @@ namespace ResourceHub.Api.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpGet("resource/{resourceId}/upcoming")]
         public async Task<IActionResult> GetUpcomingBookingByResource(int resourceId)
         {
@@ -137,6 +144,7 @@ namespace ResourceHub.Api.Controllers
             });
         }
 
+        [Authorize]
         [HttpGet("resource/{resourceId}/availability")]
         public async Task<IActionResult> CheckAvailability(int resourceId, [FromQuery] DateTime start, [FromQuery] DateTime end)
         {
