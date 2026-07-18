@@ -1,6 +1,7 @@
 ﻿@page "/"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
 @using ResourceHub.Client.Services
 @using ResourceHub.Shared.QueryParams
 @using ResourceHub.Shared.DTOs
@@ -54,16 +55,32 @@ else
     <div class="quick-actions">
 
         <NavLink href="/resources" class="action-card">
-            Manage Resources
+            Browse Resources
         </NavLink>
 
         <NavLink href="/bookings" class="action-card">
             View Bookings
         </NavLink>
 
-        <NavLink href="/resources/create" class="action-card">
-            Add Resource
-        </NavLink>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+
+                <NavLink href="/resources/create" class="action-card">
+                    Add Resource
+                </NavLink>
+                
+            </Authorized>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+
+                <NavLink href="/users" class="action-card">
+                    Manage Users
+                </NavLink>
+
+            </Authorized>
+        </AuthorizeView>
 
     </div>
 
