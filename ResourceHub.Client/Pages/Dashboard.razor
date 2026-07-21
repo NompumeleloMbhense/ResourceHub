@@ -1,0 +1,177 @@
+@page "/dashboard"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using ResourceHub.Client.Services
+@using ResourceHub.Shared.QueryParams
+@using ResourceHub.Shared.DTOs
+@inject IResourceService ResourceService
+@inject IBookingService BookingService
+
+
+<PageTitle>Dashboard</PageTitle>
+
+<div class="page-header">
+
+    <div>
+        <h1 class="page-title">Dashboard</h1>
+
+        <p class="page-subtitle">
+            Overview of resources and booking activity
+        </p>
+    </div>
+</div>
+
+
+@if (isLoading)
+{
+    <p class="loading">Loading dashboard...</p>
+}
+else
+{
+    <div class="dashboard-grid">
+
+        <div class="stat-card">
+            <h3>Total Resources</h3>
+            <p>@totalResources</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Available Resources</h3>
+            <p>@availableResources</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Bookings</h3>
+            <p>@totalBookings</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Upcoming Bookings</h3>
+            <p>@upcomingBookings</p>
+        </div>
+
+    </div>
+
+    <div class="quick-actions">
+
+        <NavLink href="/resources" class="action-card">
+            Browse Resources
+        </NavLink>
+
+        <NavLink href="/bookings" class="action-card">
+            View Bookings
+        </NavLink>
+
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+
+                <NavLink href="/resources/create" class="action-card">
+                    Add Resource
+                </NavLink>
+                
+            </Authorized>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+
+                <NavLink href="/users" class="action-card">
+                    Manage Users
+                </NavLink>
+
+            </Authorized>
+        </AuthorizeView>
+
+    </div>
+
+    @if (upcomingBookingsList.Any())
+    {
+        <div class="upcoming-section">
+            <div class="section-header">
+                <h2>Upcoming Bookings</h2>
+
+                <NavLink href="/bookings" class="view-all-link">
+                    View All
+                </NavLink>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Resource</th>
+                            <th>Booked By</th>
+                            <th>Start</th>
+                            <th>End</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var booking in upcomingBookingsList)
+                        {
+                            <tr>
+                                <td>@booking.ResourceName</td>
+                                <td>@booking.BookedBy</td>
+                                <td>@booking.StartTime.ToString("dd MMM yyyy HH:mm")</td>
+                                <td>@booking.EndTime.ToString("dd MMM yyyy HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+}
+
+
+
+@code
+{
+    private bool isLoading = true;
+
+    private int totalResources;
+    private int availableResources;
+    private int totalBookings;
+    private int upcomingBookings;
+
+    private List<BookingDto> upcomingBookingsList = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load resources
+        var resourcesResult = await ResourceService.GetResourcesAsync(new ResourceQueryParams
+        {
+            PageSize = 1000
+        });
+
+        if (resourcesResult != null)
+        {
+            totalResources = resourcesResult.Data.Count();
+
+            availableResources = resourcesResult.Data.Count(r => r.IsAvailable);
+        }
+
+        // Load bookings
+        var bookingResult = await BookingService.GetBookingsAsync(new BookingQueryParams
+        {
+            PageSize = 1000
+        });
+
+        if (bookingResult != null)
+        {
+            totalBookings = bookingResult.Data.Count();
+
+            upcomingBookingsList = bookingResult.Data
+                .Where(b => b.StartTime > DateTime.Now)
+                .OrderBy(b => b.StartTime)
+                .Take(5)
+                .ToList();
+
+            upcomingBookings = upcomingBookingsList.Count;
+        }
+
+        isLoading = false;
+    }
+}

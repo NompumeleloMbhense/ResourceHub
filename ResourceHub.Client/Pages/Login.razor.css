@@ -103,6 +103,21 @@ label {
   box-shadow: 0 10px 20px rgba(5, 150, 105, 0.18);
 }
 
+
+.auth-footer{
+
+    margin-top:1.5rem;
+    text-align:center;
+    color:#64748B;
+}
+
+.auth-footer a{
+
+    color:#059669;
+    font-weight:600;
+    text-decoration:none;
+}
+
 /* VALIDATION */
 .validation-message,
 .error {

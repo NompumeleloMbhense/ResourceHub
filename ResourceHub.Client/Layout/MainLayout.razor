@@ -16,22 +16,32 @@
 
         <nav class="sidebar-nav">
 
-            <NavLink class="sidebar-link" href="/" Match="NavLinkMatch.All">
-                Dashboard
-            </NavLink>
+            <AuthorizeView>
 
-            <NavLink class="sidebar-link" href="/resources">
-                Resources
-            </NavLink>
+                <Authorized>
 
-            <NavLink class="sidebar-link" href="/bookings">
-                Bookings
-            </NavLink>
+                    <NavLink class="sidebar-link" href="/dashboard" Match="NavLinkMatch.All">
+                        Dashboard
+                    </NavLink>
 
-            <AuthorizeView Roles="Admin">
-                <NavLink class="sidebar-link" href="/users">
-                    Users
-                </NavLink>
+                    <NavLink class="sidebar-link" href="/resources">
+                        Resources
+                    </NavLink>
+
+                    <NavLink class="sidebar-link" href="/bookings">
+                        Bookings
+                    </NavLink>
+
+                    <AuthorizeView Roles="Admin" Context="adminContext">
+                        <Authorized>
+                            <NavLink class="sidebar-link" href="/users">
+                                Users
+                            </NavLink>
+                        </Authorized>
+                    </AuthorizeView>
+
+                </Authorized>
+
             </AuthorizeView>
 
         </nav>
@@ -49,11 +59,31 @@
             </div>
 
             <div class="user-section">
-                <span class="user">@username</span>
 
-                <button class="logout-btn" @onclick="Logout">
-                    Logout
-                </button>
+                <AuthorizeView>
+
+                    <Authorized>
+
+                        <span class="user">
+                            @username
+                        </span>
+
+                        <button class="logout-btn" @onclick="Logout">
+                            Logout
+                        </button>
+
+                    </Authorized>
+
+                    <NotAuthorized>
+
+                        <button class="logout-btn" @onclick='() => Navigation.NavigateTo("/login")'>
+                            Login
+                        </button>
+
+                    </NotAuthorized>
+
+                </AuthorizeView>
+
             </div>
 
         </header>
@@ -69,7 +99,6 @@
 
 @code
 {
-
     private string? username;
 
     protected override async Task OnInitializedAsync()
@@ -79,7 +108,7 @@
         var user = authState.User;
 
         username = user.Identity?.IsAuthenticated == true
-            ? user.Identity.Name
+            ? user.Identity!.Name
             : "Guest";
     }
 
@@ -87,6 +116,6 @@
     {
         await AuthService.LogoutAsync();
 
-        Navigation.NavigateTo("/login", forceLoad: true);
+        Navigation.NavigateTo("/", true);
     }
 }

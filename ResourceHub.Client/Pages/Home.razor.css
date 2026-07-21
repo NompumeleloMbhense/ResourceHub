@@ -1,197 +1,73 @@
-/* PAGE HEADER */
+.hero{
+    min-height:calc(100vh - 80px);
 
-.page-header {
-    margin-bottom: 2rem;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    background:linear-gradient(
+        135deg,
+        #F8FAFC,
+        #ECFDF5
+    );
 }
 
-.page-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #0F172A;
-    margin: 0;
+.hero-content{
+    max-width:700px;
+    padding:2rem;
 }
 
-.page-subtitle {
-    margin-top: 0.4rem;
-    color: #64748B;
-    font-size: 0.98rem;
+.hero h1{
+    font-size:3.5rem;
+    color:#0F172A;
+    margin-bottom:1rem;
 }
 
-/* LOADING */
-
-.loading {
-    color: #64748B;
-    font-size: 0.95rem;
+.hero p{
+    font-size:1.2rem;
+    color:#64748B;
+    margin-bottom:2rem;
 }
 
-/* DASHBOARD GRID */
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+.hero-buttons{
+    display:flex;
+    justify-content:center;
+    gap:1rem;
 }
 
-/* STAT CARDS */
+.primary-btn,
+.secondary-btn{
 
-.stat-card {
-    position: relative;
-    background: white;
-    border: 1px solid #E2E8F0;
-    border-radius: 22px;
-    padding: 1.75rem;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease;
+    padding:1rem 2rem;
+    border-radius:14px;
+
+    text-decoration:none;
+    font-weight:600;
+
+    transition:.2s;
 }
 
-.stat-card:hover {
-    transform: translateY(-3px);
-    border-color: #A7F3D0;
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+.primary-btn{
+
+    background:#059669;
+    color:white;
 }
 
-.stat-card h3 {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #64748B;
+.primary-btn:hover{
+
+    background:#047857;
 }
 
-.stat-card p {
-    margin-top: 1rem;
-    margin-bottom: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #059669;
+.secondary-btn{
+
+    border:1px solid #CBD5E1;
+    background:white;
+    color:#334155;
 }
 
-/* QUICK ACTIONS */
+.secondary-btn:hover{
 
-.quick-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-/* ACTION BUTTONS */
-
-::deep .action-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 200px;
-    background: white;
-    color: #0F172A;
-    text-decoration: none;
-    padding: 1rem 1.4rem;
-    border-radius: 16px;
-    border: 1px solid #E2E8F0;
-    font-weight: 600;
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-::deep .action-card:hover {
-    background: #F0FDF4;
-    color: #059669;
-    border-color: #A7F3D0;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(5, 150, 105, 0.08);
-}
-
-
-/* UPCOMING BOOKINGS */
-
-.upcoming-section {
-    margin-top: 2rem;
-}
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 1rem;
-}
-
-.section-header h2 {
-    margin: 0;
-
-    font-size: 1.25rem;
-    font-weight: 700;
-
-    color: #0F172A;
-}
-
-.view-all-link {
-    color: #059669;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.view-all-link:hover {
-    text-decoration: underline;
-}
-
-/* Reuse same table style as Resources */
-
-.table-wrapper {
-    background: white;
-    border: 1px solid #E2E8F0;
-    border-radius: 22px;
-    overflow-x: auto;
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table th {
-    background: #F8FAFC;
-    color: #64748B;
-    text-align: left;
-    padding: 1rem;
-    border-bottom: 1px solid #E2E8F0;
-}
-
-.table td {
-    padding: 1rem;
-    border-bottom: 1px solid #F1F5F9;
-}
-
-/* MOBILE */
-
-@media (max-width: 768px) {
-
-    .page-title {
-        font-size: 1.7rem;
-    }
-
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .stat-card {
-        padding: 1.5rem;
-    }
-
-    .stat-card p {
-        font-size: 2rem;
-    }
-
-    .quick-actions {
-        flex-direction: column;
-    }
-
-    ::deep .action-card {
-        width: 100%;
-    }
+    background:#F8FAFC;
 }

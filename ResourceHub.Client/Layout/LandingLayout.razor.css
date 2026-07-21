@@ -1,0 +1,40 @@
+.landing-layout{
+    min-height:100vh;
+    background:#F8FAFC;
+}
+
+.landing-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:1.25rem 3rem;
+
+    background:white;
+    border-bottom:1px solid #E2E8F0;
+}
+
+.logo{
+    font-size:1.5rem;
+    font-weight:700;
+    color:#059669;
+}
+
+.landing-header nav{
+    display:flex;
+    gap:2rem;
+}
+
+.landing-header a{
+    text-decoration:none;
+    color:#334155;
+    font-weight:600;
+}
+
+.landing-header a:hover{
+    color:#059669;
+}
+
+.landing-content{
+    padding:0;
+}

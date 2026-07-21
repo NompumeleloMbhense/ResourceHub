@@ -37,13 +37,25 @@
 
             <div class="form-group">
                 <label>Password</label>
-                <InputText @bind-Value="model.Password" type="password" class="input" placeholder="Enter your password"  />
+                <InputText @bind-Value="model.Password" type="password" class="input"
+                           placeholder="Enter your password" />
                 <ValidationMessage For="@(() => model.Password)" />
             </div>
 
             <button type="submit" class="btn">
                 Register
             </button>
+
+
+            <div class="auth-footer">
+
+                Already have an account?
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </div>
 
             @if (!string.IsNullOrEmpty(error))
             {
@@ -80,6 +92,6 @@
             return;
         }
 
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo("/dashboard");
     }
 }
