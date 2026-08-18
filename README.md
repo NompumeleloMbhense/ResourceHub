@@ -200,12 +200,12 @@ Implemented a booking relocation workflow:
 
 ---
 ## Images
-**Login Page**
-<img width="1891" height="860" alt="LoginPage" src="https://github.com/user-attachments/assets/fe0a0bbb-75a0-4263-b6a8-5068d10247d7" />
-
 
 **Home Page**
 <img width="1898" height="867" alt="Homepage" src="https://github.com/user-attachments/assets/69b21cbf-66e6-4327-9dde-85206e1c8e73" />
+
+**Login Page**
+<img width="1891" height="860" alt="LoginPage" src="https://github.com/user-attachments/assets/fe0a0bbb-75a0-4263-b6a8-5068d10247d7" />
 
 
 **Resources**
